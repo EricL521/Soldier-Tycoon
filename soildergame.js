@@ -1,4 +1,3 @@
-document.body.innerHTML = "";
 alert("By clicking the ok button, you are accepting that your mouse and keyboard will be tracked, while you are on this website (all information used for this game will stay on this device). X out this tab if you do not consent to this.");
 alert("Green circles are soldiers (protect and kill enemies). Blue circles are workers (make gold). Your castle is green. When it gets overrun, you lose. Raiders are red. (If you are looking to right click, right click outside of the border, not inside.)");
 document.write("<title>Soldier Tycoon by Eric Liu</title>");
