@@ -37,7 +37,7 @@ document.onmouseup = function() {
 
 	if (mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125) {
 		if (gold >= soldierCost && soldiers.length + workers.length + 1 <= maxPeople) {
-			soldiers.push({x: castle.x, y: castle.y, radius: 5, x_vel: Math.random()/2, y_vel: Math.random()-0.5, health: 100, damage: Math.random() * 50 + 50, timer: new Date(), shootTime: Math.random()*100+450});
+			soldiers.push({x: castle.x, y: castle.y, radius: 5, x_vel: Math.random()/2, y_vel: Math.random()-0.5, health: 100, damage: Math.random() * 25 + 25, timer: new Date(), shootTime: Math.random()*100+450});
 			gold -= soldierCost;
 			soldierCost += Math.floor(Math.random() * 50 + 25);
     }
@@ -146,6 +146,15 @@ function moveWorker(i) {
 
 	if (play) {
 
+		for (var k = 0; k < bullets.length; k ++) {
+			distance = Math.sqrt((Math.pow(bullets[k].x - workers[i].x, 2) + Math.pow(bullets[k].y - workers[i].y, 2)));
+
+			if (distance <= workers[i].radius + bullets[k].radius && bullets[k].from !== "soldier") {
+				workers[i].health -= bullets[k].damage;
+				bullets.splice[k, 1];
+      }
+    }
+
 		if (workers[i].health <= 0) {
 			workers.splice(i, 1);
 		}
@@ -190,7 +199,7 @@ function moveRaider(i) {
 		for (var k = 0; k < bullets.length; k ++) {
 			distance = Math.sqrt((Math.pow(bullets[k].x - raiders[i].x, 2) + Math.pow(bullets[k].y - raiders[i].y, 2)));
 
-			if (distance <= raiders[i].radius + bullets[k].radius) {
+			if (distance <= raiders[i].radius + bullets[k].radius && bullets[k].from !== "raider" + i) {
 				raiders[i].health -= bullets[k].damage;
 				bullets.splice[k, 1];
         }
@@ -206,7 +215,7 @@ function moveRaider(i) {
 				var ifFound = false;
 				for (var j = 0; j < soldiers.length; j ++) {
 					if (Math.abs(raiders[i].x - soldiers[j].x) < 100 && Math.abs(raiders[i].y - soldiers[j].y) < 100) {
-						bullets.push({x: raiders[i].x, y: raiders[i].y, damage: raiders[i].damage, x_vel: (soldiers[j].x - raiders[i].x)/10, y_vel: (soldiers[j].y - raiders[i].y)/10, from: "raider", radius: 2});
+						bullets.push({x: raiders[i].x, y: raiders[i].y, damage: raiders[i].damage, x_vel: (soldiers[j].x - raiders[i].x)/10, y_vel: (soldiers[j].y - raiders[i].y)/10, from: "raider" + i, radius: 2});
 						ifFound = true;
 						break;
 					}
@@ -215,7 +224,7 @@ function moveRaider(i) {
 				if (!ifFound) {
 					for (var n = 0; n < workers.length; n ++) {
 						if (Math.abs(raiders[i].x - workers[n].x) < 100 && Math.abs(raiders[i].y - workers[n].y) < 100) {
-							workers[n].health -= 50;
+							bullets.push({x: raiders[i].x, y: raiders[i].y, damage: raiders[i].damage, x_vel: (workers[n].x - raiders[i].x)/10, y_vel: (workers[n].y - raiders[i].y)/10, from: "raider" + i, radius: 2});
 							ifFound = true;
 							break;
 						}
@@ -284,7 +293,7 @@ function moveBullet(i) {
 }
 
 function startRaid() {
-	var raiders1 = Math.floor((Math.random() * ((soldiers.length + workers.length)/ 16)) + ((soldiers.length + workers.length)/ 4));
+	var raiders1 = Math.floor((Math.random() * ((soldiers.length + workers.length)/ 32)) + ((soldiers.length + workers.length)/ 16));
 	for (var i = 0; i < raiders1; i ++) {
     raiders.push({x: (Math.random() * (canvas.width/2 - castle.scoutRange - 20) + 10), y : (Math.random() * (canvas.height - 150 - 20) + 150 + 10), radius: 10, x_vel: Math.random() * 2 - 1, y_vel: Math.random() * 2 - 1, health: 100, timer: new Date(), shootTime: Math.random()*100+450});
 	}
@@ -383,7 +392,7 @@ function draw() {
 		ctx.fillText("paused", canvas.width/2 - 20, 170);
 	}
 	else {
-		if (Math.random() > .9999) {
+		if (Math.random() > .995) {
 			startRaid();
 		}
 	}
