@@ -22,6 +22,7 @@ var frames = 0;
 var fps = 0;
 var castleUpgradeCost = 50000;
 var maxPeople = 50;
+var lost = false;
 
 canvas.addEventListener('contextmenu', event => event.preventDefault());
 
@@ -48,7 +49,7 @@ document.onmouseup = function() {
 
 		else {
 			alert("You don’t have enough gold! You need " + (soldierCost - gold) + " more gold!");
-        }
+  	}
 	}
 
 	if (mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125) {
@@ -109,6 +110,8 @@ function moveSoldier(i) {
 					if (Math.abs(soldiers[i].x - raiders[j].x) < 100 && Math.abs(soldiers[i].y - raiders[j].y) < 100) {
 						bullets.push({x: soldiers[i].x, y: soldiers[i].y, damage: soldiers[i].damage, x_vel: (raiders[j].x - soldiers[i].x)/10, y_vel: (raiders[j].y - soldiers[i].y)/10, from: "soldier", radius: 2});
 						soldiers[i].timer = new Date();
+						soldiers[i].x_vel = 0;
+						soldiers[i].y_vel = 0;
 						break;
 					}
 				}
@@ -237,9 +240,6 @@ function moveRaider(i) {
 				}
       }
 
-			raiders[i].y += raiders[i].y_vel;
-			raiders[i].x += raiders[i].x_vel;
-
 			if (soldiers.length > 0 || workers.length > 0) {
 				if (raiders[i].y < castle.y + castle.scoutRange + raiders[i].radius && raiders[i].y > castle.y - castle.scoutRange - raiders[i].radius) {
 					if (raiders[i].x > castle.x - castle.scoutRange - raiders[i].radius && raiders[i].x < castle.x + castle.scoutRange + raiders[i].radius) {
@@ -254,6 +254,13 @@ function moveRaider(i) {
 					}
 				}
 			}
+			else {
+				raiders[i].x_vel = (castle.x - raiders[i].x) / 50;
+				raiders[i].y_vel = (castle.y - raiders[i].y) / 50;
+			}
+
+			raiders[i].y += raiders[i].y_vel;
+			raiders[i].x += raiders[i].x_vel;
 
 			if (raiders[i].x > canvas.width - raiders[i].radius|| raiders[i].x < raiders[i].radius) {
 				raiders[i].x_vel *= -1;
@@ -367,59 +374,76 @@ function drawBackground() {
 	ctx.fillStyle = "green";
 	ctx.fill();
 
+	if (soldiers.length + workers.length > 0)
 	ctx.strokeRect(castle.x - castle.scoutRange, castle.y - castle.scoutRange, 2 * castle.scoutRange, 2 * castle.scoutRange);
 }
 
 function draw() {
 
-	if (new Date() - d >= 1000 && play) {
-		gps = gold - goldBefore;
-		goldBefore = gold;
-		d = new Date();
-		fps = frames;
-		frames = 0;
-	}
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	frames ++;
-
-	ctx.fillStyle = "white";
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-	if (!play) {
-		ctx.fillStyle = "grey";
-		ctx.fillRect(0, 150, canvas.width, canvas.height - 150);
-		ctx.fillStyle = "black";
-		ctx.font = "15px Arial";
-		ctx.fillText("paused", canvas.width/2 - 20, 170);
-	}
-	else {
-		if (Math.random() > .999) {
-			startRaid();
+	if (!lost) {
+		if (new Date() - d >= 1000 && play) {
+			if (gold - goldBefore >= 0) {
+				gps = gold - goldBefore;
+			}
+			goldBefore = gold;
+			d = new Date();
+			fps = frames;
+			frames = 0;
 		}
+
+		if (Math.random() > .8 && play && soldiers.length + workers.length > 0) {
+			gold += 2;
+		}
+
+		frames ++;
+
+		if (!play) {
+			ctx.fillStyle = "lightgrey";
+			ctx.fillRect(0, 150, canvas.width, canvas.height - 150);
+			ctx.fillStyle = "black";
+			ctx.font = "15px Arial";
+			ctx.fillText("Paused", canvas.width/2 - 20, 170);
+			d = new Date();
+		}
+		else {
+			if (Math.random() > .999) {
+				startRaid();
+			}
+		}
+
+		for (var m = 0; m < bullets.length; m ++) {
+			moveBullet(m);
+		}
+
+		for (var k = 0; k < workers.length; k ++) {
+			moveWorker(k);
+		}
+
+		for (var j = 0; j < soldiers.length; j ++) {
+			moveSoldier(j);
+		}
+
+		for (var n = 0; n < raiders.length; n ++) {
+			if (Math.sqrt(Math.pow(raiders[n].x - castle.x, 2) + Math.pow(raiders[n].y - castle.y, 2)) < castle.radius - raiders[n].radius) {
+				lost = true;
+			}
+			moveRaider(n);
+		}
+
+		drawBackground();
+
+		topBar();
+
 	}
 
-	for (var m = 0; m < bullets.length; m ++) {
-		moveBullet(m);
+	else {
+		ctx.font = "30px Arial";
+		ctx.fillText("You have lost!", canvas.width/2 - 75, canvas.height/2);
 	}
-
-	for (var k = 0; k < workers.length; k ++) {
-		moveWorker(k);
-	}
-
-	for (var j = 0; j < soldiers.length; j ++) {
-		moveSoldier(j);
-	}
-
-	for (var n = 0; n < raiders.length; n ++) {
-		moveRaider(n);
-	}
-
-	drawBackground();
-
-	topBar();
 
 	requestAnimationFrame(draw);
-
 }
 
 draw();
