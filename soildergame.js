@@ -32,54 +32,80 @@ canvas.addEventListener("mousemove", function(e) {
 });
 
 document.onmouseup = function() {
-	if (mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100) {
-		play = !play;
+	if (!lost) {
+		if (mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100) {
+			play = !play;
+		}
+
+		if (mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125) {
+			if (gold >= soldierCost && soldiers.length + workers.length + 1 <= maxPeople) {
+				gold -= soldierCost;
+				soldiers.push({x: castle.x, y: castle.y, radius: 5, x_vel: Math.random()/2, y_vel: Math.random()-0.5, health: 100, damage: Math.random() * 10 + 40, timer: new Date(), shootTime: Math.random()*100+450});
+				soldierCost += Math.floor(Math.random() * 50 + 25);
+	    }
+
+			else if (soldiers.length + workers.length + 1 > maxPeople) {
+				alert("You have reached your maximum number of people your castle can support. Upgrade your castle to keep hiring!");
+			}
+
+			else {
+				alert("You don’t have enough gold! You need " + (soldierCost - gold) + " more gold!");
+	  	}
+		}
+
+		if (mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125) {
+			if (gold >= workerCost && soldiers.length + workers.length + 1 <= maxPeople) {
+				workers.push({x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 3, x_vel: 0.3, y_vel: 0.5, income: Math.random() * 10 + 80, health: 50});
+				gold -= workerCost;
+				workerCost+= Math.floor(Math.random() * 50 + 50);
+			}
+
+			else if (soldiers.length + workers.length + 1 > maxPeople) {
+				alert("You have reached your maximum number of people your castle can support. Upgrade your castle to keep hiring!");
+			}
+
+			else {
+				alert("You don’t have enough gold! You need " + (workerCost - gold) + " more gold!");
+			}
+		}
+
+		if (mouseX > 390 && mouseX < 510 && mouseY > 75 && mouseY < 125) {
+			if (gold >= castleUpgradeCost) {
+				castle.scoutRange += (190 - castle.scoutRange) / 50;
+				maxPeople += 10;
+				gold -= castleUpgradeCost;
+				castleUpgradeCost += Math.floor(Math.random() * 50 + 50) * 100;
+	        }
+
+			else {
+				alert("You don't have enough gold! You need " + (castleUpgradeCost - gold) + " more gold!");
+			}
+		}
 	}
 
-	if (mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125) {
-		if (gold >= soldierCost && soldiers.length + workers.length + 1 <= maxPeople) {
-			gold -= soldierCost;
-			soldiers.push({x: castle.x, y: castle.y, radius: 5, x_vel: Math.random()/2, y_vel: Math.random()-0.5, health: 100, damage: Math.random() * 10 + 40, timer: new Date(), shootTime: Math.random()*100+450});
-			soldierCost += Math.floor(Math.random() * 50 + 25);
-    }
-
-		else if (soldiers.length + workers.length + 1 > maxPeople) {
-			alert("You have reached your maximum number of people your castle can support. Upgrade your castle to keep hiring!");
-		}
-
-		else {
-			alert("You don’t have enough gold! You need " + (soldierCost - gold) + " more gold!");
-  	}
-	}
-
-	if (mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125) {
-		if (gold >= workerCost && soldiers.length + workers.length + 1 <= maxPeople) {
-			workers.push({x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 3, x_vel: 0.3, y_vel: 0.5, income: Math.random() * 10 + 80, health: 50});
-			gold -= workerCost;
-			workerCost+= Math.floor(Math.random() * 50 + 50);
-		}
-
-		else if (soldiers.length + workers.length + 1 > maxPeople) {
-			alert("You have reached your maximum number of people your castle can support. Upgrade your castle to keep hiring!");
-		}
-
-		else {
-			alert("You don’t have enough gold! You need " + (workerCost - gold) + " more gold!");
+	else {
+		if (mouseX > canvas.width/2 - 100 && mouseX < canvas.width/2 + 100 && mouseY > canvas.height/2 - 50 && mouseY < canvas.height/2 + 50) {
+			soldiers = [{x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 5, x_vel: 0.5, y_vel: -0.5, health: 100, damage: Math.random() * 10 + 40, timer: new Date(), shootTime: Math.random()*100+450}];
+			workers = [{x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 3, x_vel: 0.3, y_vel: 0.5, income: Math.random() * 10 + 80, health: 50}];
+			bullets = [];
+			raiders = [];
+			castle = {x: canvas.width/2, y: (canvas.height + 150) / 2, radius:25, scoutRange: 100};
+			mouseX = 0;
+			mouseY = 0;
+			play = true;
+			soldierCost = 200;
+			workerCost = 500;
+			gold = 15000;
+			d = new Date();
+			goldBefore = gold;
+			gps = 0;
+			frames = 0;
+			fps = 0;
+			castleUpgradeCost = 50000;
+			maxPeople = 50;
+			lost = false;
 		}
 	}
-
-	if (mouseX > 390 && mouseX < 510 && mouseY > 75 && mouseY < 125) {
-		if (gold >= castleUpgradeCost) {
-			castle.scoutRange += (190 - castle.scoutRange) / 50;
-			maxPeople += 10;
-			gold -= castleUpgradeCost;
-			castleUpgradeCost += Math.floor(Math.random() * 50 + 50) * 100;
-        }
-
-		else {
-			alert("You don't have enough gold! You need " + (castleUpgradeCost - gold) + " more gold!");
-		}
-    }
 };
 
 function moveSoldier(i) {
@@ -439,8 +465,15 @@ function draw() {
 	}
 
 	else {
+		ctx.fillStyle = "black"
 		ctx.font = "30px Arial";
-		ctx.fillText("You have lost!", canvas.width/2 - 75, canvas.height/2);
+		ctx.fillText("You have lost!", canvas.width/2 - 90, canvas.height/2 - 75);
+
+		ctx.fillStyle = "grey";
+		ctx.fillRect(canvas.width/2 - 100, canvas.height/2 - 50, 200, 100);
+		ctx.fillStyle = "black";
+		ctx.font = "15px Arial";
+		ctx.fillText("Click here to play again!", canvas.width/2 - 80, canvas.height/2 - 25);
 	}
 
 	requestAnimationFrame(draw);
