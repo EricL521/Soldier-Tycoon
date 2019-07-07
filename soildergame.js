@@ -14,7 +14,7 @@ document.write("<canvas id='canvas' width='1347' height='587' style='border:2px 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var soldiers = [{x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 5, x_vel: 0.5, y_vel: -0.5, health: 100, damage: Math.random() * 10 + 40, timer: new Date(), shootTime: Math.random()*100+450}];
-var workers = [{x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 3, x_vel: 0.3, y_vel: 0.5, income: Math.random() * 10 + 80, health: 50, goldTimer: new Date()}];
+var workers = [{x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 3, x_vel: 0.3, y_vel: 0.5, health: 50, goldTimer: new Date()}];
 var bullets = [];
 var raiders = [];
 var castle = {x: canvas.width/2, y: (canvas.height + 150) / 2, radius:25, scoutRange: 100};
@@ -64,7 +64,7 @@ document.onmouseup = function() {
 
 		if (mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125) {
 			if (gold >= workerCost && soldiers.length + workers.length + 1 <= maxPeople) {
-				workers.push({x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 3, x_vel: 0.3, y_vel: 0.5, income: Math.random() * 10 + 80, health: 50, goldTimer: new Date()});
+				workers.push({x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 3, x_vel: 0.3, y_vel: 0.5, health: 50, goldTimer: new Date()});
 				gold -= workerCost;
 				workerCost+= Math.floor(Math.random() * 50 + 50);
 			}
@@ -95,7 +95,7 @@ document.onmouseup = function() {
 	else {
 		if (mouseX > canvas.width/2 - 100 && mouseX < canvas.width/2 + 100 && mouseY > canvas.height/2 - 50 && mouseY < canvas.height/2 + 50) {
 			soldiers = [{x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 5, x_vel: 0.5, y_vel: -0.5, health: 100, damage: Math.random() * 10 + 40, timer: new Date(), shootTime: Math.random()*100+450}];
-			workers = [{x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 3, x_vel: 0.3, y_vel: 0.5, income: Math.random() * 10 + 80, health: 50, goldTimer: new Date()}];
+			workers = [{x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 3, x_vel: 0.3, y_vel: 0.5, health: 50, goldTimer: new Date()}];
 			bullets = [];
 			raiders = [];
 			castle = {x: canvas.width/2, y: (canvas.height + 150) / 2, radius:25, scoutRange: 100};
@@ -199,11 +199,13 @@ function moveWorker(i) {
 		}
 
 		else {
+			if (new Date() - workers[i].goldTimer > 100) {
+				gold ++;
+				workers[i].goldTimer = new Date();
+			}
+
 			workers[i].y += workers[i].y_vel;
 			workers[i].x += workers[i].x_vel;
-			if (Math.random()*100 > workers[i].income) {
-				gold ++;
-			}
 
 			if (workers[i].x > castle.x + castle.scoutRange - workers[i].radius || workers[i].x < castle.x - castle.scoutRange + workers[i].radius) {
 				workers[i].x_vel *= -1;
@@ -426,10 +428,10 @@ function draw() {
 			d = new Date();
 			fps = frames;
 			frames = 0;
-		}
 
-		if (Math.random() > .8 && play && soldiers.length + workers.length > 0) {
-			gold += 2;
+			if (soldiers.length + workers.length > 0) {
+					gold += 15;
+			}
 		}
 
 		frames ++;
