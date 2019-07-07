@@ -1,3 +1,12 @@
+/*
+plans:
+	- Soldiers and workers cost a certain amount (varies) to hire and require money to keep working
+	- Different people (soldiers and workers) require different amounts of money per second
+	- Workers make same amount every second
+	- Hovering over buttons gives info on current person and stats
+	- If there is not enough gold to pay soldiers, soldiers will leave until there is enough gold to go around
+*/
+
 alert("By clicking the ok button, you are accepting that your mouse and keyboard will be tracked, while you are on this website (all information used for this game will stay on this device). X out this tab if you do not consent to this.");
 alert("Green circles are soldiers (protect and kill enemies). Blue circles are workers (make gold). Your castle is green. When it gets overrun, you lose. Raiders are red. (If you are looking to right click, right click outside of the border, not inside.)");
 document.write("<title>Soldier Tycoon</title>");
@@ -5,7 +14,7 @@ document.write("<canvas id='canvas' width='1347' height='587' style='border:2px 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var soldiers = [{x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 5, x_vel: 0.5, y_vel: -0.5, health: 100, damage: Math.random() * 10 + 40, timer: new Date(), shootTime: Math.random()*100+450}];
-var workers = [{x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 3, x_vel: 0.3, y_vel: 0.5, income: Math.random() * 10 + 80, health: 50}];
+var workers = [{x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 3, x_vel: 0.3, y_vel: 0.5, income: Math.random() * 10 + 80, health: 50, goldTimer: new Date()}];
 var bullets = [];
 var raiders = [];
 var castle = {x: canvas.width/2, y: (canvas.height + 150) / 2, radius:25, scoutRange: 100};
@@ -55,7 +64,7 @@ document.onmouseup = function() {
 
 		if (mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125) {
 			if (gold >= workerCost && soldiers.length + workers.length + 1 <= maxPeople) {
-				workers.push({x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 3, x_vel: 0.3, y_vel: 0.5, income: Math.random() * 10 + 80, health: 50});
+				workers.push({x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 3, x_vel: 0.3, y_vel: 0.5, income: Math.random() * 10 + 80, health: 50, goldTimer: new Date()});
 				gold -= workerCost;
 				workerCost+= Math.floor(Math.random() * 50 + 50);
 			}
@@ -86,7 +95,7 @@ document.onmouseup = function() {
 	else {
 		if (mouseX > canvas.width/2 - 100 && mouseX < canvas.width/2 + 100 && mouseY > canvas.height/2 - 50 && mouseY < canvas.height/2 + 50) {
 			soldiers = [{x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 5, x_vel: 0.5, y_vel: -0.5, health: 100, damage: Math.random() * 10 + 40, timer: new Date(), shootTime: Math.random()*100+450}];
-			workers = [{x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 3, x_vel: 0.3, y_vel: 0.5, income: Math.random() * 10 + 80, health: 50}];
+			workers = [{x: canvas.width/2, y: (canvas.height + 150) / 2, radius: 3, x_vel: 0.3, y_vel: 0.5, income: Math.random() * 10 + 80, health: 50, goldTimer: new Date()}];
 			bullets = [];
 			raiders = [];
 			castle = {x: canvas.width/2, y: (canvas.height + 150) / 2, radius:25, scoutRange: 100};
@@ -342,7 +351,7 @@ function topBar() {
 	ctx.fillRect(0, 148, canvas.width, 2);
 
 	ctx.font = "15px Arial";
-	ctx.fillText("Soldier Tycoon Game By Eric", 10, 20);
+	ctx.fillText("Soldier Tycoon Game", 10, 20);
 
 	ctx.font = "15px Arial";
 	ctx.fillText("You have " + gold + " gold! You earn " + gps + " gold per second. You have " + fps + " fps.        Your population: " + (soldiers.length + workers.length) + "/" + maxPeople + "         There are " + raiders.length + " raiders.", 250, 20);
