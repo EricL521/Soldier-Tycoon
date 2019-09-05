@@ -548,7 +548,7 @@ function draw() {
     topBar();
 
   } else {
-    ctx.fillStyle = "black"
+    ctx.fillStyle = "black";
     ctx.font = "30px Arial";
     ctx.fillText("You have lost!", canvas.width / 2 - 90, canvas.height / 2 - 75);
 
