@@ -2,9 +2,18 @@ document.write("<title>Soldier Tycoon</title>");
 document.write("<canvas id='canvas' width='1347' height='587' style='border:2px solid black'></canvas>");
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
+var mouseX, mouseY;
 var units = {};
 
+canvas.addEventListener('contextmenu', event => event.preventDefault());
+
+canvas.addEventListener("mousemove", function(e) {
+  mouseX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - canvas.offsetLeft;
+  mouseY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop - canvas.offsetTop;
+});
+
 class Unit {
+  /*
   var health = 0;
   var speed = 0;
   var damage = 0;
@@ -16,6 +25,7 @@ class Unit {
   var peaceful = false;
   var enemy = false;
   var bullets = {};
+  */
 
   constructor(health, speed, damage, bulletSpeed, range, size, coords, peaceful, enemy) {
     this.health = health;
