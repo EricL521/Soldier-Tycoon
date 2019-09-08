@@ -68,7 +68,7 @@ class Unit {
           for (unit in units) {
             if (unit.enemy !== this.enemy && Math.sqrt((Math.pow(bullets.coords.x, 2) + Math.pow(bullets.coords.y, 2)), 2) - bullets.size <= 0) {
               unit.health -= this.damage;
-              bullets.splice(bullets.findIndex(bullet),1);
+              bullets.splice(bullets.findIndex(bullet), 1);
             }
           }
       }
