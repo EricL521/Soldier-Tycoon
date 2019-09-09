@@ -5,6 +5,7 @@ var ctx = canvas.getContext('2d');
 var units = {};
 
 class Unit {
+  /*
   var health = 0;
   var speed = 0;
   var damage = 0;
@@ -16,6 +17,7 @@ class Unit {
   var peaceful = false;
   var enemy = false;
   var bullets = {};
+  */
 
   constructor(health, speed, damage, bulletSpeed, range, size, coords, peaceful, enemy) {
     this.health = health;
@@ -25,13 +27,17 @@ class Unit {
     this.range = range;
     this.size = size;
     this.coords = coords;
+    this.momentum = {xVel:0, yVel:0};
     this.peaceful = peaceful;
     this.enemy = enemy;
+    this.bullets = {};
+    this.timeSinceLastFrame = new Date();
   }
 
   updateUnit() {
     var alreadyShot = false;
-
+    timeSinceLastFrame = new Date() - timeSinceLastFrame;
+    
     ctx.beginPath();
     ctx.arc(this.coords.x, this.coords.y, this.size, 0, 2 * Math.PI);
     if (peaceful) {
@@ -41,6 +47,9 @@ class Unit {
       ctx.fillStyle = "gray";
     }
     ctx.fill();
+    
+    this.coords.x += this.momentum.xVel / (timeSinceLastFrame/(50/3));
+    this.coords.y += this.momentum.yVel / (timeSinceLastFrame/(50/3));
 
     if (!peaceful) {
       for(unit in units) {
@@ -48,8 +57,8 @@ class Unit {
           var xVel = unit.coords.x - this.coords.x;
           var yVel = unit.coords.y - this.coords.y;
           var ratio = Math.sqrt((Math.pow(xVel, 2) + Math.pow(yVel, 2)), 2)/10;
-          var xVel /= ratio;
-          var yVel /= ratio;
+          xVel /= ratio;
+          yVel /= ratio;
 
           bullets.push({coords:{x:this.x, y:this.y}, momentum:{xVel:xVel, yVel:yVel}, size: 3});
 
@@ -58,20 +67,21 @@ class Unit {
       }
 
       for (bullet in bullets) {
-          ctx.beginPath();
-          ctx.arc(bullets.coords.x, bullets.coords.y, bullets.size, 0, 2 * Math.PI);
-          ctx.fillStyle = "black";
-          ctx.fill();
-          bullets.coords.x += bullets.momentum.x;
-          bullets.coords.y += bullets.momentum.y;
+        ctx.beginPath();
+        ctx.arc(bullet.coords.x, bullet.coords.y, bullet.size, 0, 2 * Math.PI);
+        ctx.fillStyle = "black";
+        ctx.fill();
+        bullet.coords.x += bullet.momentum.x / (timeSinceLastFrame/(50/3));
+        bullet.coords.y += bullet.momentum.y / (timeSinceLastFrame/(50/3));
 
-          for (unit in units) {
-            if (unit.enemy !== this.enemy && Math.sqrt((Math.pow(bullets.coords.x, 2) + Math.pow(bullets.coords.y, 2)), 2) - bullets.size <= 0) {
-              unit.health -= this.damage;
-              bullets.splice(bullets.findIndex(bullet), 1);
-            }
+        for (unit in units) {
+          if (unit.enemy !== this.enemy && Math.sqrt((Math.pow(bullets.coords.x, 2) + Math.pow(bullets.coords.y, 2)), 2) - bullets.size <= 0) {
+            unit.health -= this.damage;
+            bullets.splice(bullets.findIndex(bullet), 1);
           }
-      }
+        }
+      }  
     }
+    timeSinceLastFrame = new Date();
   }
 }
