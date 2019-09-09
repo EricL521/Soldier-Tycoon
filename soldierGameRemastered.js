@@ -52,7 +52,7 @@ class Unit {
     this.coords.y += this.momentum.yVel / (this.timeSinceLastFrame/(50/3));
 
     if (!this.peaceful) {
-      for(unit in units) {
+      for(var unit in units) {
         if (!alreadyShot && unit.enemy !== this.enemy && Math.sqrt((Math.pow(this.coords.x - unit.coords.x, 2) + Math.pow(this.coords.y - unit.coords.y, 2)), 2)) {
           var xVel = unit.coords.x - this.coords.x;
           var yVel = unit.coords.y - this.coords.y;
@@ -66,7 +66,7 @@ class Unit {
         }
       }
 
-      for (bullet in bullets) {
+      for (var bullet in bullets) {
         ctx.beginPath();
         ctx.arc(bullet.coords.x, bullet.coords.y, bullet.size, 0, 2 * Math.PI);
         ctx.fillStyle = "black";
@@ -90,7 +90,7 @@ function draw() {
   
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   
-  for (unit in units) {
+  for (var unit in units) {
     unit.updateUnit();
   }
   
