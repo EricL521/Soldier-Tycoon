@@ -85,3 +85,17 @@ class Unit {
     timeSinceLastFrame = new Date();
   }
 }
+
+function draw() {
+  
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  for (unit in units) {
+    unit.updateUnit();
+  }
+  
+  
+  requestAnimationFrame(draw);  
+}
+
+draw();
