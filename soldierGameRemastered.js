@@ -35,10 +35,10 @@ class Unit {
     ctx.beginPath();
     ctx.arc(this.coords.x, this.coords.y, this.size, 0, 2 * Math.PI);
     if (peaceful) {
-      ctx.fillStyle = "green";
+      ctx.fillStyle = "blue";
     }
     else {
-      ctx.fillStyle = "red";
+      ctx.fillStyle = "gray";
     }
     ctx.fill();
 
