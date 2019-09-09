@@ -36,11 +36,11 @@ class Unit {
 
   updateUnit() {
     var alreadyShot = false;
-    timeSinceLastFrame = new Date() - timeSinceLastFrame;
+    this.timeSinceLastFrame = new Date() - this.timeSinceLastFrame;
     
     ctx.beginPath();
     ctx.arc(this.coords.x, this.coords.y, this.size, 0, 2 * Math.PI);
-    if (peaceful) {
+    if (this.peaceful) {
       ctx.fillStyle = "blue";
     }
     else {
@@ -48,10 +48,10 @@ class Unit {
     }
     ctx.fill();
     
-    this.coords.x += this.momentum.xVel / (timeSinceLastFrame/(50/3));
-    this.coords.y += this.momentum.yVel / (timeSinceLastFrame/(50/3));
+    this.coords.x += this.momentum.xVel / (this.timeSinceLastFrame/(50/3));
+    this.coords.y += this.momentum.yVel / (this.timeSinceLastFrame/(50/3));
 
-    if (!peaceful) {
+    if (!this.peaceful) {
       for(unit in units) {
         if (!alreadyShot && unit.enemy !== this.enemy && Math.sqrt((Math.pow(this.coords.x - unit.coords.x, 2) + Math.pow(this.coords.y - unit.coords.y, 2)), 2)) {
           var xVel = unit.coords.x - this.coords.x;
@@ -71,8 +71,8 @@ class Unit {
         ctx.arc(bullet.coords.x, bullet.coords.y, bullet.size, 0, 2 * Math.PI);
         ctx.fillStyle = "black";
         ctx.fill();
-        bullet.coords.x += bullet.momentum.x / (timeSinceLastFrame/(50/3));
-        bullet.coords.y += bullet.momentum.y / (timeSinceLastFrame/(50/3));
+        bullet.coords.x += bullet.momentum.x / (this.timeSinceLastFrame/(50/3));
+        bullet.coords.y += bullet.momentum.y / (this.timeSinceLastFrame/(50/3));
 
         for (unit in units) {
           if (unit.enemy !== this.enemy && Math.sqrt((Math.pow(bullets.coords.x, 2) + Math.pow(bullets.coords.y, 2)), 2) - bullets.size <= 0) {
@@ -82,7 +82,7 @@ class Unit {
         }
       }  
     }
-    timeSinceLastFrame = new Date();
+    this.timeSinceLastFrame = new Date();
   }
 }
 
