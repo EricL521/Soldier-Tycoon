@@ -45,7 +45,7 @@ class Unit {
   updateUnit() {
     var alreadyShot = false;
     this.timeSinceLastFrame = new Date() - this.timeSinceLastFrame;
-    
+
     ctx.beginPath();
     ctx.arc(this.coords.x, this.coords.y, this.size, 0, 2 * Math.PI);
     if (this.peaceful) {
@@ -55,7 +55,7 @@ class Unit {
       ctx.fillStyle = "gray";
     }
     ctx.fill();
-    
+
     this.coords.x += this.momentum.xVel / (this.timeSinceLastFrame/(50/3));
     this.coords.y += this.momentum.yVel / (this.timeSinceLastFrame/(50/3));
 
@@ -88,22 +88,22 @@ class Unit {
             bullets.splice(bullets.findIndex(bullet), 1);
           }
         }
-      }  
+      }
     }
     this.timeSinceLastFrame = new Date();
   }
 }
 
 function draw() {
-  
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
+
   for (var unit in units) {
     unit.updateUnit();
   }
-  
-  
-  requestAnimationFrame(draw);  
+
+
+  requestAnimationFrame(draw);
 }
 
 draw();
