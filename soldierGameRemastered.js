@@ -60,13 +60,13 @@ class Unit {
           xVel /= ratio;
           yVel /= ratio;
 
-          bullets.push({coords:{x:this.x, y:this.y}, momentum:{xVel:xVel, yVel:yVel}, size: 3});
+          this.bullets.push({coords:{x:this.x, y:this.y}, momentum:{xVel:xVel, yVel:yVel}, size: 3});
 
           alreadyShot = true;
         }
       }
 
-      for (var bullet in bullets) {
+      for (var bullet in this.bullets) {
         ctx.beginPath();
         ctx.arc(bullet.coords.x, bullet.coords.y, bullet.size, 0, 2 * Math.PI);
         ctx.fillStyle = "black";
@@ -75,9 +75,9 @@ class Unit {
         bullet.coords.y += bullet.momentum.y / (this.timeSinceLastFrame/(50/3));
 
         for (unit in units) {
-          if (unit.enemy !== this.enemy && Math.sqrt((Math.pow(bullets.coords.x, 2) + Math.pow(bullets.coords.y, 2)), 2) - bullets.size <= 0) {
+          if (unit.enemy !== this.enemy && Math.sqrt((Math.pow(this.bullets.coords.x, 2) + Math.pow(this.bullets.coords.y, 2)), 2) - this.bullets.size <= 0) {
             unit.health -= this.damage;
-            bullets.splice(bullets.findIndex(bullet), 1);
+            this.bullets.splice(this.bullets.findIndex(bullet), 1);
           }
         }
       }  
