@@ -3,6 +3,15 @@ document.write("<canvas id='canvas' width='1347' height='587' style='border:2px 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var units = {};
+var mouseX = 0;
+var mouseY = 0;
+
+canvas.addEventListener('contextmenu', event => event.preventDefault());
+
+canvas.addEventListener("mousemove", function(e) {
+  mouseX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - canvas.offsetLeft;
+  mouseY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop - canvas.offsetTop;
+});
 
 class Unit {
   /*
