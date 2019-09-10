@@ -62,31 +62,37 @@ class Unit {
 
     if (!this.peaceful) {
       for(var unit in units) {
-        if (!alreadyShot && unit.enemy !== this.enemy && Math.sqrt((Math.pow(this.coords.x - unit.coords.x, 2) + Math.pow(this.coords.y - unit.coords.y, 2)), 2)) {
-          var xVel = unit.coords.x - this.coords.x;
-          var yVel = unit.coords.y - this.coords.y;
-          var ratio = Math.sqrt((Math.pow(xVel, 2) + Math.pow(yVel, 2)), 2)/10;
-          xVel /= ratio;
-          yVel /= ratio;
+        if (units.hasOwnProperty(unit)) {
+          if (!alreadyShot && unit.enemy !== this.enemy && Math.sqrt((Math.pow(this.coords.x - unit.coords.x, 2) + Math.pow(this.coords.y - unit.coords.y, 2)), 2)) {
+            var xVel = unit.coords.x - this.coords.x;
+            var yVel = unit.coords.y - this.coords.y;
+            var ratio = Math.sqrt((Math.pow(xVel, 2) + Math.pow(yVel, 2)), 2)/10;
+            xVel /= ratio;
+            yVel /= ratio;
 
-          this.bullets.push({coords:{x:this.x, y:this.y}, momentum:{xVel:xVel, yVel:yVel}, size: 3});
+            this.bullets.push({coords:{x:this.x, y:this.y}, momentum:{xVel:xVel, yVel:yVel}, size: 3});
 
-          alreadyShot = true;
+            alreadyShot = true;
+          }
         }
       }
 
       for (var bullet in this.bullets) {
-        ctx.beginPath();
-        ctx.arc(bullet.coords.x, bullet.coords.y, bullet.size, 0, 2 * Math.PI);
-        ctx.fillStyle = "black";
-        ctx.fill();
-        bullet.coords.x += bullet.momentum.x / (this.timeSinceLastFrame/(50/3));
-        bullet.coords.y += bullet.momentum.y / (this.timeSinceLastFrame/(50/3));
+        if (this.bullets.hasOwnProperty(bullet)) {
+          ctx.beginPath();
+          ctx.arc(bullet.coords.x, bullet.coords.y, bullet.size, 0, 2 * Math.PI);
+          ctx.fillStyle = "black";
+          ctx.fill();
+          bullet.coords.x += bullet.momentum.x / (this.timeSinceLastFrame/(50/3));
+          bullet.coords.y += bullet.momentum.y / (this.timeSinceLastFrame/(50/3));
 
-        for (var unit in units) {
-          if (unit.enemy !== this.enemy && Math.sqrt((Math.pow(this.bullets.coords.x, 2) + Math.pow(this.bullets.coords.y, 2)), 2) - this.bullets.size <= 0) {
-            unit.health -= this.damage;
-            this.bullets.splice(this.bullets.findIndex(bullet), 1);
+          for (var unit in units) {
+            if (units.hasOwnPropert(unit)) {
+              if (unit.enemy !== this.enemy && Math.sqrt((Math.pow(this.bullets.coords.x, 2) + Math.pow(this.bullets.coords.y, 2)), 2) - this.bullets.size <= 0) {
+                unit.health -= this.damage;
+                this.bullets.splice(this.bullets.findIndex(bullet), 1);
+              }
+            }
           }
         }
       }  
