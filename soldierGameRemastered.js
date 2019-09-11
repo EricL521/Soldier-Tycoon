@@ -86,8 +86,8 @@ class Unit {
           bullet.coords.x += bullet.momentum.x / (this.timeSinceLastFrame/(50/3));
           bullet.coords.y += bullet.momentum.y / (this.timeSinceLastFrame/(50/3));
 
-          for (var unit in units) {
-            if (units.hasOwnPropert(unit)) {
+          for (unit in units) {
+            if (units.hasOwnProperty(unit)) {
               if (unit.enemy !== this.enemy && Math.sqrt((Math.pow(this.bullets.coords.x, 2) + Math.pow(this.bullets.coords.y, 2)), 2) - this.bullets.size <= 0) {
                 unit.health -= this.damage;
                 this.bullets.splice(this.bullets.findIndex(bullet), 1);
@@ -106,7 +106,9 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   
   for (var unit in units) {
-    unit.updateUnit();
+    if (unit.hasOwnProperty(unit)) {
+      unit.updateUnit();
+    }
   }
   
   
