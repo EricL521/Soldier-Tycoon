@@ -287,7 +287,7 @@ function moveWorker(i) {
 function password() {
 	if (prompt("Password please") === "password1") {
 		alert("Password correct");
-	};
+	}
 	else {
 		alert("Password incorrect");
 		password();
