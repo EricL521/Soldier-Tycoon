@@ -290,7 +290,7 @@ function password() {
 	}
 	else {
 		alert("Password incorrect");
-		password();
+	  password();
 	}
 }
 
