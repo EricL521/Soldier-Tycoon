@@ -413,7 +413,7 @@ function startRaid() {
 		if (Math.random() >= 0.5)
 			x1 = (Math.random() * (canvas.width / 2 - castle.scoutRange - 20) + 10);
 		else
-			x1 = canvas.width/2 * (Math.random() * (canvas.height - 150 - 20) - 10);
+			x1 = canvas.width/2 + (Math.random() * (canvas.width / 2 - castle.scoutRange - 20)) - 10;
 		var y1 = (Math.random() * (canvas.height - 150 - 20) + 150 + 10);
     raiders.push({
       x: x1,
