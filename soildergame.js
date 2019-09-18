@@ -523,7 +523,7 @@ function draw() {
       ctx.fillText("Paused", canvas.width / 2 - 20, 170);
       d = new Date();
     } else {
-      if (new Date() - raidTimer >= 20000 && Math.random() >= .99) {
+      if (new Date() - raidTimer >= 15000 && Math.random() >= .99) {
 				raidTimer = new Date();
         startRaid();
       }
