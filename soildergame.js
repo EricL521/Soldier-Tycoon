@@ -284,6 +284,16 @@ function moveWorker(i) {
   }
 }
 
+function password() {
+	if (prompt("Password please") === "password1") {
+		alert("Password correct");
+	};
+	else {
+		alert("Password incorrect");
+		password();
+	}
+}
+
 function moveRaider(i) {
   ctx.beginPath();
   ctx.arc(raiders[i].x, raiders[i].y, raiders[i].radius, 0, 2 * Math.PI);
@@ -562,4 +572,5 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
+password();
 draw();
