@@ -115,9 +115,10 @@ document.onmouseup = function() {
       } 
     }
 	  
-		if (mouseX > 580 && mouseX < 700 && mouseY > 75 && mouseY < 125) {
-			if (gold >= workerUpgradeCost) {
-				timePerGold /= 1.1;
+	  if (mouseX > 580 && mouseX < 700 && mouseY > 75 && mouseY < 125) {
+		  if (gold >= workerUpgradeCost) {
+			  timePerGold /= 1.1;
+		    gold -= workerUpgradeCost;
 				workerUpgradeCost += workerUpgradeCost/15;
 			}
 		}
