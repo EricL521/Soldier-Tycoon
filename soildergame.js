@@ -115,7 +115,7 @@ document.onmouseup = function() {
       } 
     }
 	  
-	  if (mouseX > 580 && mouseX < 700 && mouseY > 75 && mouseY < 125) {
+	  if (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125) {
 		  if (gold >= workerUpgradeCost) {
 			  timePerGold /= 1.1;
 		    gold -= workerUpgradeCost;
@@ -476,10 +476,10 @@ function topBar() {
   ctx.fillText("Upgrade your castle for " + castleUpgradeCost + " gold.", 390, 70);
   
   ctx.fillStyle = "blue";
-  ctx.fillRect(580, 75 ,120, 50);
+  ctx.fillRect(600, 75 ,120, 50);
   ctx.fillStyle = "black";
   ctx.font = "12px Arial";
-  ctx.fillText("Upgrade your workers for " + workerUpgradeCost + " gold.", 580, 70);
+  ctx.fillText("Upgrade your workers for " + workerUpgradeCost + " gold.", 600, 70);
 
   ctx.fillStyle = "grey";
   ctx.fillRect(canvas.width - 60, 50, 50, 50);
