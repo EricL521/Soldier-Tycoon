@@ -85,7 +85,7 @@ document.onmouseup = function() {
           timer: new Date(),
           shootTime: Math.random() * 100 + 450
         });
-        soldierCost += soldierCost/15;
+        soldierCost += Math.round(soldierCost/15);
       }
     }
 
@@ -101,7 +101,7 @@ document.onmouseup = function() {
           goldTimer: new Date()
         });
         gold -= workerCost;
-        workerCost += workerCost/15;
+        workerCost += Math.round(workerCost/15);
       }
     }
 
@@ -110,8 +110,8 @@ document.onmouseup = function() {
         castle.scoutRange += (190 - castle.scoutRange) / 50;
         maxPeople += 10;
         gold -= castleUpgradeCost;
-        castleUpgradeCost += castleUpgradeCost/15;
-				castleGPS += 10;
+        castleGPS += 10;
+        castleUpgradeCost += Math.round(castleUpgradeCost/15);
       } 
     }
 	  
@@ -119,7 +119,7 @@ document.onmouseup = function() {
 		  if (gold >= workerUpgradeCost) {
 			  timePerGold /= 1.1;
 		    gold -= workerUpgradeCost;
-				workerUpgradeCost += workerUpgradeCost/15;
+				workerUpgradeCost += Math.round(workerUpgradeCost/15);
 			}
 		}
   } else {
@@ -474,6 +474,12 @@ function topBar() {
   ctx.fillStyle = "black";
   ctx.font = "12px Arial";
   ctx.fillText("Upgrade your castle for " + castleUpgradeCost + " gold.", 390, 70);
+  
+  ctx.fillStyle = "blue";
+  ctx.fillRect(580, 75 ,120, 50);
+  ctx.fillStyle = "black";
+  ctx.font = "12px Arial";
+  ctx.fillText("Upgrade your workers for " + workerUpgradeCost + " gold.", 580, 70);
 
   ctx.fillStyle = "grey";
   ctx.fillRect(canvas.width - 60, 50, 50, 50);
