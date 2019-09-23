@@ -65,6 +65,24 @@ canvas.addEventListener('contextmenu', event => event.preventDefault());
 canvas.addEventListener("mousemove", function(e) {
   mouseX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - canvas.offsetLeft;
   mouseY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop - canvas.offsetTop;
+  
+  if (!lost) {
+    if ((mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100) || 
+        (mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125) ||
+        (mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125) ||
+        (mouseX > 390 && mouseX < 510 && mouseY > 75 && mouseY < 125) ||
+        (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125)) {
+      document.getElementById('canvas').style.cursor = "pointer";
+    } else {
+      document.getElementById('canvas').style.cursor = "default";
+    }
+  } else {
+    if (mouseX > canvas.width / 2 - 100 && mouseX < canvas.width / 2 + 100 && mouseY > canvas.height / 2 - 50 && mouseY < canvas.height / 2 + 50) {
+      document.getElementById('canvas').style.cursor = "pointer";
+    } else {
+      document.getElementById('canvas').style.cursor = "default";
+    }
+  }
 });
 
 document.onmouseup = function() {
@@ -435,17 +453,21 @@ function moveBullet(i) {
       bullets[i].y += bullets[i].y_vel * (bullets[i].timeSinceLastFrame/(50/3));
     }
   }
-  bullets[i].timeSinceLastFrame = new Date();
+	
+  if (i < bullets.length) {
+    bullets[i].timeSinceLastFrame = new Date();
+  }
 }
 
 function startRaid() {
   var raiders1 = Math.floor((Math.random() * ((soldiers.length + workers.length) / 32)) + ((soldiers.length + workers.length) / 16));
   var x1;
 	for (var i = 0; i < raiders1; i++) {
-		if (Math.random() >= 0.5)
-			x1 = (Math.random() * (canvas.width / 2 - castle.scoutRange - 20) + 10);
-		else
-			x1 = canvas.width/2 + (Math.random() * (canvas.width / 2 - castle.scoutRange - 20)) - 10;
+		if (Math.random() >= 0.5) {
+			x1 = Math.random() * (canvas.width / 2 - castle.scoutRange - 10) + 10;
+    } else {
+			x1 = canvas.width/2 + (Math.random() * (canvas.width / 2 - castle.scoutRange - 10)) + castle.scoutRange + 10;
+    }
 		var y1 = (Math.random() * (canvas.height - 150 - 20) + 150 + 10);
     raiders.push({
       x: x1,
