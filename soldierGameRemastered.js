@@ -3,7 +3,7 @@ document.write("<canvas id='canvas' width='1347' height='587' style='border:2px 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var mouseX, mouseY;
-var units = {};
+var units = [];
 var mouseX = 0;
 var mouseY = 0;
 
@@ -49,31 +49,30 @@ class Unit {
     this.enemy = enemy;
     this.bullets = {};
     this.timeSinceLastFrame = new Date();
-  }
 
-  updateUnit() {
-    var alreadyShot = false;
-    this.timeSinceLastFrame = new Date() - this.timeSinceLastFrame;
 
-    ctx.beginPath();
-    ctx.arc(this.coords.x, this.coords.y, this.size, 0, 2 * Math.PI);
-    if (this.peaceful) {
-      ctx.fillStyle = "blue";
-    }
-    else {
-      ctx.fillStyle = "gray";
-    }
-    ctx.fill();
+    this.updateUnit = function() {
+      var alreadyShot = false;
+      this.timeSinceLastFrame = new Date() - this.timeSinceLastFrame;
 
-    this.coords.x += this.momentum.xVel / (this.timeSinceLastFrame/(50/3));
-    this.coords.y += this.momentum.yVel / (this.timeSinceLastFrame/(50/3));
+      ctx.beginPath();
+      ctx.arc(this.coords.x, this.coords.y, this.size, 0, 2 * Math.PI);
+      if (this.peaceful) {
+        ctx.fillStyle = "blue";
+      }
+      else {
+        ctx.fillStyle = "gray";
+      }
+      ctx.fill();
 
-    if (!this.peaceful) {
-      for(var unit in units) {
-        if (units.hasOwnProperty(unit)) {
-          if (!alreadyShot && unit.enemy !== this.enemy && Math.sqrt((Math.pow(this.coords.x - unit.coords.x, 2) + Math.pow(this.coords.y - unit.coords.y, 2)), 2)) {
-            var xVel = unit.coords.x - this.coords.x;
-            var yVel = unit.coords.y - this.coords.y;
+      this.coords.x += this.momentum.xVel / (this.timeSinceLastFrame/(50/3));
+      this.coords.y += this.momentum.yVel / (this.timeSinceLastFrame/(50/3));
+
+      if (!this.peaceful) {
+        for(var i = 0; i < units.length; i ++) {
+          if (!alreadyShot && units[i].enemy !== this.enemy && Math.sqrt((Math.pow(this.coords.x - units[i].coords.x, 2) + Math.pow(this.coords.y - units[i].coords.y, 2)), 2)) {
+            var xVel = units[i].coords.x - this.coords.x;
+            var yVel = units[i].coords.y - this.coords.y;
             var ratio = Math.sqrt((Math.pow(xVel, 2) + Math.pow(yVel, 2)), 2)/10;
             xVel /= ratio;
             yVel /= ratio;
@@ -83,44 +82,44 @@ class Unit {
             alreadyShot = true;
           }
         }
-      }
 
-      for (var bullet in this.bullets) {
-        if (this.bullets.hasOwnProperty(bullet)) {
-          ctx.beginPath();
-          ctx.arc(bullet.coords.x, bullet.coords.y, bullet.size, 0, 2 * Math.PI);
-          ctx.fillStyle = "black";
-          ctx.fill();
-          bullet.coords.x += bullet.momentum.x / (this.timeSinceLastFrame/(50/3));
-          bullet.coords.y += bullet.momentum.y / (this.timeSinceLastFrame/(50/3));
+        for (var bullet in this.bullets) {
+          if (this.bullets.hasOwnProperty(bullet)) {
+            ctx.beginPath();
+            ctx.arc(bullet.coords.x, bullet.coords.y, bullet.size, 0, 2 * Math.PI);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            bullet.coords.x += bullet.momentum.x / (this.timeSinceLastFrame/(50/3));
+            bullet.coords.y += bullet.momentum.y / (this.timeSinceLastFrame/(50/3));
 
-          for (unit in units) {
-            if (units.hasOwnProperty(unit)) {
-              if (unit.enemy !== this.enemy && Math.sqrt((Math.pow(this.bullets.coords.x, 2) + Math.pow(this.bullets.coords.y, 2)), 2) - this.bullets.size <= 0) {
-                unit.health -= this.damage;
+            for (i = 0; i < units.length; i ++) {
+              if (units[i].enemy !== this.enemy && Math.sqrt((Math.pow(this.bullets.coords.x, 2) + Math.pow(this.bullets.coords.y, 2)), 2) - this.bullets.size <= 0) {
+                units[i].health -= this.damage;
                 this.bullets.splice(this.bullets.findIndex(bullet), 1);
               }
             }
           }
         }
       }
-    }
-    this.timeSinceLastFrame = new Date();
+      this.timeSinceLastFrame = new Date();
+    };
+
   }
+
 }
 
 function draw() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  for (var unit in units) {
-    if (unit.hasOwnProperty(unit)) {
-      unit.updateUnit();
-    }
+  for (var i = 0; i < units.length; i ++) {
+      units[i].updateUnit();
   }
 
 
   requestAnimationFrame(draw);
 }
+
+units.push(new Unit(100, 3, 10, 10, 50, 5, {x:50, y:50}, false, false));
 
 draw();
