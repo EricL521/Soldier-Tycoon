@@ -7,12 +7,11 @@ plans:
 	- If there is not enough gold to pay soldiers, soldiers will leave until there is enough gold to go around
 */
 
-alert("By clicking the ok button, you are accepting that your mouse and keyboard will be tracked, while you are on this website (all information used for this game will stay on this device). X out this tab if you do not consent to this.");
-alert("Green circles are soldiers (protect and kill enemies). Blue circles are workers (make gold). Your castle is green. When it gets overrun, you lose. Raiders are red. (If you are looking to right click, right click outside of the border, not inside.)");
 document.write("<title>Soldier Tycoon</title>");
 document.write("<canvas id='canvas' width='1347' height='587' style='border:2px solid black'></canvas>");
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
+var raidTimer = new Date();
 var soldiers = [{
   x: canvas.width / 2,
   y: (canvas.height + 150) / 2,
@@ -54,6 +53,9 @@ var frames = 0;
 var fps = 0;
 var castleUpgradeCost = 50000;
 var maxPeople = 50;
+var castleGPS = 15;
+var workerUpgradeCost = 5000;
+var timePerGold = 100;
 var lost = false;
 
 canvas.addEventListener('contextmenu', event => event.preventDefault());
@@ -83,11 +85,7 @@ document.onmouseup = function() {
           timer: new Date(),
           shootTime: Math.random() * 100 + 450
         });
-        soldierCost += Math.floor(Math.random() * 50 + 25);
-      } else if (soldiers.length + workers.length + 1 > maxPeople) {
-        alert("You have reached your maximum number of people your castle can support. Upgrade your castle to keep hiring!");
-      } else {
-        alert("You don’t have enough gold! You need " + (soldierCost - gold) + " more gold!");
+        soldierCost += Math.round(soldierCost/15);
       }
     }
 
@@ -103,11 +101,7 @@ document.onmouseup = function() {
           goldTimer: new Date()
         });
         gold -= workerCost;
-        workerCost += Math.floor(Math.random() * 50 + 50);
-      } else if (soldiers.length + workers.length + 1 > maxPeople) {
-        alert("You have reached your maximum number of people your castle can support. Upgrade your castle to keep hiring!");
-      } else {
-        alert("You don’t have enough gold! You need " + (workerCost - gold) + " more gold!");
+        workerCost += Math.round(workerCost/15);
       }
     }
 
@@ -116,11 +110,18 @@ document.onmouseup = function() {
         castle.scoutRange += (190 - castle.scoutRange) / 50;
         maxPeople += 10;
         gold -= castleUpgradeCost;
-        castleUpgradeCost += Math.floor(Math.random() * 50 + 50) * 100;
-      } else {
-        alert("You don't have enough gold! You need " + (castleUpgradeCost - gold) + " more gold!");
-      }
+        castleGPS += 10;
+        castleUpgradeCost += Math.round(castleUpgradeCost/15);
+      } 
     }
+	  
+	  if (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125) {
+		  if (gold >= workerUpgradeCost) {
+			  timePerGold /= 1.1;
+		    gold -= workerUpgradeCost;
+				workerUpgradeCost += Math.round(workerUpgradeCost/15);
+			}
+		}
   } else {
     if (mouseX > canvas.width / 2 - 100 && mouseX < canvas.width / 2 + 100 && mouseY > canvas.height / 2 - 50 && mouseY < canvas.height / 2 + 50) {
       soldiers = [{
@@ -163,6 +164,9 @@ document.onmouseup = function() {
       frames = 0;
       fps = 0;
       castleUpgradeCost = 50000;
+			castleGPS = 15;
+			workerUpgradeCost = 5000;
+			timePerGold = 100;
       maxPeople = 50;
       lost = false;
     }
@@ -255,7 +259,7 @@ function moveWorker(i) {
     if (workers[i].health <= 0) {
       workers.splice(i, 1);
     } else {
-      if (new Date() - workers[i].goldTimer > 100) {
+      if (new Date() - workers[i].goldTimer > timePerGold) {
         gold++;
         workers[i].goldTimer = new Date();
       }
@@ -407,10 +411,16 @@ function moveBullet(i) {
 
 function startRaid() {
   var raiders1 = Math.floor((Math.random() * ((soldiers.length + workers.length) / 32)) + ((soldiers.length + workers.length) / 16));
-  for (var i = 0; i < raiders1; i++) {
+  var x1;
+	for (var i = 0; i < raiders1; i++) {
+		if (Math.random() >= 0.5)
+			x1 = (Math.random() * (canvas.width / 2 - castle.scoutRange - 20) + 10);
+		else
+			x1 = canvas.width/2 + (Math.random() * (canvas.width / 2 - castle.scoutRange - 20)) - 10;
+		var y1 = (Math.random() * (canvas.height - 150 - 20) + 150 + 10);
     raiders.push({
-      x: (Math.random() * (canvas.width / 2 - castle.scoutRange - 20) + 10),
-      y: (Math.random() * (canvas.height - 150 - 20) + 150 + 10),
+      x: x1,
+      y: y1,
       radius: 10,
       x_vel: Math.random() * 2 - 1,
       y_vel: Math.random() * 2 - 1,
@@ -419,9 +429,6 @@ function startRaid() {
       shootTime: Math.random() * 100 + 450,
       damage: Math.random() * 90 + 10
     });
-  }
-  if (raiders1 > 0) {
-    alert("A raid is starting. " + raiders1 + " people have dropped onto land west of your castle! There are now " + raiders.length + " raiders near your castle.");
   }
 }
 
@@ -467,6 +474,12 @@ function topBar() {
   ctx.fillStyle = "black";
   ctx.font = "12px Arial";
   ctx.fillText("Upgrade your castle for " + castleUpgradeCost + " gold.", 390, 70);
+  
+  ctx.fillStyle = "blue";
+  ctx.fillRect(600, 75 ,120, 50);
+  ctx.fillStyle = "black";
+  ctx.font = "12px Arial";
+  ctx.fillText("Upgrade your workers for " + workerUpgradeCost + " gold.", 600, 70);
 
   ctx.fillStyle = "grey";
   ctx.fillRect(canvas.width - 60, 50, 50, 50);
@@ -505,7 +518,7 @@ function draw() {
       frames = 0;
 
       if (soldiers.length + workers.length > 0) {
-        gold += 15;
+        gold += castleGPS;
       }
     }
 
@@ -519,7 +532,8 @@ function draw() {
       ctx.fillText("Paused", canvas.width / 2 - 20, 170);
       d = new Date();
     } else {
-      if (Math.random() > .999) {
+      if (new Date() - raidTimer >= 15000 && Math.random() >= 0.99) {
+				raidTimer = new Date();
         startRaid();
       }
     }
