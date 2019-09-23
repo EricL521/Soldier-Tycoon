@@ -21,7 +21,8 @@ var soldiers = [{
   health: 100,
   damage: Math.random() * 10 + 40,
   timer: new Date(),
-  shootTime: Math.random() * 100 + 450
+  shootTime: Math.random() * 100 + 450,
+  timeSinceLastFrame: new Date()
 }];
 var workers = [{
   x: canvas.width / 2,
@@ -30,7 +31,8 @@ var workers = [{
   x_vel: 0.3,
   y_vel: 0.5,
   health: 50,
-  goldTimer: new Date()
+  goldTimer: new Date(),
+  timeSinceLastFrame: new Date()
 }];
 var bullets = [];
 var raiders = [];
@@ -83,7 +85,8 @@ document.onmouseup = function() {
           health: 100,
           damage: Math.random() * 10 + 40,
           timer: new Date(),
-          shootTime: Math.random() * 100 + 450
+          shootTime: Math.random() * 100 + 450,
+          timeSinceLastFrame: new Date()
         });
         soldierCost += Math.round(soldierCost/15);
       }
@@ -98,7 +101,8 @@ document.onmouseup = function() {
           x_vel: 0.3,
           y_vel: 0.5,
           health: 50,
-          goldTimer: new Date()
+          goldTimer: new Date(),
+          timeSinceLastFrame: new Date()
         });
         gold -= workerCost;
         workerCost += Math.round(workerCost/15);
@@ -112,9 +116,9 @@ document.onmouseup = function() {
         gold -= castleUpgradeCost;
         castleGPS += 10;
         castleUpgradeCost += Math.round(castleUpgradeCost/15);
-      } 
+      }
     }
-	  
+
 	  if (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125) {
 		  if (gold >= workerUpgradeCost) {
 			  timePerGold /= 1.1;
@@ -133,7 +137,8 @@ document.onmouseup = function() {
         health: 100,
         damage: Math.random() * 10 + 40,
         timer: new Date(),
-        shootTime: Math.random() * 100 + 450
+        shootTime: Math.random() * 100 + 450,
+        timeSinceLastFrame: new Date()
       }];
       workers = [{
         x: canvas.width / 2,
@@ -142,7 +147,8 @@ document.onmouseup = function() {
         x_vel: 0.3,
         y_vel: 0.5,
         health: 50,
-        goldTimer: new Date()
+        goldTimer: new Date(),
+        timeSinceLastFrame: new Date()
       }];
       bullets = [];
       raiders = [];
@@ -179,6 +185,8 @@ function moveSoldier(i) {
   ctx.fillStyle = "green";
   ctx.fill();
 
+  soldiers[i].timeSinceLastFrame = new Date() - soldiers[i].timeSinceLastFrame;
+
   if (play) {
     var distance = 0;
 
@@ -204,7 +212,8 @@ function moveSoldier(i) {
               x_vel: (raiders[j].x - soldiers[i].x) / 10,
               y_vel: (raiders[j].y - soldiers[i].y) / 10,
               from: "soldier",
-              radius: 2
+              radius: 2,
+              timeSinceLastFrame: new Date()
             });
             soldiers[i].timer = new Date();
             soldiers[i].x_vel = 0;
@@ -214,17 +223,17 @@ function moveSoldier(i) {
         }
       }
 
-      soldiers[i].y += soldiers[i].y_vel;
-      soldiers[i].x += soldiers[i].x_vel;
+      soldiers[i].y += soldiers[i].y_vel * (soldiers[i].timeSinceLastFrame/(50/3));
+      soldiers[i].x += soldiers[i].x_vel * (soldiers[i].timeSinceLastFrame/(50/3));
 
       if (soldiers[i].x > castle.x + castle.scoutRange - soldiers[i].radius || soldiers[i].x < castle.x - castle.scoutRange + soldiers[i].radius) {
         soldiers[i].x_vel *= -1;
-        soldiers[i].x += soldiers[i].x_vel;
+        soldiers[i].x += soldiers[i].x_vel * (soldiers[i].timeSinceLastFrame/(50/3));
       }
 
       if (soldiers[i].y > castle.y + castle.scoutRange - soldiers[i].radius || soldiers[i].y < castle.y - castle.scoutRange + soldiers[i].radius) {
         soldiers[i].y_vel *= -1;
-        soldiers[i].y += soldiers[i].y_vel;
+        soldiers[i].y += soldiers[i].y_vel * (soldiers[i].timeSinceLastFrame/(50/3));
       }
 
       if (Math.random() > 0.99) {
@@ -236,6 +245,10 @@ function moveSoldier(i) {
       }
     }
   }
+
+  if (i < soldiers.length) {
+    soldiers[i].timeSinceLastFrame = new Date();
+  }
 }
 
 function moveWorker(i) {
@@ -243,6 +256,8 @@ function moveWorker(i) {
   ctx.arc(workers[i].x, workers[i].y, workers[i].radius, 0, 2 * Math.PI);
   ctx.fillStyle = "blue";
   ctx.fill();
+
+  workers[i].timeSinceLastFrame = new Date() - workers[i].timeSinceLastFrame;
 
   if (play) {
     var distance = 0;
@@ -264,17 +279,17 @@ function moveWorker(i) {
         workers[i].goldTimer = new Date();
       }
 
-      workers[i].y += workers[i].y_vel;
-      workers[i].x += workers[i].x_vel;
+      workers[i].y += workers[i].y_vel * (workers[i].timeSinceLastFrame/(50/3));
+      workers[i].x += workers[i].x_vel * (workers[i].timeSinceLastFrame/(50/3));
 
       if (workers[i].x > castle.x + castle.scoutRange - workers[i].radius || workers[i].x < castle.x - castle.scoutRange + workers[i].radius) {
         workers[i].x_vel *= -1;
-        workers[i].x += workers[i].x_vel;
+        workers[i].x += workers[i].x_vel * (workers[i].timeSinceLastFrame/(50/3));
       }
 
       if (workers[i].y > castle.y + castle.scoutRange - workers[i].radius || workers[i].y < castle.y - castle.scoutRange + workers[i].radius) {
         workers[i].y_vel *= -1;
-        workers[i].y += workers[i].y_vel;
+        workers[i].y += workers[i].y_vel * (workers[i].timeSinceLastFrame/(50/3));
       }
 
       if (Math.random() > 0.99) {
@@ -286,6 +301,10 @@ function moveWorker(i) {
       }
     }
   }
+
+  if (i < workers.length) {
+    workers[i].timeSinceLastFrame = new Date();
+  }
 }
 
 function moveRaider(i) {
@@ -293,6 +312,8 @@ function moveRaider(i) {
   ctx.arc(raiders[i].x, raiders[i].y, raiders[i].radius, 0, 2 * Math.PI);
   ctx.fillStyle = "red";
   ctx.fill();
+
+  raiders[i].timeSinceLastFrame = new Date() - raiders[i].timeSinceLastFrame;
 
   if (play) {
     var distance = 0;
@@ -338,7 +359,8 @@ function moveRaider(i) {
                 x_vel: (workers[n].x - raiders[i].x) / 10,
                 y_vel: (workers[n].y - raiders[i].y) / 10,
                 from: "raider" + i,
-                radius: 2
+                radius: 2,
+                timeSinceLastFrame: new Date()
               });
               ifFound = true;
               break;
@@ -369,17 +391,17 @@ function moveRaider(i) {
         raiders[i].y_vel = (castle.y - raiders[i].y) / 50;
       }
 
-      raiders[i].y += raiders[i].y_vel;
-      raiders[i].x += raiders[i].x_vel;
+      raiders[i].y += raiders[i].y_vel * (raiders[i].timeSinceLastFrame/(50/3));
+      raiders[i].x += raiders[i].x_vel * (raiders[i].timeSinceLastFrame/(50/3));
 
       if (raiders[i].x > canvas.width - raiders[i].radius || raiders[i].x < raiders[i].radius) {
         raiders[i].x_vel *= -1;
-        raiders[i].x += raiders[i].x_vel;
+        raiders[i].x += raiders[i].x_vel * (raiders[i].timeSinceLastFrame/(50/3));
       }
 
       if (raiders[i].y > canvas.height - raiders[i].radius || raiders[i].y < 150 + raiders[i].radius) {
         raiders[i].y_vel *= -1;
-        raiders[i].y += raiders[i].y_vel;
+        raiders[i].y += raiders[i].y_vel * (raiders[i].timeSinceLastFrame/(50/3));
       }
 
       if (Math.random() > 0.999) {
@@ -391,6 +413,10 @@ function moveRaider(i) {
       }
     }
   }
+
+  if (i < raiders.length) {
+    raiders[i].timeSinceLastFrame = new Date();
+  }
 }
 
 function moveBullet(i) {
@@ -399,14 +425,17 @@ function moveBullet(i) {
   ctx.fillStyle = "black";
   ctx.fill();
 
+  bullets[i].timeSinceLastFrame = new Date() - bullets[i].timeSinceLastFrame;
+
   if (play) {
     if (bullets[i].x > canvas.width - bullets[i].radius || bullets[i].x < bullets[i].radius || bullets[i].y > canvas.height - bullets[i].radius || bullets[i].y < 150 + bullets[i].radius) {
       bullets.splice(i, 1);
     } else {
-      bullets[i].x += bullets[i].x_vel;
-      bullets[i].y += bullets[i].y_vel;
+      bullets[i].x += bullets[i].x_vel * (bullets[i].timeSinceLastFrame/(50/3));
+      bullets[i].y += bullets[i].y_vel * (bullets[i].timeSinceLastFrame/(50/3));
     }
   }
+  bullets[i].timeSinceLastFrame = new Date();
 }
 
 function startRaid() {
@@ -427,7 +456,8 @@ function startRaid() {
       health: 200,
       timer: new Date(),
       shootTime: Math.random() * 100 + 450,
-      damage: Math.random() * 90 + 10
+      damage: Math.random() * 90 + 10,
+      timeSinceLastFrame: new Date()
     });
   }
 }
@@ -474,7 +504,7 @@ function topBar() {
   ctx.fillStyle = "black";
   ctx.font = "12px Arial";
   ctx.fillText("Upgrade your castle for " + castleUpgradeCost + " gold.", 390, 70);
-  
+
   ctx.fillStyle = "blue";
   ctx.fillRect(600, 75 ,120, 50);
   ctx.fillStyle = "black";
