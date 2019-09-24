@@ -551,8 +551,7 @@ function drawBackground() {
   ctx.fillStyle = "green";
   ctx.fill();
 
-  if (soldiers.length + workers.length > 0)
-    ctx.strokeRect(castle.x - castle.scoutRange, castle.y - castle.scoutRange, 2 * castle.scoutRange, 2 * castle.scoutRange);
+  ctx.strokeRect(castle.x - castle.scoutRange, castle.y - castle.scoutRange, 2 * castle.scoutRange, 2 * castle.scoutRange);
 }
 
 function draw() {
