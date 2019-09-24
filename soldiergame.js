@@ -360,7 +360,8 @@ function moveRaider(i) {
               x_vel: (soldiers[j].x - raiders[i].x) / 10,
               y_vel: (soldiers[j].y - raiders[i].y) / 10,
               from: "raider" + i,
-              radius: 2
+              radius: 2,
+              timeSinceLastFrame: new Date()
             });
             ifFound = true;
             break;
