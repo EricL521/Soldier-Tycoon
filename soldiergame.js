@@ -569,9 +569,7 @@ function draw() {
       fps = frames;
       frames = 0;
 
-      if (soldiers.length + workers.length > 0) {
-        gold += castleGPS;
-      }
+      gold += castleGPS;
     }
 
     frames++;
