@@ -58,6 +58,8 @@ var maxPeople = 50;
 var castleGPS = 15;
 var workerUpgradeCost = 5000;
 var timePerGold = 100;
+var firstTime = true;
+var firstRaid = true;
 var lost = false;
 
 canvas.addEventListener('contextmenu', event => event.preventDefault());
@@ -623,6 +625,17 @@ function draw() {
     ctx.fillText("Click here to play again!", canvas.width / 2 - 80, canvas.height / 2 - 25);
   }
 
+	if (firstTime) {
+    alert("Soldiers are troops used to protect your castle. They shoot bullets at raiders.");
+    alert("Workers produce gold. You will need them to buy units/upgrades.");
+    firstTime = false;
+  }
+  
+  if (firstRaid && raiders.length > 0) {
+    alert("Raiders try to take over  your castle. Buy soldiers to protect your castle.");
+    firstRaid = false;
+  }
+  
   requestAnimationFrame(draw);
 }
 
