@@ -24,6 +24,7 @@ var soldiers = [{
   shootTime: Math.random() * 100 + 450,
   timeSinceLastFrame: new Date()
 }];
+var payTimer = new Date();
 var workers = [{
   x: canvas.width / 2,
   y: (canvas.height + 150) / 2,
@@ -264,6 +265,14 @@ function moveSoldier(i) {
         soldiers[i].y_vel = Math.random() - 0.5;
       }
     }
+    
+    if (new Date() - payTimer > 60000) {
+      if (gold >= 10) {
+        gold -= 10;
+      } else {
+        soldiers.splice(i, 1);
+      }
+    }
   }
 
   if (i < soldiers.length) {
@@ -496,7 +505,7 @@ function topBar() {
   ctx.fillText("Soldier Tycoon Game", 10, 20);
 
   ctx.font = "15px Arial";
-  ctx.fillText("You have " + gold + " gold! You earn " + gps + " gold per second. You have " + fps + " fps.        Your population: " + (soldiers.length + workers.length) + "/" + maxPeople + "         There are " + raiders.length + " raiders.", 250, 20);
+  ctx.fillText("You have " + gold + " gold! You earn " + gps + " gold per second. You have " + fps + " fps.    Your population: " + (soldiers.length + workers.length) + "/" + maxPeople + "    There are " + raiders.length + " raiders." + "    Next pay for Soldiers: " + (60 - Math.floor((new Date() - payTimer)/1000)) + "  Total pay: " + soldiers.length * 10, 200, 20);
   ctx.fillStyle = "yellow";
   ctx.fillRect(10, 30, gold / 1000, 25);
 
@@ -601,6 +610,10 @@ function draw() {
     for (var j = 0; j < soldiers.length; j++) {
       moveSoldier(j);
     }
+    
+    if (new Date() - payTimer > 60000) {
+      payTimer = new Date();
+    }
 
     for (var n = 0; n < raiders.length; n++) {
       if (Math.sqrt(Math.pow(raiders[n].x - castle.x, 2) + Math.pow(raiders[n].y - castle.y, 2)) < castle.radius - raiders[n].radius) {
@@ -626,7 +639,7 @@ function draw() {
   }
 
 	if (firstTime) {
-    alert("Soldiers are troops used to protect your castle. They shoot bullets at raiders.");
+    alert("Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 10 gold per minute. When there is not enough gold, soldiers will leave.");
     alert("Workers produce gold. You will need them to buy units/upgrades.");
     firstTime = false;
   }
