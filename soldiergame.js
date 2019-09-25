@@ -222,13 +222,13 @@ function moveSoldier(i) {
     } else {
       if (new Date() - soldiers[i].timer > soldiers[i].shootTime) {
         for (var j = 0; j < raiders.length; j++) {
-          if (Math.abs(soldiers[i].x - raiders[j].x) < 100 && Math.abs(soldiers[i].y - raiders[j].y) < 100) {
+          if (Math.sqrt(Math.pow(soldiers[i].x - raiders[j].x, 2) + Math.pow(soldiers[i].y - raiders[j].y, 2), 2) < 100) {
             bullets.push({
               x: soldiers[i].x,
               y: soldiers[i].y,
               damage: soldiers[i].damage,
-              x_vel: (raiders[j].x - soldiers[i].x) / 10,
-              y_vel: (raiders[j].y - soldiers[i].y) / 10,
+              x_vel: (raiders[j].x - soldiers[i].x) / (Math.sqrt(Math.pow(raiders[j].x - soldiers[i].x, 2) + Math.pow(raiders[j].y - soldiers[i].y, 2), 2)/10),
+              y_vel: (raiders[j].y - soldiers[i].y) / (Math.sqrt(Math.pow(raiders[j].x - soldiers[i].x, 2) + Math.pow(raiders[j].y - soldiers[i].y, 2), 2)/10),
               from: "soldier",
               radius: 2,
               timeSinceLastFrame: new Date()
@@ -352,13 +352,13 @@ function moveRaider(i) {
       if (new Date() - raiders[i].timer > raiders[i].shootTime) {
         var ifFound = false;
         for (var j = 0; j < soldiers.length; j++) {
-          if (Math.abs(raiders[i].x - soldiers[j].x) < 100 && Math.abs(raiders[i].y - soldiers[j].y) < 100) {
+          if (Math.sqrt(Math.pow(raiders[i].x - soldiers[j].x, 2) + Math.pow(raiders[i].y - soldiers[j].y, 2), 2) < 100) {
             bullets.push({
               x: raiders[i].x,
               y: raiders[i].y,
               damage: raiders[i].damage,
-              x_vel: (soldiers[j].x - raiders[i].x) / 10,
-              y_vel: (soldiers[j].y - raiders[i].y) / 10,
+              x_vel: (soldiers[j].x - raiders[i].x) / (Math.sqrt(Math.pow(soldiers[j].x - raiders[i].x, 2) + Math.pow(soldiers[j].y - raiders[i].y, 2), 2)/10),
+              y_vel: (soldiers[j].y - raiders[i].y) / (Math.sqrt(Math.pow(soldiers[j].x - raiders[i].x, 2) + Math.pow(soldiers[j].y - raiders[i].y, 2), 2)/10),
               from: "raider" + i,
               radius: 2,
               timeSinceLastFrame: new Date()
@@ -369,14 +369,14 @@ function moveRaider(i) {
         }
 
         if (!ifFound) {
-          for (var n = 0; n < workers.length; n++) {
-            if (Math.abs(raiders[i].x - workers[n].x) < 100 && Math.abs(raiders[i].y - workers[n].y) < 100) {
+          for (j = 0; j < workers.length; j++) {
+            if (Math.sqrt(Math.pow(raiders[i].x - workers[j].x, 2) + Math.pow(raiders[i].y - workers[j].y, 2), 2) < 100) {
               bullets.push({
                 x: raiders[i].x,
                 y: raiders[i].y,
                 damage: raiders[i].damage,
-                x_vel: (workers[n].x - raiders[i].x) / 10,
-                y_vel: (workers[n].y - raiders[i].y) / 10,
+                x_vel: (workers[j].x - raiders[i].x) / (Math.sqrt(Math.pow(workers[j].x - raiders[i].x, 2) + Math.pow(workers[j].y - raiders[i].y, 2), 2)/10),
+                y_vel: (workers[j].y - raiders[i].y) / (Math.sqrt(Math.pow(workers[j].x - raiders[i].x, 2) + Math.pow(workers[j].y - raiders[i].y, 2), 2)/10),
                 from: "raider" + i,
                 radius: 2,
                 timeSinceLastFrame: new Date()
