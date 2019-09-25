@@ -68,13 +68,13 @@ canvas.addEventListener('contextmenu', event => event.preventDefault());
 canvas.addEventListener("mousemove", function(e) {
   mouseX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - canvas.offsetLeft;
   mouseY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop - canvas.offsetTop;
-  
+
   if (!lost) {
-    if ((mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100) || 
-        (mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125) ||
-        (mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125) ||
-        (mouseX > 390 && mouseX < 510 && mouseY > 75 && mouseY < 125) ||
-        (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125)) {
+    if ((mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100) ||
+      (mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125) ||
+      (mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125) ||
+      (mouseX > 390 && mouseX < 510 && mouseY > 75 && mouseY < 125) ||
+      (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125)) {
       document.getElementById('canvas').style.cursor = "pointer";
     } else {
       document.getElementById('canvas').style.cursor = "default";
@@ -109,7 +109,7 @@ document.onmouseup = function() {
           shootTime: Math.random() * 100 + 450,
           timeSinceLastFrame: new Date()
         });
-        soldierCost += Math.round(soldierCost/15);
+        soldierCost += Math.round(soldierCost / 15);
       }
     }
 
@@ -126,7 +126,7 @@ document.onmouseup = function() {
           timeSinceLastFrame: new Date()
         });
         gold -= workerCost;
-        workerCost += Math.round(workerCost/15);
+        workerCost += Math.round(workerCost / 15);
       }
     }
 
@@ -136,17 +136,17 @@ document.onmouseup = function() {
         maxPeople += 10;
         gold -= castleUpgradeCost;
         castleGPS += 10;
-        castleUpgradeCost += Math.round(castleUpgradeCost/15);
+        castleUpgradeCost += Math.round(castleUpgradeCost / 15);
       }
     }
 
-	  if (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125) {
-		  if (gold >= workerUpgradeCost) {
-			  timePerGold /= 1.1;
-		    gold -= workerUpgradeCost;
-				workerUpgradeCost += Math.round(workerUpgradeCost/15);
-			}
-		}
+    if (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125) {
+      if (gold >= workerUpgradeCost) {
+        timePerGold /= 1.1;
+        gold -= workerUpgradeCost;
+        workerUpgradeCost += Math.round(workerUpgradeCost / 15);
+      }
+    }
   } else {
     if (mouseX > canvas.width / 2 - 100 && mouseX < canvas.width / 2 + 100 && mouseY > canvas.height / 2 - 50 && mouseY < canvas.height / 2 + 50) {
       soldiers = [{
@@ -191,9 +191,9 @@ document.onmouseup = function() {
       frames = 0;
       fps = 0;
       castleUpgradeCost = 50000;
-			castleGPS = 15;
-			workerUpgradeCost = 5000;
-			timePerGold = 100;
+      castleGPS = 15;
+      workerUpgradeCost = 5000;
+      timePerGold = 100;
       maxPeople = 50;
       lost = false;
     }
@@ -230,8 +230,8 @@ function moveSoldier(i) {
               x: soldiers[i].x,
               y: soldiers[i].y,
               damage: soldiers[i].damage,
-              x_vel: (raiders[j].x - soldiers[i].x) / (Math.sqrt(Math.pow(raiders[j].x - soldiers[i].x, 2) + Math.pow(raiders[j].y - soldiers[i].y, 2), 2)/10),
-              y_vel: (raiders[j].y - soldiers[i].y) / (Math.sqrt(Math.pow(raiders[j].x - soldiers[i].x, 2) + Math.pow(raiders[j].y - soldiers[i].y, 2), 2)/10),
+              x_vel: (raiders[j].x - soldiers[i].x) / (Math.sqrt(Math.pow(raiders[j].x - soldiers[i].x, 2) + Math.pow(raiders[j].y - soldiers[i].y, 2), 2) / 10),
+              y_vel: (raiders[j].y - soldiers[i].y) / (Math.sqrt(Math.pow(raiders[j].x - soldiers[i].x, 2) + Math.pow(raiders[j].y - soldiers[i].y, 2), 2) / 10),
               from: "soldier",
               radius: 2,
               timeSinceLastFrame: new Date()
@@ -244,17 +244,17 @@ function moveSoldier(i) {
         }
       }
 
-      soldiers[i].y += soldiers[i].y_vel * (soldiers[i].timeSinceLastFrame/(50/3));
-      soldiers[i].x += soldiers[i].x_vel * (soldiers[i].timeSinceLastFrame/(50/3));
+      soldiers[i].y += soldiers[i].y_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
+      soldiers[i].x += soldiers[i].x_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
 
       if (soldiers[i].x > castle.x + castle.scoutRange - soldiers[i].radius || soldiers[i].x < castle.x - castle.scoutRange + soldiers[i].radius) {
         soldiers[i].x_vel *= -1;
-        soldiers[i].x += soldiers[i].x_vel * (soldiers[i].timeSinceLastFrame/(50/3));
+        soldiers[i].x += soldiers[i].x_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
       }
 
       if (soldiers[i].y > castle.y + castle.scoutRange - soldiers[i].radius || soldiers[i].y < castle.y - castle.scoutRange + soldiers[i].radius) {
         soldiers[i].y_vel *= -1;
-        soldiers[i].y += soldiers[i].y_vel * (soldiers[i].timeSinceLastFrame/(50/3));
+        soldiers[i].y += soldiers[i].y_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
       }
 
       if (Math.random() > 0.99) {
@@ -265,7 +265,7 @@ function moveSoldier(i) {
         soldiers[i].y_vel = Math.random() - 0.5;
       }
     }
-    
+
     if (new Date() - payTimer > 60000) {
       if (gold >= 10) {
         gold -= 10;
@@ -308,17 +308,17 @@ function moveWorker(i) {
         workers[i].goldTimer = new Date();
       }
 
-      workers[i].y += workers[i].y_vel * (workers[i].timeSinceLastFrame/(50/3));
-      workers[i].x += workers[i].x_vel * (workers[i].timeSinceLastFrame/(50/3));
+      workers[i].y += workers[i].y_vel * (workers[i].timeSinceLastFrame / (50 / 3));
+      workers[i].x += workers[i].x_vel * (workers[i].timeSinceLastFrame / (50 / 3));
 
       if (workers[i].x > castle.x + castle.scoutRange - workers[i].radius || workers[i].x < castle.x - castle.scoutRange + workers[i].radius) {
         workers[i].x_vel *= -1;
-        workers[i].x += workers[i].x_vel * (workers[i].timeSinceLastFrame/(50/3));
+        workers[i].x += workers[i].x_vel * (workers[i].timeSinceLastFrame / (50 / 3));
       }
 
       if (workers[i].y > castle.y + castle.scoutRange - workers[i].radius || workers[i].y < castle.y - castle.scoutRange + workers[i].radius) {
         workers[i].y_vel *= -1;
-        workers[i].y += workers[i].y_vel * (workers[i].timeSinceLastFrame/(50/3));
+        workers[i].y += workers[i].y_vel * (workers[i].timeSinceLastFrame / (50 / 3));
       }
 
       if (Math.random() > 0.99) {
@@ -368,8 +368,8 @@ function moveRaider(i) {
               x: raiders[i].x,
               y: raiders[i].y,
               damage: raiders[i].damage,
-              x_vel: (soldiers[j].x - raiders[i].x) / (Math.sqrt(Math.pow(soldiers[j].x - raiders[i].x, 2) + Math.pow(soldiers[j].y - raiders[i].y, 2), 2)/10),
-              y_vel: (soldiers[j].y - raiders[i].y) / (Math.sqrt(Math.pow(soldiers[j].x - raiders[i].x, 2) + Math.pow(soldiers[j].y - raiders[i].y, 2), 2)/10),
+              x_vel: (soldiers[j].x - raiders[i].x) / (Math.sqrt(Math.pow(soldiers[j].x - raiders[i].x, 2) + Math.pow(soldiers[j].y - raiders[i].y, 2), 2) / 10),
+              y_vel: (soldiers[j].y - raiders[i].y) / (Math.sqrt(Math.pow(soldiers[j].x - raiders[i].x, 2) + Math.pow(soldiers[j].y - raiders[i].y, 2), 2) / 10),
               from: "raider" + i,
               radius: 2,
               timeSinceLastFrame: new Date()
@@ -386,8 +386,8 @@ function moveRaider(i) {
                 x: raiders[i].x,
                 y: raiders[i].y,
                 damage: raiders[i].damage,
-                x_vel: (workers[j].x - raiders[i].x) / (Math.sqrt(Math.pow(workers[j].x - raiders[i].x, 2) + Math.pow(workers[j].y - raiders[i].y, 2), 2)/10),
-                y_vel: (workers[j].y - raiders[i].y) / (Math.sqrt(Math.pow(workers[j].x - raiders[i].x, 2) + Math.pow(workers[j].y - raiders[i].y, 2), 2)/10),
+                x_vel: (workers[j].x - raiders[i].x) / (Math.sqrt(Math.pow(workers[j].x - raiders[i].x, 2) + Math.pow(workers[j].y - raiders[i].y, 2), 2) / 10),
+                y_vel: (workers[j].y - raiders[i].y) / (Math.sqrt(Math.pow(workers[j].x - raiders[i].x, 2) + Math.pow(workers[j].y - raiders[i].y, 2), 2) / 10),
                 from: "raider" + i,
                 radius: 2,
                 timeSinceLastFrame: new Date()
@@ -421,17 +421,17 @@ function moveRaider(i) {
         raiders[i].y_vel = (castle.y - raiders[i].y) / 50;
       }
 
-      raiders[i].y += raiders[i].y_vel * (raiders[i].timeSinceLastFrame/(50/3));
-      raiders[i].x += raiders[i].x_vel * (raiders[i].timeSinceLastFrame/(50/3));
+      raiders[i].y += raiders[i].y_vel * (raiders[i].timeSinceLastFrame / (50 / 3));
+      raiders[i].x += raiders[i].x_vel * (raiders[i].timeSinceLastFrame / (50 / 3));
 
       if (raiders[i].x > canvas.width - raiders[i].radius || raiders[i].x < raiders[i].radius) {
         raiders[i].x_vel *= -1;
-        raiders[i].x += raiders[i].x_vel * (raiders[i].timeSinceLastFrame/(50/3));
+        raiders[i].x += raiders[i].x_vel * (raiders[i].timeSinceLastFrame / (50 / 3));
       }
 
       if (raiders[i].y > canvas.height - raiders[i].radius || raiders[i].y < 150 + raiders[i].radius) {
         raiders[i].y_vel *= -1;
-        raiders[i].y += raiders[i].y_vel * (raiders[i].timeSinceLastFrame/(50/3));
+        raiders[i].y += raiders[i].y_vel * (raiders[i].timeSinceLastFrame / (50 / 3));
       }
 
       if (Math.random() > 0.999) {
@@ -461,11 +461,11 @@ function moveBullet(i) {
     if (bullets[i].x > canvas.width - bullets[i].radius || bullets[i].x < bullets[i].radius || bullets[i].y > canvas.height - bullets[i].radius || bullets[i].y < 150 + bullets[i].radius) {
       bullets.splice(i, 1);
     } else {
-      bullets[i].x += bullets[i].x_vel * (bullets[i].timeSinceLastFrame/(50/3));
-      bullets[i].y += bullets[i].y_vel * (bullets[i].timeSinceLastFrame/(50/3));
+      bullets[i].x += bullets[i].x_vel * (bullets[i].timeSinceLastFrame / (50 / 3));
+      bullets[i].y += bullets[i].y_vel * (bullets[i].timeSinceLastFrame / (50 / 3));
     }
   }
-	
+
   if (i < bullets.length) {
     bullets[i].timeSinceLastFrame = new Date();
   }
@@ -474,13 +474,13 @@ function moveBullet(i) {
 function startRaid() {
   var raiders1 = Math.floor((Math.random() * ((soldiers.length + workers.length) / 16)) + ((soldiers.length + workers.length) / 8));
   var x1;
-	for (var i = 0; i < raiders1; i++) {
-		if (Math.random() >= 0.5) {
-			x1 = Math.random() * (canvas.width / 2 - castle.scoutRange - 10) + 10;
+  for (var i = 0; i < raiders1; i++) {
+    if (Math.random() >= 0.5) {
+      x1 = Math.random() * (canvas.width / 2 - castle.scoutRange - 10) + 10;
     } else {
-			x1 = canvas.width/2 + (Math.random() * (canvas.width / 2 - castle.scoutRange - 10)) + castle.scoutRange + 10;
+      x1 = canvas.width / 2 + (Math.random() * (canvas.width / 2 - castle.scoutRange - 10)) + castle.scoutRange + 10;
     }
-		var y1 = (Math.random() * (canvas.height - 150 - 20) + 150 + 10);
+    var y1 = (Math.random() * (canvas.height - 150 - 20) + 150 + 10);
     raiders.push({
       x: x1,
       y: y1,
@@ -505,7 +505,7 @@ function topBar() {
   ctx.fillText("Soldier Tycoon Game", 10, 20);
 
   ctx.font = "15px Arial";
-  ctx.fillText("You have " + gold + " gold! You earn " + gps + " gold per second. You have " + fps + " fps.    Your population: " + (soldiers.length + workers.length) + "/" + maxPeople + "    There are " + raiders.length + " raiders." + "    Next pay for Soldiers: " + (60 - Math.floor((new Date() - payTimer)/1000)) + "  Total pay: " + soldiers.length * 10, 200, 20);
+  ctx.fillText("You have " + gold + " gold! You earn " + gps + " gold per second. You have " + fps + " fps.    Your population: " + (soldiers.length + workers.length) + "/" + maxPeople + "    There are " + raiders.length + " raiders." + "    Next pay for Soldiers: " + (60 - Math.floor((new Date() - payTimer) / 1000)) + "  Total pay: " + soldiers.length * 10, 200, 20);
   ctx.fillStyle = "yellow";
   ctx.fillRect(10, 30, gold / 1000, 25);
 
@@ -540,7 +540,7 @@ function topBar() {
   ctx.fillText("Upgrade your castle for " + castleUpgradeCost + " gold.", 390, 70);
 
   ctx.fillStyle = "blue";
-  ctx.fillRect(600, 75 ,120, 50);
+  ctx.fillRect(600, 75, 120, 50);
   ctx.fillStyle = "black";
   ctx.font = "12px Arial";
   ctx.fillText("Upgrade your workers for " + workerUpgradeCost + " gold.", 600, 70);
@@ -594,7 +594,7 @@ function draw() {
       d = new Date();
     } else {
       if (new Date() - raidTimer >= 15000 && Math.random() >= 0.99) {
-				raidTimer = new Date();
+        raidTimer = new Date();
         startRaid();
       }
     }
@@ -610,7 +610,7 @@ function draw() {
     for (var j = 0; j < soldiers.length; j++) {
       moveSoldier(j);
     }
-    
+
     if (new Date() - payTimer > 60000) {
       payTimer = new Date();
     }
@@ -638,17 +638,17 @@ function draw() {
     ctx.fillText("Click here to play again!", canvas.width / 2 - 80, canvas.height / 2 - 25);
   }
 
-	if (firstTime) {
+  if (firstTime) {
     alert("Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 10 gold per minute. When there is not enough gold, soldiers will leave.");
     alert("Workers produce gold. You will need them to buy units/upgrades.");
     firstTime = false;
   }
-  
+
   if (firstRaid && raiders.length > 0) {
     alert("Raiders try to take over  your castle. Buy soldiers to protect your castle.");
     firstRaid = false;
   }
-  
+
   requestAnimationFrame(draw);
 }
 
