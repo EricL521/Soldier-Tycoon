@@ -461,7 +461,7 @@ function moveBullet(i) {
 }
 
 function startRaid() {
-  var raiders1 = Math.floor((Math.random() * ((soldiers.length + workers.length) / 32)) + ((soldiers.length + workers.length) / 16));
+  var raiders1 = Math.floor((Math.random() * ((soldiers.length + workers.length) / 16)) + ((soldiers.length + workers.length) / 8));
   var x1;
 	for (var i = 0; i < raiders1; i++) {
 		if (Math.random() >= 0.5) {
