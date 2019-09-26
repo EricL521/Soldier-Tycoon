@@ -600,7 +600,9 @@ function draw() {
       ctx.fillText("Paused", canvas.width / 2 - 20, 170);
       d = new Date();
     } else {
-      gold += Math.floor(1000 * ((new Date() - d) / (50/3)));
+	    if (sandbox) {
+        gold += Math.floor(1000 * ((new Date() - d) / (50/3)));
+      }
       if (new Date() - raidTimer >= 15000 && Math.random() >= 0.99) {
         raidTimer = new Date();
         startRaid();
