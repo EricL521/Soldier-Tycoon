@@ -56,6 +56,10 @@ var frames = 0;
 var fps = 0;
 var castleUpgradeCost = 50000;
 var maxPeople = 50;
+var sandbox = false;
+if (prompt("Type \"y\" to turn on sandbox mode. Typing anything else will turn it off.") === "y") {
+  sandbox = true;
+}
 var castleGPS = 15;
 var workerUpgradeCost = 5000;
 var timePerGold = 100;
@@ -503,6 +507,9 @@ function topBar() {
 
   ctx.font = "15px Arial";
   ctx.fillText("Soldier Tycoon Game", 10, 20);
+  if (sandbox) {
+    ctx.fillText("Sandbox mode on", canvas.width - 100, 130);
+  }
 
   ctx.font = "15px Arial";
   ctx.fillText("You have " + gold + " gold! You earn " + gps + " gold per second. You have " + fps + " fps.    Your population: " + (soldiers.length + workers.length) + "/" + maxPeople + "    There are " + raiders.length + " raiders." + "    Next pay for Soldiers: " + (60 - Math.floor((new Date() - payTimer) / 1000)) + "  Total pay: " + soldiers.length * 10, 200, 20);
@@ -593,6 +600,7 @@ function draw() {
       ctx.fillText("Paused", canvas.width / 2 - 20, 170);
       d = new Date();
     } else {
+      gold += Math.floor(1000 * ((new Date() - d) / (50/3)));
       if (new Date() - raidTimer >= 15000 && Math.random() >= 0.99) {
         raidTimer = new Date();
         startRaid();
