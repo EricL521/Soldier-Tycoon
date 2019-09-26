@@ -641,11 +641,47 @@ function draw() {
   if (firstTime) {
     alert("Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 10 gold per minute. When there is not enough gold, soldiers will leave.");
     alert("Workers produce gold. You will need them to buy units/upgrades.");
+    
+    for (var j = 0; j < soldiers.length; j++) {
+      soldiers[j].timeSinceLastFrame = new Date();
+    }
+    
+    for (var m = 0; m < bullets.length; m++) {
+      bullets[m].timeSinceLastFrame = new Date();
+    }
+
+    for (var k = 0; k < workers.length; k++) {
+      workers[k].timeSinceLastFrame = new Date();
+    }
+    
+    for (var n = 0; n < raiders.length; n++) {
+      raiders[n].timeSinceLastFrame = new Date();
+    }
+    
     firstTime = false;
   }
 
   if (firstRaid && raiders.length > 0) {
-    alert("Raiders try to take over  your castle. Buy soldiers to protect your castle.");
+	  play = false;
+    alert("Raiders try to take over your castle. Buy soldiers to protect your castle.");
+    
+    for (var j = 0; j < soldiers.length; j++) {
+      soldiers[j].timeSinceLastFrame = new Date();
+    }
+    
+    for (var m = 0; m < bullets.length; m++) {
+      bullets[m].timeSinceLastFrame = new Date();
+    }
+
+    for (var k = 0; k < workers.length; k++) {
+      workers[k].timeSinceLastFrame = new Date();
+    }
+    
+    for (var n = 0; n < raiders.length; n++) {
+      raiders[n].timeSinceLastFrame = new Date();
+    }
+    
+    play = true;
     firstRaid = false;
   }
 
