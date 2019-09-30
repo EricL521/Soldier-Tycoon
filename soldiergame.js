@@ -113,7 +113,6 @@ document.onmouseup = function() {
           shootTime: Math.random() * 100 + 450,
           timeSinceLastFrame: new Date()
         });
-        soldierCost += Math.round(soldierCost / 15);
       }
     }
 
@@ -130,7 +129,6 @@ document.onmouseup = function() {
           timeSinceLastFrame: new Date()
         });
         gold -= workerCost;
-        workerCost += Math.round(workerCost / 15);
       }
     }
 
@@ -271,8 +269,8 @@ function moveSoldier(i) {
     }
 
     if (new Date() - payTimer > 60000) {
-      if (gold >= 10) {
-        gold -= 10;
+      if (gold >= 50) {
+        gold -= 50;
       } else {
         soldiers.splice(i, 1);
       }
@@ -512,7 +510,7 @@ function topBar() {
   }
 
   ctx.font = "15px Arial";
-  ctx.fillText("You have " + gold + " gold! You earn " + gps + " gold per second. You have " + fps + " fps.    Your population: " + (soldiers.length + workers.length) + "/" + maxPeople + "    There are " + raiders.length + " raiders." + "    Next pay for Soldiers: " + (60 - Math.floor((new Date() - payTimer) / 1000)) + "  Total pay: " + soldiers.length * 10, 200, 20);
+  ctx.fillText("You have " + gold + " gold! You earn " + gps + " gold per second. You have " + fps + " fps.    Your population: " + (soldiers.length + workers.length) + "/" + maxPeople + "    There are " + raiders.length + " raiders." + "    Next pay for Soldiers: " + (60 - Math.floor((new Date() - payTimer) / 1000)) + "  Total pay: " + soldiers.length * 50, 200, 20);
   ctx.fillStyle = "yellow";
   ctx.fillRect(10, 30, gold / 1000, 25);
 
