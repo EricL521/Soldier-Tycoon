@@ -12,14 +12,16 @@ document.write("<canvas id='canvas' width='1347' height='587' style='border:2px 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var raidTimer = new Date();
+var minSoldierDamage = 40;
+var soldierHealth = 100;
 var soldiers = [{
   x: canvas.width / 2,
   y: (canvas.height + 150) / 2,
   radius: 5,
   x_vel: 0.5,
   y_vel: -0.5,
-  health: 100,
-  damage: Math.random() * 10 + 40,
+  health: soldierHealth,
+  damage: Math.random() * 10 + minSoldierDamage,
   timer: new Date(),
   shootTime: Math.random() * 100 + 450,
   timeSinceLastFrame: new Date()
@@ -41,7 +43,8 @@ var castle = {
   x: canvas.width / 2,
   y: (canvas.height + 150) / 2,
   radius: 25,
-  scoutRange: 100
+  scoutRange: 100,
+  castleGPS: 15
 };
 var mouseX = 0;
 var mouseY = 0;
@@ -60,8 +63,8 @@ var sandbox = false;
 if (prompt("Type \"y\" to turn on sandbox mode. Typing anything else will turn it off.") === "y") {
   sandbox = true;
 }
-var castleGPS = 15;
 var workerUpgradeCost = 5000;
+var soldierUpgradeCost = 7500;
 var timePerGold = 100;
 var firstTime = true;
 var firstRaid = true;
@@ -75,10 +78,11 @@ canvas.addEventListener("mousemove", function(e) {
 
   if (!lost) {
     if ((mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100) ||
-      (mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125) ||
-      (mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125) ||
-      (mouseX > 390 && mouseX < 510 && mouseY > 75 && mouseY < 125) ||
-      (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125)) {
+        (mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125) ||
+        (mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125) ||
+        (mouseX > 390 && mouseX < 510 && mouseY > 75 && mouseY < 125) ||
+        (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125) || 
+        (mouseX > 810 && mouseX < 930 && mouseY > 75 && mouseY < 125)) {
       document.getElementById('canvas').style.cursor = "pointer";
     } else {
       document.getElementById('canvas').style.cursor = "default";
@@ -107,8 +111,8 @@ document.onmouseup = function() {
           radius: 5,
           x_vel: Math.random() / 2,
           y_vel: Math.random() - 0.5,
-          health: 100,
-          damage: Math.random() * 10 + 40,
+          health: soldierHealth,
+          damage: Math.random() * 10 + minSoldierDamage,
           timer: new Date(),
           shootTime: Math.random() * 100 + 450,
           timeSinceLastFrame: new Date()
@@ -137,7 +141,7 @@ document.onmouseup = function() {
         castle.scoutRange += (190 - castle.scoutRange) / 50;
         maxPeople += 10;
         gold -= castleUpgradeCost;
-        castleGPS += 10;
+        castle.castleGPS += 10;
         castleUpgradeCost += Math.round(castleUpgradeCost / 15);
       }
     }
@@ -149,16 +153,33 @@ document.onmouseup = function() {
         workerUpgradeCost += Math.round(workerUpgradeCost / 15);
       }
     }
+    
+    if (mouseX > 810 && mouseX < 930 && mouseY > 75 && mouseY < 125) {
+      if (gold >= soldierUpgradeCost) {
+        minSoldierDamage += 10;
+        soldierHealth += 10;
+        gold -= soldierUpgradeCost;
+        soldierUpgradeCost += Math.round(soldierUpgradeCost / 15);
+        
+        for (var i = 0; i < soldiers.length; i ++) {
+          soldiers[i].damage = Math.random() * 10 + minSoldierDamage;
+          soldiers[i].health += 10;
+        }
+      }
+    }
+    
   } else {
     if (mouseX > canvas.width / 2 - 100 && mouseX < canvas.width / 2 + 100 && mouseY > canvas.height / 2 - 50 && mouseY < canvas.height / 2 + 50) {
+      minSoldierDamage = 40;
+      soldierHealth = 100;
       soldiers = [{
         x: canvas.width / 2,
         y: (canvas.height + 150) / 2,
         radius: 5,
         x_vel: 0.5,
         y_vel: -0.5,
-        health: 100,
-        damage: Math.random() * 10 + 40,
+        health: soldierHealth,
+        damage: Math.random() * 10 + minSoldierDamage,
         timer: new Date(),
         shootTime: Math.random() * 100 + 450,
         timeSinceLastFrame: new Date()
@@ -179,7 +200,8 @@ document.onmouseup = function() {
         x: canvas.width / 2,
         y: (canvas.height + 150) / 2,
         radius: 25,
-        scoutRange: 100
+        scoutRange: 100,
+        castleGPS: 15
       };
       mouseX = 0;
       mouseY = 0;
@@ -193,7 +215,6 @@ document.onmouseup = function() {
       frames = 0;
       fps = 0;
       castleUpgradeCost = 50000;
-      castleGPS = 15;
       workerUpgradeCost = 5000;
       timePerGold = 100;
       maxPeople = 50;
@@ -550,6 +571,12 @@ function topBar() {
   ctx.font = "12px Arial";
   ctx.fillText("Upgrade your workers for " + workerUpgradeCost + " gold.", 600, 70);
 
+  ctx.fillStyle = "green";
+  ctx.fillRect(810, 75, 120, 50);
+  ctx.fillStyle = "black";
+  ctx.font = "12px Arial";
+  ctx.fillText("Upgrade your soldiers for " + soldierUpgradeCost + " gold.", 810, 70);
+
   ctx.fillStyle = "grey";
   ctx.fillRect(canvas.width - 60, 50, 50, 50);
   ctx.fillStyle = "black";
@@ -585,7 +612,7 @@ function draw() {
       fps = frames;
       frames = 0;
 
-      gold += castleGPS;
+      gold += castle.castleGPS;
     }
 
     frames++;
