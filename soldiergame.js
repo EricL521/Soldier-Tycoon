@@ -46,6 +46,8 @@ var castle = {
   scoutRange: 100,
   castleGPS: 15
 };
+var outposts = [];
+/* {x, y, size, unitLimit} */
 var mouseX = 0;
 var mouseY = 0;
 var play = true;
@@ -645,7 +647,6 @@ function draw() {
     for (var j = 0; j < soldiers.length; j++) {
       moveSoldier(j);
     }
-
     if (new Date() - payTimer > 60000) {
       payTimer = new Date();
     }
@@ -674,8 +675,9 @@ function draw() {
   }
 
   if (firstTime) {
-    alert("Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 10 gold per minute. When there is not enough gold, soldiers will leave.");
+    alert("Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 50 gold per minute. When there is not enough gold, soldiers will leave.");
     alert("Workers produce gold. You will need them to buy units/upgrades.");
+    alert("Outposts can help fend off raiders. Station soldiers in them to protect your workers.");
     
     for (var j = 0; j < soldiers.length; j++) {
       soldiers[j].timeSinceLastFrame = new Date();
@@ -697,7 +699,7 @@ function draw() {
   }
 
   if (firstRaid && raiders.length > 0) {
-	  play = false;
+    play = false;
     alert("Raiders try to take over your castle. Buy soldiers to protect your castle.");
     
     for (var j = 0; j < soldiers.length; j++) {
