@@ -218,9 +218,14 @@ document.onmouseup = function() {
       fps = 0;
       castleUpgradeCost = 50000;
       workerUpgradeCost = 5000;
+	    soldierUpgradeCost = 7500;
       timePerGold = 100;
       maxPeople = 50;
       lost = false;
+			sandbox = false;
+			if (prompt("Type \"y\" to turn on sandbox mode. Typing anything else will turn it off.") === "y") {
+  			sandbox = true;
+			}
     }
   }
 };
