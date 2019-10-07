@@ -286,6 +286,18 @@ function moveSoldier(i) {
         soldiers[i].y_vel *= -1;
         soldiers[i].y += soldiers[i].y_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
       }
+      
+      for (var j = 0; j < outposts.length; j ++) {
+        if (soldiers[i].x > outposts[j].x + outposts[j].size - soldiers[i].radius || soldiers[i].x < outposts[j].x - outposts[j].size + soldiers[i].radius) {
+          soldiers[i].x_vel *= -1;
+          soldiers[i].x += soldiers[i].x_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
+        }
+
+        if (soldiers[i].y > outposts[j].y + outposts[j].size - soldiers[i].radius || soldiers[i].y < outposts[j].y - outposts[j].size + soldiers[i].radius) {
+          soldiers[i].y_vel *= -1;
+          soldiers[i].y += soldiers[i].y_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
+        }
+      }
 
       if (Math.random() > 0.99) {
         soldiers[i].x_vel = Math.random() - 0.5;
@@ -444,6 +456,20 @@ function moveRaider(i) {
           if (raiders[i].y > castle.y - castle.scoutRange - raiders[i].radius && raiders[i].y < castle.y + castle.scoutRange + raiders[i].radius) {
             raiders[i].x_vel = 0;
             raiders[i].y_vel = 0;
+          }
+        }
+	      for (var j = 0; j < outposts.length; j ++) {
+          if (raiders[i].x < outposts[j].x + outposts[j].size + raiders[i].radius && raiders[i].x > outposts[j].x - outposts[j].size - raiders[i].radius) {
+            if (raiders[i].y > outposts[j].y + outposts[j].size + raiders[i].radius && raiders[i].y < outposts[j].y - outposts[j].size - raiders[i].radius) {
+              raiders[i].x_vel = 0;
+              raiders[i].y_vel = 0;
+            }
+          }
+          if (raiders[i].y < outposts[j].y + outposts[j].size + raiders[i].radius && raiders[i].y > outposts[j].y - outposts[j].size - raiders[i].radius) {
+            if (raiders[i].x > outposts[j].x + outposts[j].size + raiders[i].radius && raiders[i].x < outposts[j].x - outposts[j].size - raiders[i].radius) {
+              raiders[i].x_vel = 0;
+              raiders[i].y_vel = 0;
+            }
           }
         }
       } else {
