@@ -24,7 +24,8 @@ var soldiers = [{
   damage: Math.random() * 10 + minSoldierDamage,
   timer: new Date(),
   shootTime: Math.random() * 100 + 450,
-  timeSinceLastFrame: new Date()
+  timeSinceLastFrame: new Date(),
+  outpostNumber: -1
 }];
 var payTimer = new Date();
 var workers = [{
@@ -47,7 +48,7 @@ var castle = {
   castleGPS: 15
 };
 var outposts = [];
-/* {x, y, size, unitLimit} */
+/* {x, y, size, radius, unitLimit} */
 var mouseX = 0;
 var mouseY = 0;
 var play = true;
@@ -117,7 +118,8 @@ document.onmouseup = function() {
           damage: Math.random() * 10 + minSoldierDamage,
           timer: new Date(),
           shootTime: Math.random() * 100 + 450,
-          timeSinceLastFrame: new Date()
+          timeSinceLastFrame: new Date(),
+          outpostNumber: -1
         });
       }
     }
@@ -184,7 +186,8 @@ document.onmouseup = function() {
         damage: Math.random() * 10 + minSoldierDamage,
         timer: new Date(),
         shootTime: Math.random() * 100 + 450,
-        timeSinceLastFrame: new Date()
+        timeSinceLastFrame: new Date(),
+        outpostNumber: -1
       }];
       workers = [{
         x: canvas.width / 2,
@@ -277,23 +280,23 @@ function moveSoldier(i) {
       soldiers[i].y += soldiers[i].y_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
       soldiers[i].x += soldiers[i].x_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
 
-      if (soldiers[i].x > castle.x + castle.scoutRange - soldiers[i].radius || soldiers[i].x < castle.x - castle.scoutRange + soldiers[i].radius) {
+      if (soldiers[i].outpostNumber < 0 && (soldiers[i].x > castle.x + castle.scoutRange - soldiers[i].radius || soldiers[i].x < castle.x - castle.scoutRange + soldiers[i].radius)) {
         soldiers[i].x_vel *= -1;
         soldiers[i].x += soldiers[i].x_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
       }
 
-      if (soldiers[i].y > castle.y + castle.scoutRange - soldiers[i].radius || soldiers[i].y < castle.y - castle.scoutRange + soldiers[i].radius) {
+      if (soldiers[i].outpostNumber < 0 && (soldiers[i].y > castle.y + castle.scoutRange - soldiers[i].radius || soldiers[i].y < castle.y - castle.scoutRange + soldiers[i].radius)) {
         soldiers[i].y_vel *= -1;
         soldiers[i].y += soldiers[i].y_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
       }
       
       for (var j = 0; j < outposts.length; j ++) {
-        if (soldiers[i].x > outposts[j].x + outposts[j].size - soldiers[i].radius || soldiers[i].x < outposts[j].x - outposts[j].size + soldiers[i].radius) {
+        if (soldiers[i].outpostNumber === j && (soldiers[i].x > outposts[j].x + outposts[j].size - soldiers[i].radius || soldiers[i].x < outposts[j].x - outposts[j].size + soldiers[i].radius)) {
           soldiers[i].x_vel *= -1;
           soldiers[i].x += soldiers[i].x_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
         }
 
-        if (soldiers[i].y > outposts[j].y + outposts[j].size - soldiers[i].radius || soldiers[i].y < outposts[j].y - outposts[j].size + soldiers[i].radius) {
+        if (soldiers[i].outpostNumber === j && (soldiers[i].y > outposts[j].y + outposts[j].size - soldiers[i].radius || soldiers[i].y < outposts[j].y - outposts[j].size + soldiers[i].radius)) {
           soldiers[i].y_vel *= -1;
           soldiers[i].y += soldiers[i].y_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
         }
@@ -460,13 +463,13 @@ function moveRaider(i) {
         }
 	      for (var j = 0; j < outposts.length; j ++) {
           if (raiders[i].x < outposts[j].x + outposts[j].size + raiders[i].radius && raiders[i].x > outposts[j].x - outposts[j].size - raiders[i].radius) {
-            if (raiders[i].y > outposts[j].y + outposts[j].size + raiders[i].radius && raiders[i].y < outposts[j].y - outposts[j].size - raiders[i].radius) {
+            if (raiders[i].y > outposts[j].y - outposts[j].size - raiders[i].radius && raiders[i].y < outposts[j].y + outposts[j].size + raiders[i].radius) {
               raiders[i].x_vel = 0;
               raiders[i].y_vel = 0;
             }
           }
           if (raiders[i].y < outposts[j].y + outposts[j].size + raiders[i].radius && raiders[i].y > outposts[j].y - outposts[j].size - raiders[i].radius) {
-            if (raiders[i].x > outposts[j].x + outposts[j].size + raiders[i].radius && raiders[i].x < outposts[j].x - outposts[j].size - raiders[i].radius) {
+            if (raiders[i].x > outposts[j].x - outposts[j].size - raiders[i].radius && raiders[i].x < outposts[j].x + outposts[j].size + raiders[i].radius) {
               raiders[i].x_vel = 0;
               raiders[i].y_vel = 0;
             }
@@ -622,6 +625,14 @@ function topBar() {
 }
 
 function drawBackground() {
+  for (var m = 0; m < outposts.length; m ++) {
+    ctx.beginPath();
+    ctx.arc(outposts[m].x, outposts[m].y, outposts[m].radius, 0, 2 * Math.PI);
+    ctx.fillStyle = "green";
+    ctx.fill();
+    
+    ctx.strokeRect(outposts[m].x - outposts[m].size, outposts[m].y - outposts[m].size, 2 * outposts[m].size, 2 * outposts[m].size);
+  }
 
   ctx.beginPath();
   ctx.arc(castle.x, castle.y, castle.radius, 0, 2 * Math.PI);
