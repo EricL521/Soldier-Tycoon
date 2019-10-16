@@ -49,6 +49,9 @@ var castle = {
 };
 var outposts = [];
 /* {x, y, size, radius, unitLimit} */
+var outpostCost = 100000;
+var outpostPlacing = -1;
+var pauseButtonDisabled = false;
 var mouseX = 0;
 var mouseY = 0;
 var play = true;
@@ -85,7 +88,8 @@ canvas.addEventListener("mousemove", function(e) {
         (mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125) ||
         (mouseX > 390 && mouseX < 510 && mouseY > 75 && mouseY < 125) ||
         (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125) || 
-        (mouseX > 810 && mouseX < 930 && mouseY > 75 && mouseY < 125)) {
+        (mouseX > 810 && mouseX < 930 && mouseY > 75 && mouseY < 125) ||
+        (mouseX > 1020 && mouseX < 1140 && mouseY > 75 && mouseY < 125)) {
       document.getElementById('canvas').style.cursor = "pointer";
     } else {
       document.getElementById('canvas').style.cursor = "default";
@@ -101,7 +105,7 @@ canvas.addEventListener("mousemove", function(e) {
 
 document.onmouseup = function() {
   if (!lost) {
-    if (mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100) {
+    if (!pauseButtonDisabled && mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100) {
       play = !play;
     }
 
@@ -172,10 +176,27 @@ document.onmouseup = function() {
       }
     }
     
+    if (mouseX > 1020 && mouseX < 1140 && mouseY > 75 && mouseY < 125) {
+      if (gold >= outpostCost) {
+        gold -= outpostCost;
+        outposts.push({x: mouseX, y: mouseY, size: 25, radius: 5, unitLimit: 4});
+        outpostPlacing = outposts.length - 1;
+        play = false;
+        pauseButtonDisabled = true;
+      }
+    }
+    
+    if (outpostPlacing >= 0 && mouseY > 150 && mouseY < canvas.height && mouseX > 0 && mouseX < canvas.width) {
+      outpostPlacing = -1;
+      play = true;
+      pauseButtonDisabled = false;
+    }
+    
   } else {
     if (mouseX > canvas.width / 2 - 100 && mouseX < canvas.width / 2 + 100 && mouseY > canvas.height / 2 - 50 && mouseY < canvas.height / 2 + 50) {
       minSoldierDamage = 40;
       soldierHealth = 100;
+      play = true;
       soldiers = [{
         x: canvas.width / 2,
         y: (canvas.height + 150) / 2,
@@ -201,6 +222,10 @@ document.onmouseup = function() {
       }];
       bullets = [];
       raiders = [];
+      outposts = [];
+      outpostCost = 100000;
+      outpostPlacing = -1;
+      pauseButtonDisabled = false;
       castle = {
         x: canvas.width / 2,
         y: (canvas.height + 150) / 2,
@@ -699,6 +724,11 @@ function draw() {
       }
       moveRaider(n);
     }
+    
+    if (outpostPlacing >= 0) {
+      outposts[outpostPlacing].x = mouseX;
+      outposts[outpostPlacing].y = mouseY;
+    }
 
     drawBackground();
 
@@ -719,7 +749,7 @@ function draw() {
   if (firstTime) {
     alert("Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 50 gold per minute. When there is not enough gold, soldiers will leave.");
     alert("Workers produce gold. You will need them to buy units/upgrades.");
-    /* alert("Outposts can help fend off raiders. Station soldiers in them to protect your workers."); */
+    alert("Outposts can help fend off raiders. Station soldiers in them to protect your workers.");
     
     for (var j = 0; j < soldiers.length; j++) {
       soldiers[j].timeSinceLastFrame = new Date();
