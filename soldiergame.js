@@ -179,10 +179,16 @@ document.onmouseup = function() {
     if (mouseX > 1020 && mouseX < 1140 && mouseY > 75 && mouseY < 125) {
       if (gold >= outpostCost) {
         gold -= outpostCost;
-        outposts.push({x: mouseX, y: mouseY, size: 25, radius: 5, unitLimit: 4});
+        outposts.push({x: mouseX, y: mouseY, size: 25, radius: 10, unitLimit: 4, selected: false});
         outpostPlacing = outposts.length - 1;
         play = false;
         pauseButtonDisabled = true;
+      }
+    }
+    
+    for (var i = 0; i < outposts.length; i ++) {
+      if (Math.sqrt(Math.pow(outposts[i].x - mouseX, 2) + Math.pow(outposts[i].y - mouseY, 2), 2) <= outposts[i].radius) {
+        outposts[i].selected = true;
       }
     }
     
@@ -657,6 +663,18 @@ function drawBackground() {
     ctx.fill();
     
     ctx.strokeRect(outposts[m].x - outposts[m].size, outposts[m].y - outposts[m].size, 2 * outposts[m].size, 2 * outposts[m].size);
+    
+    if (outposts[m].selected) {
+      ctx.fillStyle = "grey";
+      ctx.fillRect(outposts[m].x, outposts[m].y, 50, 25);
+      
+      ctx.fillStyle = "white";
+      ctx.font = "7px Arial";
+      ctx.fillText("Move Soldiers", outposts[m].x + 2, outposts[m].y + 10);
+      ctx.font = "15px Arial";
+      ctx.fillText("-", outposts[m].x + 5, outposts[m].y + 22);
+      ctx.fillText("+", outposts[m].x + 30, outposts[m].y + 22);
+    }
   }
 
   ctx.beginPath();
