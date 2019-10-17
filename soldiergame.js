@@ -214,6 +214,8 @@ document.onmouseup = function() {
         outpostPlacing = -1;
         play = true;
         pauseButtonDisabled = false;
+      } else {
+        alert("Invalid outpost placement.");
       }
     }
     
