@@ -209,10 +209,12 @@ document.onmouseup = function() {
       }
     }
     
-    if (outpostPlacing >= 0 && mouseY > 150 && mouseY < canvas.height && mouseX > 0 && mouseX < canvas.width) {
-      outpostPlacing = -1;
-      play = true;
-      pauseButtonDisabled = false;
+    if (outpostPlacing >= 0 && mouseY > 150 + outposts[outpostPlacing].size && mouseY < canvas.height - outposts[outpostPlacing].size && mouseX > outposts[outpostPlacing].size && mouseX < canvas.width - outposts[outpostPlacing].size) {
+      if (outpostPlacing >= 0 && !(mouseY < castle.y + castle.scoutRange + outposts[outpostPlacing].size && mouseY > castle.y - castle.scoutRange - outposts[outpostPlacing].size && mouseX < castle.x + castle.scoutRange + outposts[outpostPlacing].size && mouseX > castle.x - castle.scoutRange - outposts[outpostPlacing].size)) {
+        outpostPlacing = -1;
+        play = true;
+        pauseButtonDisabled = false;
+      }
     }
     
     for (var i = 0; i < outposts.length; i ++) {
