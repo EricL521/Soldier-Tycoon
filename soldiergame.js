@@ -48,7 +48,6 @@ var castle = {
   castleGPS: 15
 };
 var outposts = [];
-/* {x, y, size, radius, unitLimit} */
 var outpostCost = 100000;
 var outpostPlacing = -1;
 var pauseButtonDisabled = false;
@@ -92,7 +91,19 @@ canvas.addEventListener("mousemove", function(e) {
         (mouseX > 1020 && mouseX < 1140 && mouseY > 75 && mouseY < 125)) {
       document.getElementById('canvas').style.cursor = "pointer";
     } else {
-      document.getElementById('canvas').style.cursor = "default";
+      var pointer = false;
+      for (var i = 0; i < outposts.length; i ++) {
+        if ((mouseX > outposts[i].x + 5 && mouseX < outposts[i].x + 17 && mouseY < outposts[i].y + 25 && mouseY > outposts[i].y + 13) || 
+            (mouseX > outposts[i].x + 30 && mouseX < outposts[i].x + 42 && mouseY < outposts[i].y + 25 && mouseY > outposts[i].y + 13)) {
+          document.getElementById('canvas').style.cursor = "pointer";
+          pointer = true;
+          break;
+        }
+      }
+      
+      if (!pointer) {
+        document.getElementById('canvas').style.cursor = "default";
+      }
     }
   } else {
     if (mouseX > canvas.width / 2 - 100 && mouseX < canvas.width / 2 + 100 && mouseY > canvas.height / 2 - 50 && mouseY < canvas.height / 2 + 50) {
@@ -179,10 +190,16 @@ document.onmouseup = function() {
     if (mouseX > 1020 && mouseX < 1140 && mouseY > 75 && mouseY < 125) {
       if (gold >= outpostCost) {
         gold -= outpostCost;
-        outposts.push({x: mouseX, y: mouseY, size: 25, radius: 10, unitLimit: 4, selected: false});
+        outposts.push({x: mouseX, y: mouseY, size: 25, radius: 10, unitLimit: 4, selected: false, unitsContained: 0});
         outpostPlacing = outposts.length - 1;
         play = false;
         pauseButtonDisabled = true;
+      }
+    }
+    
+    for (var i = 0; i < outposts.length; i ++) {
+      if (outposts[i].selected && !(mouseX > outposts[i].x && mouseX < outposts[i].x + 50 && mouseY > outposts[i].y && mouseY < outposts[i].y + 25)) {
+        outposts[i].selected = false;
       }
     }
     
@@ -196,6 +213,32 @@ document.onmouseup = function() {
       outpostPlacing = -1;
       play = true;
       pauseButtonDisabled = false;
+    }
+    
+    for (var i = 0; i < outposts.length; i ++) {
+      if (outposts[i].selected && outposts[i].unitsContained > 0 && mouseX > outposts[i].x + 5 && mouseX < outposts[i].x + 17 && mouseY < outposts[i].y + 25 && mouseY > outposts[i].y + 13) {
+        for (var j = 0; j < soldiers.length; j ++) {
+          if (soldiers[j].outpostNumber === i) {
+            soldiers[j].outpostNumber = -1;
+            soldiers[j].x = castle.x;
+            soldiers[j].y = castle.y;
+            outposts[i].unitsContained -= 1;
+            break;
+          }
+        }
+      }
+      
+      if (outposts[i].selected && outposts[i].unitsContained < outposts[i].unitLimit && mouseX > outposts[i].x + 30 && mouseX < outposts[i].x + 42 && mouseY < outposts[i].y + 25 && mouseY > outposts[i].y + 13) {
+        for (var j = 0; j < soldiers.length; j ++) {
+          if (soldiers[j].outpostNumber === -1) {
+            soldiers[j].outpostNumber = i;
+            soldiers[j].x = outposts[i].x;
+            soldiers[j].y = outposts[i].y;
+            outposts[i].unitsContained += 1;
+            break;
+          }
+        }
+      }
     }
     
   } else {
@@ -643,6 +686,12 @@ function topBar() {
   ctx.fillStyle = "black";
   ctx.font = "12px Arial";
   ctx.fillText("Upgrade your soldiers for " + soldierUpgradeCost + " gold.", 810, 70);
+  
+  ctx.fillStyle = "grey";
+  ctx.fillRect(1020, 75, 120, 50);
+  ctx.fillStyle = "black";
+  ctx.font = "12px Arial";
+  ctx.fillText("Buy an outpost for " + outpostCost + " gold.", 1020, 70);
 
   ctx.fillStyle = "grey";
   ctx.fillRect(canvas.width - 60, 50, 50, 50);
