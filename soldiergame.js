@@ -65,7 +65,7 @@ var fps = 0;
 var castleUpgradeCost = 50000;
 var maxPeople = 50;
 var sandbox = false;
-if (prompt("Type \"y\" to turn on sandbox mode. Typing anything else will turn it off.") === "y") {
+if (confirm("Do you want to turn on sandbox mode?")) {
   sandbox = true;
 	gold = Infinity;
 }
@@ -306,7 +306,7 @@ document.onmouseup = function() {
       maxPeople = 50;
       lost = false;
 			sandbox = false;
-			if (prompt("Type \"y\" to turn on sandbox mode. Typing anything else will turn it off.") === "y") {
+			if (confirm("Do you want to turn on sandbox mode?")) {
   			gold = Infinity;
       }
     }
