@@ -332,6 +332,9 @@ function moveSoldier(i) {
     }
 
     if (soldiers[i].health <= 0) {
+      if (soldiers[i].outpostNumber >= 0) {
+        outposts[soldiers[i].outpostNumber].unitsContained -= 1;
+      }
       soldiers.splice(i, 1);
     } else {
       if (new Date() - soldiers[i].timer > soldiers[i].shootTime) {
