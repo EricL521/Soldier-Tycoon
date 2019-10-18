@@ -67,6 +67,7 @@ var maxPeople = 50;
 var sandbox = false;
 if (prompt("Type \"y\" to turn on sandbox mode. Typing anything else will turn it off.") === "y") {
   sandbox = true;
+	gold = Infinity;
 }
 var workerUpgradeCost = 5000;
 var soldierUpgradeCost = 7500;
@@ -306,8 +307,8 @@ document.onmouseup = function() {
       lost = false;
 			sandbox = false;
 			if (prompt("Type \"y\" to turn on sandbox mode. Typing anything else will turn it off.") === "y") {
-  			sandbox = true;
-			}
+  			gold = Infinity;
+      }
     }
   }
 };
@@ -769,9 +770,6 @@ function draw() {
       ctx.fillText("Paused", canvas.width / 2 - 20, 170);
       d = new Date();
     } else {
-	    if (sandbox) {
-        gold += Math.floor(1000 * ((new Date() - d) / (50/3)));
-      }
       if (new Date() - raidTimer >= 15000 && Math.random() >= 0.99) {
         raidTimer = new Date();
         startRaid();
