@@ -94,7 +94,8 @@ canvas.addEventListener("mousemove", function(e) {
       var pointer = false;
       for (var i = 0; i < outposts.length; i ++) {
         if ((mouseX > outposts[i].x + 5 && mouseX < outposts[i].x + 17 && mouseY < outposts[i].y + 25 && mouseY > outposts[i].y + 13) || 
-            (mouseX > outposts[i].x + 30 && mouseX < outposts[i].x + 42 && mouseY < outposts[i].y + 25 && mouseY > outposts[i].y + 13)) {
+            (mouseX > outposts[i].x + 30 && mouseX < outposts[i].x + 42 && mouseY < outposts[i].y + 25 && mouseY > outposts[i].y + 13) || 
+	    (Math.sqrt(Math.pow(outposts[i].x - mouseX, 2) + Math.pow(outposts[i].y - mouseY, 2), 2) <= outposts[i].radius)) {
           document.getElementById('canvas').style.cursor = "pointer";
           pointer = true;
           break;
@@ -187,7 +188,7 @@ document.onmouseup = function() {
       }
     }
     
-    if (mouseX > 1020 && mouseX < 1140 && mouseY > 75 && mouseY < 125) {
+    if (outpostPlacing < 0 && mouseX > 1020 && mouseX < 1140 && mouseY > 75 && mouseY < 125) {
       if (gold >= outpostCost) {
         gold -= outpostCost;
         outposts.push({x: mouseX, y: mouseY, size: 25, radius: 10, unitLimit: 4, selected: false, unitsContained: 0});
