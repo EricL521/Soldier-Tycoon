@@ -545,13 +545,13 @@ function moveRaider(i) {
           }
         }
 	      for (var j = 0; j < outposts.length; j ++) {
-          if (raiders[i].x < outposts[j].x + outposts[j].size + raiders[i].radius && raiders[i].x > outposts[j].x - outposts[j].size - raiders[i].radius) {
+          if (outposts[j].unitsContained > 0 && raiders[i].x < outposts[j].x + outposts[j].size + raiders[i].radius && raiders[i].x > outposts[j].x - outposts[j].size - raiders[i].radius) {
             if (raiders[i].y > outposts[j].y - outposts[j].size - raiders[i].radius && raiders[i].y < outposts[j].y + outposts[j].size + raiders[i].radius) {
               raiders[i].x_vel = 0;
               raiders[i].y_vel = 0;
             }
           }
-          if (raiders[i].y < outposts[j].y + outposts[j].size + raiders[i].radius && raiders[i].y > outposts[j].y - outposts[j].size - raiders[i].radius) {
+          if (outposts[j].unitsContained > 0 && raiders[i].y < outposts[j].y + outposts[j].size + raiders[i].radius && raiders[i].y > outposts[j].y - outposts[j].size - raiders[i].radius) {
             if (raiders[i].x > outposts[j].x - outposts[j].size - raiders[i].radius && raiders[i].x < outposts[j].x + outposts[j].size + raiders[i].radius) {
               raiders[i].x_vel = 0;
               raiders[i].y_vel = 0;
