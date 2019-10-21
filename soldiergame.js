@@ -74,6 +74,7 @@ var soldierUpgradeCost = 7500;
 var timePerGold = 100;
 var firstTime = true;
 var firstRaid = true;
+var firstMaxPeople = true;
 var lost = false;
 
 canvas.addEventListener('contextmenu', event => event.preventDefault());
@@ -83,20 +84,20 @@ canvas.addEventListener("mousemove", function(e) {
   mouseY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop - canvas.offsetTop;
 
   if (!lost) {
-    if ((mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100) ||
-        (mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125) ||
-        (mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125) ||
-        (mouseX > 390 && mouseX < 510 && mouseY > 75 && mouseY < 125) ||
-        (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125) || 
-        (mouseX > 810 && mouseX < 930 && mouseY > 75 && mouseY < 125) ||
-        (mouseX > 1020 && mouseX < 1140 && mouseY > 75 && mouseY < 125)) {
+    if ((mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100 && !pauseButtonDisabled) ||
+        (mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125 && gold >= soldierCost && soldiers.length + workers.length + 1 <= maxPeople) ||
+        (mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125 && gold >= workerCost && soldiers.length + workers.length + 1 <= maxPeople) ||
+        (mouseX > 390 && mouseX < 510 && mouseY > 75 && mouseY < 125 && gold >= castleUpgradeCost) ||
+        (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125 && gold >= workerUpgradeCost) || 
+        (mouseX > 810 && mouseX < 930 && mouseY > 75 && mouseY < 125 && gold >= soldierUpgradeCost) ||
+        (mouseX > 1020 && mouseX < 1140 && mouseY > 75 && mouseY < 125 && gold >= outpostCost)) {
       document.getElementById('canvas').style.cursor = "pointer";
     } else {
       var pointer = false;
       for (var i = 0; i < outposts.length; i ++) {
         if ((mouseX > outposts[i].x + 5 && mouseX < outposts[i].x + 17 && mouseY < outposts[i].y + 25 && mouseY > outposts[i].y + 13) || 
             (mouseX > outposts[i].x + 30 && mouseX < outposts[i].x + 42 && mouseY < outposts[i].y + 25 && mouseY > outposts[i].y + 13) || 
-	    (Math.sqrt(Math.pow(outposts[i].x - mouseX, 2) + Math.pow(outposts[i].y - mouseY, 2), 2) <= outposts[i].radius)) {
+	          (Math.sqrt(Math.pow(outposts[i].x - mouseX, 2) + Math.pow(outposts[i].y - mouseY, 2), 2) <= outposts[i].radius)) {
           document.getElementById('canvas').style.cursor = "pointer";
           pointer = true;
           break;
@@ -776,26 +777,26 @@ function draw() {
       }
     }
 
-    for (var m = 0; m < bullets.length; m++) {
-      moveBullet(m);
+    for (var i = 0; i < bullets.length; i++) {
+      moveBullet(i);
     }
 
-    for (var k = 0; k < workers.length; k++) {
-      moveWorker(k);
+    for (var i = 0; i < workers.length; i++) {
+      moveWorker(i);
     }
 
-    for (var j = 0; j < soldiers.length; j++) {
-      moveSoldier(j);
+    for (var i = 0; i < soldiers.length; i++) {
+      moveSoldier(i);
     }
     if (new Date() - payTimer > 60000) {
       payTimer = new Date();
     }
 
-    for (var n = 0; n < raiders.length; n++) {
-      if (Math.sqrt(Math.pow(raiders[n].x - castle.x, 2) + Math.pow(raiders[n].y - castle.y, 2)) < castle.radius - raiders[n].radius) {
+    for (var i = 0; i < raiders.length; i++) {
+      if (Math.sqrt(Math.pow(raiders[i].x - castle.x, 2) + Math.pow(raiders[i].y - castle.y, 2)) < castle.radius - raiders[i].radius) {
         lost = true;
       }
-      moveRaider(n);
+      moveRaider(i);
     }
     
     if (outpostPlacing >= 0) {
@@ -822,45 +823,50 @@ function draw() {
   if (firstTime) {
     alert("Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 50 gold per minute. When there is not enough gold, soldiers will leave.");
     alert("Workers produce gold. You will need them to buy units/upgrades.");
-    alert("Outposts can help fend off raiders. Station soldiers in them to protect your workers.");
+    alert("Outposts can help fend off raiders. Station soldiers in them to protect your workers. They can only hold 4 soldiers, though.");
     
-    for (var j = 0; j < soldiers.length; j++) {
-      soldiers[j].timeSinceLastFrame = new Date();
+    for (var i = 0; i < soldiers.length; i++) {
+      soldiers[i].timeSinceLastFrame = new Date();
     }
     
-    for (var m = 0; m < bullets.length; m++) {
-      bullets[m].timeSinceLastFrame = new Date();
+    for (var i = 0; i < bullets.length; i++) {
+      bullets[i].timeSinceLastFrame = new Date();
     }
 
-    for (var k = 0; k < workers.length; k++) {
-      workers[k].timeSinceLastFrame = new Date();
+    for (var i = 0; i < workers.length; i++) {
+      workers[i].timeSinceLastFrame = new Date();
     }
     
-    for (var n = 0; n < raiders.length; n++) {
-      raiders[n].timeSinceLastFrame = new Date();
+    for (var i = 0; i < raiders.length; i++) {
+      raiders[i].timeSinceLastFrame = new Date();
     }
     
     firstTime = false;
+  }
+	
+	if (firstMaxPeople && soldiers.length + workers.length === 50) {
+    alert("Castle Full? Upgrade it to fit more people.");
+    firstMaxPeople = false;
   }
 
   if (firstRaid && raiders.length > 0) {
     play = false;
     alert("Raiders try to take over your castle. Buy soldiers to protect your castle.");
     
-    for (var j = 0; j < soldiers.length; j++) {
-      soldiers[j].timeSinceLastFrame = new Date();
+    for (var i = 0; i < soldiers.length; i++) {
+      soldiers[i].timeSinceLastFrame = new Date();
     }
     
-    for (var m = 0; m < bullets.length; m++) {
-      bullets[m].timeSinceLastFrame = new Date();
+    for (var i = 0; i < bullets.length; i++) {
+      bullets[i].timeSinceLastFrame = new Date();
     }
 
-    for (var k = 0; k < workers.length; k++) {
-      workers[k].timeSinceLastFrame = new Date();
+    for (var i = 0; i < workers.length; i++) {
+      workers[i].timeSinceLastFrame = new Date();
     }
     
-    for (var n = 0; n < raiders.length; n++) {
-      raiders[n].timeSinceLastFrame = new Date();
+    for (var i = 0; i < raiders.length; i++) {
+      raiders[i].timeSinceLastFrame = new Date();
     }
     
     play = true;
