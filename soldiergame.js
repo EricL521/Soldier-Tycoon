@@ -75,6 +75,7 @@ var timePerGold = 100;
 var firstTime = true;
 var firstRaid = true;
 var firstMaxPeople = true;
+var firstOutpost = true;
 var lost = false;
 
 canvas.addEventListener('contextmenu', event => event.preventDefault());
@@ -819,11 +820,15 @@ function draw() {
     ctx.font = "15px Arial";
     ctx.fillText("Click here to play again!", canvas.width / 2 - 80, canvas.height / 2 - 25);
   }
+  
+  if (firstOutpost && gold >= outpostCost) {
+    alert("Congrats on 100k! You can now afford an outpost! Outposts can help fend off raiders. Station soldiers in them to protect your workers. They can only hold 4 soldiers, though.");
+    firstOutpost = false;
+  }
 
   if (firstTime) {
     alert("Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 50 gold per minute. When there is not enough gold, soldiers will leave.");
     alert("Workers produce gold. You will need them to buy units/upgrades.");
-    alert("Outposts can help fend off raiders. Station soldiers in them to protect your workers. They can only hold 4 soldiers, though.");
     
     for (var i = 0; i < soldiers.length; i++) {
       soldiers[i].timeSinceLastFrame = new Date();
