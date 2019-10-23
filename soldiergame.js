@@ -616,21 +616,21 @@ function moveBullet(i) {
 }
 
 function startRaid() {
-  var raiders1 = Math.floor((Math.random() * ((soldiers.length + workers.length) / 25)) + ((soldiers.length + workers.length) / 15));
+  var raiders1 = Math.floor((Math.random() * ((soldiers.length + workers.length) / 25)) + ((soldiers.length + workers.length) / 15)) + ((soldierHealth - 100)/10);
   var x1;
   for (var i = 0; i < raiders1; i++) {
     if (Math.random() >= 0.5) {
       x1 = Math.random() * (canvas.width / 2 - castle.scoutRange - 10) + 10;
     } else {
-      x1 = canvas.width / 2 + (Math.random() * (canvas.width / 2 - castle.scoutRange - 10)) + castle.scoutRange + 10;
+      x1 = canvas.width / 2 + (Math.random() * (canvas.width / 2 - castle.scoutRange - 10)) + castle.scoutRange - 10;
     }
     var y1 = (Math.random() * (canvas.height - 150 - 20) + 150 + 10);
     raiders.push({
       x: x1,
       y: y1,
       radius: 10,
-      x_vel: Math.random() * 2 - 1,
-      y_vel: Math.random() * 2 - 1,
+      x_vel: (castle.x - x1) / (Math.sqrt(Math.pow(castle.x - x1, 2) + Math.pow(castle.y - y1, 2), 2) / Math.sqrt(2, 2)),
+      y_vel: (castle.y - y1) / (Math.sqrt(Math.pow(castle.x - x1, 2) + Math.pow(castle.y - y1, 2), 2) / Math.sqrt(2, 2)),
       health: 200,
       timer: new Date(),
       shootTime: Math.random() * 100 + 450,
@@ -825,7 +825,7 @@ function draw() {
     if (!sandbox) {
       alert("Congrats on 100k! You can now afford an outpost! Outposts can help fend off raiders. Station soldiers in them to protect your workers. They can only hold 4 soldiers, though.");
     } else {
-      alert("Outposts can help fend off raiders. Station soldiers in them to protect your workers. They can only hold 4 soldiers, though.")
+      alert("Outposts can help fend off raiders. Station soldiers in them to protect your workers. They can only hold 4 soldiers, though.");
     }
     
     firstOutpost = false;
@@ -848,6 +848,7 @@ function draw() {
   }
 
   if (firstTime) {
+    alert("Try to stay alive as long as possible against the raiders!");
     alert("Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 50 gold per minute. When there is not enough gold, soldiers will leave.");
     alert("Workers produce gold. You will need them to buy units/upgrades.");
     
