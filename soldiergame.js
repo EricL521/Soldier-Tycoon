@@ -822,8 +822,29 @@ function draw() {
   }
   
   if (firstOutpost && gold >= outpostCost) {
-    alert("Congrats on 100k! You can now afford an outpost! Outposts can help fend off raiders. Station soldiers in them to protect your workers. They can only hold 4 soldiers, though.");
+    if (!sandbox) {
+      alert("Congrats on 100k! You can now afford an outpost! Outposts can help fend off raiders. Station soldiers in them to protect your workers. They can only hold 4 soldiers, though.");
+    } else {
+      alert("Outposts can help fend off raiders. Station soldiers in them to protect your workers. They can only hold 4 soldiers, though.")
+    }
+    
     firstOutpost = false;
+    
+    for (var i = 0; i < soldiers.length; i++) {
+      soldiers[i].timeSinceLastFrame = new Date();
+    }
+    
+    for (var i = 0; i < bullets.length; i++) {
+      bullets[i].timeSinceLastFrame = new Date();
+    }
+
+    for (var i = 0; i < workers.length; i++) {
+      workers[i].timeSinceLastFrame = new Date();
+    }
+    
+    for (var i = 0; i < raiders.length; i++) {
+      raiders[i].timeSinceLastFrame = new Date();
+    }
   }
 
   if (firstTime) {
