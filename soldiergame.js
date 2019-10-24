@@ -25,9 +25,12 @@ var soldiers = [{
   timer: new Date(),
   shootTime: Math.random() * 100 + 450,
   timeSinceLastFrame: new Date(),
-  outpostNumber: -1
+  outpostNumber: -1,
+  paid: false
 }];
 var payTimer = new Date();
+var payTimerMillis = 0;
+var paySeconds = 60;
 var workers = [{
   x: canvas.width / 2,
   y: (canvas.height + 150) / 2,
@@ -122,6 +125,7 @@ document.onmouseup = function() {
   if (!lost) {
     if (!pauseButtonDisabled && mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100) {
       play = !play;
+      payTimerMillis = new Date().getTime() - payTimer.getTime();
     }
 
     if (mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125) {
@@ -138,7 +142,8 @@ document.onmouseup = function() {
           timer: new Date(),
           shootTime: Math.random() * 100 + 450,
           timeSinceLastFrame: new Date(),
-          outpostNumber: -1
+          outpostNumber: -1,
+          paid: false
         });
       }
     }
@@ -254,6 +259,7 @@ document.onmouseup = function() {
       minSoldierDamage = 40;
       soldierHealth = 100;
       play = true;
+      paySeconds = 60;
       soldiers = [{
         x: canvas.width / 2,
         y: (canvas.height + 150) / 2,
@@ -265,7 +271,8 @@ document.onmouseup = function() {
         timer: new Date(),
         shootTime: Math.random() * 100 + 450,
         timeSinceLastFrame: new Date(),
-        outpostNumber: -1
+        outpostNumber: -1,
+        paid: false
       }];
       workers = [{
         x: canvas.width / 2,
@@ -396,12 +403,15 @@ function moveSoldier(i) {
       }
     }
 
-    if (new Date() - payTimer > 60000) {
+    if (!soldiers[i].paid && paySeconds === 1) {
       if (gold >= 50) {
         gold -= 50;
+        soldiers[i].paid = true;
       } else {
         soldiers.splice(i, 1);
       }
+    } else if (soldiers[i].paid && paySeconds > 1) {
+      soldiers[i].paid = false;
     }
   }
 
@@ -652,7 +662,7 @@ function topBar() {
   }
 
   ctx.font = "15px Arial";
-  ctx.fillText("You have " + gold + " gold! You earn " + gps + " gold per second. You have " + fps + " fps.    Your population: " + (soldiers.length + workers.length) + "/" + maxPeople + "    There are " + raiders.length + " raiders." + "    Next pay for Soldiers: " + (60 - Math.floor((new Date() - payTimer) / 1000)) + "  Total pay: " + soldiers.length * 50, 200, 20);
+  ctx.fillText("You have " + gold + " gold! You earn " + gps + " gold per second. You have " + fps + " fps.    Your population: " + (soldiers.length + workers.length) + "/" + maxPeople + "    There are " + raiders.length + " raiders." + "    Next pay for Soldiers: " + (paySeconds) + "  Total pay: " + soldiers.length * 50, 200, 20);
   ctx.fillStyle = "yellow";
   ctx.fillRect(10, 30, gold / 1000, 25);
 
@@ -789,8 +799,16 @@ function draw() {
     for (var i = 0; i < soldiers.length; i++) {
       moveSoldier(i);
     }
-    if (new Date() - payTimer > 60000) {
+    if (play && new Date() - payTimer > 1000) {
       payTimer = new Date();
+      paySeconds -= 1;
+      if (paySeconds === 0) {
+        paySeconds = 60;
+      }
+    }
+    if (!play) {
+      payTimer = new Date();
+      payTimer.setTime(payTimer.getTime() - payTimerMillis);
     }
 
     for (var i = 0; i < raiders.length; i++) {
@@ -820,6 +838,30 @@ function draw() {
     ctx.font = "15px Arial";
     ctx.fillText("Click here to play again!", canvas.width / 2 - 80, canvas.height / 2 - 25);
   }
+
+  if (firstTime) {
+    alert("Try to stay alive as long as possible against the raiders!");
+    alert("Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 50 gold per minute. When there is not enough gold, soldiers will leave.");
+    alert("Workers produce gold. You will need them to buy units/upgrades.");
+    
+    for (var i = 0; i < soldiers.length; i++) {
+      soldiers[i].timeSinceLastFrame = new Date();
+    }
+    
+    for (var i = 0; i < bullets.length; i++) {
+      bullets[i].timeSinceLastFrame = new Date();
+    }
+
+    for (var i = 0; i < workers.length; i++) {
+      workers[i].timeSinceLastFrame = new Date();
+    }
+    
+    for (var i = 0; i < raiders.length; i++) {
+      raiders[i].timeSinceLastFrame = new Date();
+    }
+    
+    firstTime = false;
+  }
   
   if (firstOutpost && gold >= outpostCost) {
     if (!sandbox) {
@@ -846,32 +888,8 @@ function draw() {
       raiders[i].timeSinceLastFrame = new Date();
     }
   }
-
-  if (firstTime) {
-    alert("Try to stay alive as long as possible against the raiders!");
-    alert("Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 50 gold per minute. When there is not enough gold, soldiers will leave.");
-    alert("Workers produce gold. You will need them to buy units/upgrades.");
-    
-    for (var i = 0; i < soldiers.length; i++) {
-      soldiers[i].timeSinceLastFrame = new Date();
-    }
-    
-    for (var i = 0; i < bullets.length; i++) {
-      bullets[i].timeSinceLastFrame = new Date();
-    }
-
-    for (var i = 0; i < workers.length; i++) {
-      workers[i].timeSinceLastFrame = new Date();
-    }
-    
-    for (var i = 0; i < raiders.length; i++) {
-      raiders[i].timeSinceLastFrame = new Date();
-    }
-    
-    firstTime = false;
-  }
 	
-	if (firstMaxPeople && soldiers.length + workers.length === 50) {
+	if (firstMaxPeople && soldiers.length + workers.length === 50 && maxPeople === 50) {
     alert("Castle Full? Upgrade it to fit more people.");
     firstMaxPeople = false;
   }
