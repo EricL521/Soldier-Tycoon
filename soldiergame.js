@@ -809,7 +809,7 @@ function draw() {
     }
 
     for (var i = 0; i < raiders.length; i++) {
-      if (Math.sqrt(Math.pow(raiders[i].x - castle.x, 2) + Math.pow(raiders[i].y - castle.y, 2)) < castle.radius - raiders[i].radius) {
+      if (soldiers.length + workers.length === 0 && Math.sqrt(Math.pow(raiders[i].x - castle.x, 2) + Math.pow(raiders[i].y - castle.y, 2)) < castle.radius - raiders[i].radius) {
         lost = true;
       }
       moveRaider(i);
