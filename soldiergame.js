@@ -118,6 +118,21 @@ document.addEventListener("keydown", function(event) {
         alert("Sorry! You lost " + betAmount + " gold!");
       }
     }
+    for (var i = 0; i < soldiers.length; i++) {
+      soldiers[i].timeSinceLastFrame = new Date();
+    }
+    
+    for (var i = 0; i < bullets.length; i++) {
+      bullets[i].timeSinceLastFrame = new Date();
+    }
+
+    for (var i = 0; i < workers.length; i++) {
+      workers[i].timeSinceLastFrame = new Date();
+    }
+    
+    for (var i = 0; i < raiders.length; i++) {
+      raiders[i].timeSinceLastFrame = new Date();
+    }
   }
 });
 
