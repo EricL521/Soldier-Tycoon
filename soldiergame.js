@@ -57,7 +57,7 @@ var pauseButtonDisabled = false;
 var mouseX = 0;
 var mouseY = 0;
 var play = true;
-var soldierCost = 650;
+var soldierCost = 200;
 var workerCost = 500;
 var gold = 25000;
 var d = new Date();
@@ -77,6 +77,49 @@ var firstRaid = true;
 var firstMaxPeople = true;
 var firstOutpost = true;
 var lost = false;
+var betAmount = 0;
+var autoBuyDead = false;
+
+document.addEventListener("keydown", function(event) {
+  if (event.key + "" === "b") {
+    betAmount = gold + 1;
+    var cancel = false;
+    
+    while (betAmount > gold || betAmount < 100) {
+      if (!confirm("Are you sure you would like to bet?")) {
+        cancel = true;
+        break;
+      }
+      betAmount = parseInt(prompt("How much would you like to bet?"));
+      
+      if (betAmount > gold) {
+        alert("You have to bet less than your gold(" + gold + ").");
+      }
+      else if (betAmount + "" === "NaN") {
+        alert("Please enter a number.");
+        betAmount = gold + 1;
+      }
+      else if (betAmount < 100) {
+        alert("You need to bet at least 100 coins.");
+      }
+      else {
+        if (!(confirm("You would like to bet " + betAmount + " gold?"))) {
+          betAmount = gold + 1;
+        }
+      }
+    }
+    if (!cancel) {
+      if (Math.random() > 0.5) {
+        gold += Math.floor(betAmount * .98);
+        alert("Congrats! You won " + Math.floor(betAmount * .98)  + " gold! (Including House Tax)");
+      }
+      else {
+        gold -= betAmount;
+        alert("Sorry! You lost " + betAmount + " gold!");
+      }
+    }
+  }
+});
 
 canvas.addEventListener('contextmenu', event => event.preventDefault());
 
@@ -91,7 +134,9 @@ canvas.addEventListener("mousemove", function(e) {
         (mouseX > 390 && mouseX < 510 && mouseY > 75 && mouseY < 125 && gold >= castleUpgradeCost) ||
         (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125 && gold >= workerUpgradeCost) || 
         (mouseX > 810 && mouseX < 930 && mouseY > 75 && mouseY < 125 && gold >= soldierUpgradeCost) ||
-        (mouseX > 1020 && mouseX < 1140 && mouseY > 75 && mouseY < 125 && gold >= outpostCost)) {
+        (mouseX > 1020 && mouseX < 1140 && mouseY > 75 && mouseY < 125 && gold >= outpostCost) || 
+        (mouseX > 1190 && mouseX < 1240 && mouseY > 75 && mouseY < 125) || 
+        (mouseX > canvas.width - 30 && mouseX < canvas.width - 10 && mouseY < 30 && mouseY > 5)) {
       document.getElementById('canvas').style.cursor = "pointer";
     } else {
       var pointer = false;
@@ -120,6 +165,30 @@ canvas.addEventListener("mousemove", function(e) {
 
 document.onmouseup = function() {
   if (!lost) {
+    if (mouseX > 1190 && mouseX < 1240 && mouseY > 75 && mouseY < 125) {
+      autoBuyDead = !autoBuyDead;
+    }
+    
+    if (mouseX > canvas.width - 30 && mouseX < canvas.width - 10 && mouseY < 30 && mouseY > 5) {
+      alert("\u2022 Try to stay alive as long as possible against the raiders! \n\u2022 Soldiers(green) are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 50 gold per minute. When there is not enough gold, soldiers will leave. \n\u2022 Workers(blue) produce gold. You will need them to buy units/upgrades. \n\n\u2022 Press \"b\" to bet.");
+    
+      for (var i = 0; i < soldiers.length; i++) {
+        soldiers[i].timeSinceLastFrame = new Date();
+      }
+    
+      for (var i = 0; i < bullets.length; i++) {
+        bullets[i].timeSinceLastFrame = new Date();
+      }
+
+      for (var i = 0; i < workers.length; i++) {
+        workers[i].timeSinceLastFrame = new Date();
+      }
+    
+      for (var i = 0; i < raiders.length; i++) {
+        raiders[i].timeSinceLastFrame = new Date();
+      }
+    }
+    
     if (!pauseButtonDisabled && mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100) {
       play = !play;
       payTimerMillis = new Date().getTime() - payTimer.getTime();
@@ -253,6 +322,7 @@ document.onmouseup = function() {
     
   } else {
     if (mouseX > canvas.width / 2 - 100 && mouseX < canvas.width / 2 + 100 && mouseY > canvas.height / 2 - 50 && mouseY < canvas.height / 2 + 50) {
+      autoBuyDead = false;
       minSoldierDamage = 40;
       soldierHealth = 100;
       play = true;
@@ -314,6 +384,7 @@ document.onmouseup = function() {
 			sandbox = false;
 			if (confirm("Do you want to turn on sandbox mode?")) {
   			gold = Infinity;
+        sandbox = true;
       }
     }
   }
@@ -344,6 +415,23 @@ function moveSoldier(i) {
         outposts[soldiers[i].outpostNumber].unitsContained -= 1;
       }
       soldiers.splice(i, 1);
+      if (autoBuyDead && gold >= soldierCost) {
+        gold -= soldierCost;
+        soldiers.push({
+          x: castle.x,
+          y: castle.y,
+          radius: 5,
+          x_vel: Math.random() / 2,
+          y_vel: Math.random() - 0.5,
+          health: soldierHealth,
+          damage: Math.random() * 10 + minSoldierDamage,
+          timer: new Date(),
+          shootTime: Math.random() * 100 + 450,
+          timeSinceLastFrame: new Date(),
+          outpostNumber: -1,
+          paid: false
+        });
+      }
     } else {
       if (new Date() - soldiers[i].timer > soldiers[i].shootTime) {
         for (var j = 0; j < raiders.length; j++) {
@@ -439,6 +527,19 @@ function moveWorker(i) {
 
     if (workers[i].health <= 0) {
       workers.splice(i, 1);
+      if (autoBuyDead && gold >= workerCost) {
+        gold -= workerCost;
+        workers.push({
+          x: canvas.width / 2,
+          y: (canvas.height + 150) / 2,
+          radius: 3,
+          x_vel: 0.3,
+          y_vel: 0.5,
+          health: 50,
+          goldTimer: new Date(),
+          timeSinceLastFrame: new Date()
+        });
+      }
     } else {
       if (new Date() - workers[i].goldTimer > timePerGold) {
         gold++;
@@ -710,7 +811,19 @@ function topBar() {
   ctx.fillStyle = "black";
   ctx.font = "12px Arial";
   ctx.fillText("Buy an outpost for " + outpostCost + " gold.", 1020, 70);
-
+  
+  if (autoBuyDead) {
+    ctx.fillStyle = "green";
+  } else {
+    ctx.fillStyle = "red";
+  }
+  ctx.fillRect(1190, 75, 50, 50);
+  ctx.fillStyle = "black";
+  ctx.font = "12px Arial";
+  ctx.fillText("Auto-Replace Dead", 1160, 135);
+  ctx.fillStyle = "white";
+  ctx.fillText("On/Off", 1197, 105);
+  
   ctx.fillStyle = "grey";
   ctx.fillRect(canvas.width - 60, 50, 50, 50);
   ctx.fillStyle = "black";
@@ -720,6 +833,9 @@ function topBar() {
   } else {
     ctx.fillText("\u{25B7}", canvas.width - 50, 87);
   }
+  
+  ctx.fillStyle = "black";
+  ctx.fillText("?", canvas.width - 30, 30);
 }
 
 function drawBackground() {
@@ -840,6 +956,7 @@ function draw() {
     alert("Try to stay alive as long as possible against the raiders!");
     alert("Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 50 gold per minute. When there is not enough gold, soldiers will leave.");
     alert("Workers produce gold. You will need them to buy units/upgrades.");
+    alert("Need gold? Press B to bet!");
     
     for (var i = 0; i < soldiers.length; i++) {
       soldiers[i].timeSinceLastFrame = new Date();
