@@ -100,7 +100,7 @@ document.addEventListener("keydown", function(event) {
         betAmount = gold + 1;
       }
       else if (betAmount < 100) {
-        alert("You need to bet at least 100 coins.");
+        alert("You need to bet at least 100 gold.");
       }
       else {
         if (!(confirm("You would like to bet " + betAmount + " gold?"))) {
