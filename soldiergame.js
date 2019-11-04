@@ -717,10 +717,12 @@ function moveRaider(i) {
 }
 
 function moveBullet(i) {
-  ctx.beginPath();
-  ctx.arc(bullets[i].x, bullets[i].y, bullets[i].radius, 0, 2 * Math.PI);
-  ctx.fillStyle = "black";
-  ctx.fill();
+  if (bullets[i].y > 148 + bullets[i].radius) {
+    ctx.beginPath();
+    ctx.arc(bullets[i].x, bullets[i].y, bullets[i].radius, 0, 2 * Math.PI);
+    ctx.fillStyle = "black";
+    ctx.fill();
+  }
 
   bullets[i].timeSinceLastFrame = new Date() - bullets[i].timeSinceLastFrame;
 
@@ -915,6 +917,10 @@ function draw() {
         startRaid();
       }
     }
+    
+    drawBackground();
+
+    topBar();
 
     for (var i = 0; i < bullets.length; i++) {
       moveBullet(i);
@@ -950,10 +956,6 @@ function draw() {
       outposts[outpostPlacing].x = mouseX;
       outposts[outpostPlacing].y = mouseY;
     }
-
-    drawBackground();
-
-    topBar();
 
   } else {
     ctx.fillStyle = "black";
