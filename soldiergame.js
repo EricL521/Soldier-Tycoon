@@ -917,10 +917,6 @@ function draw() {
         startRaid();
       }
     }
-    
-    drawBackground();
-
-    topBar();
 
     for (var i = 0; i < bullets.length; i++) {
       moveBullet(i);
@@ -956,6 +952,10 @@ function draw() {
       outposts[outpostPlacing].x = mouseX;
       outposts[outpostPlacing].y = mouseY;
     }
+    
+    drawBackground();
+
+    topBar();
 
   } else {
     ctx.fillStyle = "black";
