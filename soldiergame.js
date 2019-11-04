@@ -5,6 +5,7 @@ plans:
 	- Workers make same amount every second
 	- Hovering over buttons gives info on current person and stats
 	- If there is not enough gold to pay soldiers, soldiers will leave until there is enough gold to go around
+	- Bug where if 1 raider dies then the raider whose index is after it is skipped and blinks, because the index goes down 1. Solution would be to make "i" (in the for loop that updates raiders) go down 1 when raider dies.
 */
 
 document.write("<title>Soldier Tycoon</title>");
