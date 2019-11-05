@@ -435,24 +435,46 @@ function moveSoldier(i) {
       if (soldiers[i].outpostNumber >= 0) {
         outposts[soldiers[i].outpostNumber].unitsContained -= 1;
       }
-      soldiers.splice(i, 1);
+      
       if (autoBuyDead && gold >= soldierCost) {
         gold -= soldierCost;
-        soldiers.push({
-          x: castle.x,
-          y: castle.y,
-          radius: 5,
-          x_vel: Math.random() / 2,
-          y_vel: Math.random() - 0.5,
-          health: soldierHealth,
-          damage: Math.random() * 10 + minSoldierDamage,
-          timer: new Date(),
-          shootTime: Math.random() * 100 + 450,
-          timeSinceLastFrame: new Date(),
-          outpostNumber: -1,
-          paid: false
-        });
+        if (soldiers[i].outpostNumber >= 0) {
+          soldiers.push({
+            x: outposts[soldiers[i].outpostNumber].x,
+            y: outposts[soldiers[i].outpostNumber].y,
+            radius: 5,
+            x_vel: Math.random() / 2,
+            y_vel: Math.random() - 0.5,
+            health: soldierHealth,
+            damage: Math.random() * 10 + minSoldierDamage,
+            timer: new Date(),
+            shootTime: Math.random() * 100 + 450,
+            timeSinceLastFrame: new Date(),
+            outpostNumber: soldiers[i].outpostNumber,
+            paid: false
+          });
+          
+          outposts[soldiers[i].outpostNumber].unitsContained += 1;
+        }
+        else {
+          soldiers.push({
+            x: castle.x,
+            y: castle.y,
+            radius: 5,
+            x_vel: Math.random() / 2,
+            y_vel: Math.random() - 0.5,
+            health: soldierHealth,
+            damage: Math.random() * 10 + minSoldierDamage,
+            timer: new Date(),
+            shootTime: Math.random() * 100 + 450,
+            timeSinceLastFrame: new Date(),
+            outpostNumber: -1,
+            paid: false
+          });
+        }
       }
+      
+      soldiers.splice(i, 1);
     } else {
       if (new Date() - soldiers[i].timer > soldiers[i].shootTime) {
         for (var j = 0; j < raiders.length; j++) {
