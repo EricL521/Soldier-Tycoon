@@ -263,9 +263,30 @@ document.onmouseup = function() {
 
     if (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125) {
       if (gold >= workerUpgradeCost) {
-        timePerGold /= 1.1;
-        gold -= workerUpgradeCost;
-        workerUpgradeCost += Math.round(workerUpgradeCost / 15);
+        if (timePerGold / 1.05 > 15) {
+          timePerGold /= 1.05;
+          gold -= workerUpgradeCost;
+          workerUpgradeCost += Math.round(workerUpgradeCost / 15);
+        } else {
+          timePerGold = 15;
+          alert("Your workers are maxed!");
+          
+          for (var i = 0; i < soldiers.length; i++) {
+            soldiers[i].timeSinceLastFrame = new Date();
+          }
+    
+          for (var i = 0; i < bullets.length; i++) {
+            bullets[i].timeSinceLastFrame = new Date();
+          }
+
+          for (var i = 0; i < workers.length; i++) {
+            workers[i].timeSinceLastFrame = new Date();
+          }
+    
+          for (var i = 0; i < raiders.length; i++) {
+            raiders[i].timeSinceLastFrame = new Date();
+          }
+        }
       }
     }
     
