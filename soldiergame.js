@@ -18,6 +18,8 @@ document.write("<canvas id='canvas' width='1347' height='587' style='border:2px 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var raidTimer = new Date();
+var raidSeconds = 15;
+var raidTimerMillis = 0;
 var minSoldierDamage = 40;
 var soldierHealth = 100;
 var soldiers = [{
@@ -213,6 +215,7 @@ document.onmouseup = function() {
     if (!pauseButtonDisabled && mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100) {
       play = !play;
       payTimerMillis = new Date().getTime() - payTimer.getTime();
+      raidTimerMillis = new Date().getTime() - raidTimer.getTime();
     }
 
     if (mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125) {
@@ -960,10 +963,17 @@ function draw() {
       ctx.font = "15px Arial";
       ctx.fillText("Paused", canvas.width / 2 - 20, 170);
       d = new Date();
+      
+      raidTimer.setTime(new Date().getTime() - raidTimerMillis);
     } else {
-      if (new Date() - raidTimer >= 15000 && Math.random() >= 0.99) {
+      if (new Date() - raidTimer >= 1000) {
         raidTimer = new Date();
+        raidSeconds -= 1;
+      }
+      
+	    if (raidSeconds === 0) {
         startRaid();
+        raidSeconds = 15;
       }
     }
 
@@ -986,8 +996,7 @@ function draw() {
       }
     }
     if (!play) {
-      payTimer = new Date();
-      payTimer.setTime(payTimer.getTime() - payTimerMillis);
+      payTimer.setTime(new Date().getTime() - payTimerMillis);
     }
 
     for (var i = 0; i < raiders.length; i++) {
