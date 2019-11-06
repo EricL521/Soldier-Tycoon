@@ -5,8 +5,8 @@ plans:
 */
 
 /*
-bug:
-  - Game crashes sometimes dont know why (probably something to do with raiders)
+bugs:
+  - Game crashes sometimes (probably something to do with raiders)
 */
 
 document.write("<title>Soldier Tycoon</title>");
