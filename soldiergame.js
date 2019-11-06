@@ -897,7 +897,7 @@ function topBar() {
   if (play) {
     ctx.fillText("||", canvas.width - 43, 83);
   } else {
-    ctx.fillText("\u{25B7}", canvas.width - 50, 87);
+    ctx.fillText("\u25B7", canvas.width - 50, 87);
   }
   
   ctx.fillStyle = "black";
