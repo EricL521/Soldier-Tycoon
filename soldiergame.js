@@ -1,16 +1,12 @@
 /*
 plans:
-	- Different people (soldiers and workers) require different amounts of money per second
-	- Workers make same amount every second
-	- Hovering over buttons gives info on current person and stats
-	- If there is not enough gold to pay soldiers, soldiers will leave until there is enough gold to go around
-	- Bug where if 1 raider dies then the raider whose index is after it is skipped and blinks, because the index goes down 1. Solution would be to make "i" (in the for loop that updates raiders) go down 1 when raider dies.
+	- Different people (soldiers and workers) require different amounts of money per second (maybe)
+	- Hovering over buttons gives info on current person and stats (maybe)
 */
 
 /*
 bug:
-
-
+  - Game crashes sometimes dont know why (probably something to do with raiders)
 */
 
 document.write("<title>Soldier Tycoon</title>");
@@ -87,6 +83,7 @@ var firstOutpost = true;
 var lost = false;
 var betAmount = 0;
 var autoBuyDead = false;
+var decreaseI = false;
 
 document.addEventListener("keydown", function(event) {
   if (event.key + "" === "b") {
@@ -462,6 +459,7 @@ function moveSoldier(i) {
       
       if (autoBuyDead && gold >= soldierCost) {
         gold -= soldierCost;
+        decreaseI = true;
         if (soldiers[i].outpostNumber >= 0) {
           soldiers.push({
             x: outposts[soldiers[i].outpostNumber].x,
@@ -594,6 +592,7 @@ function moveWorker(i) {
 
     if (workers[i].health <= 0) {
       workers.splice(i, 1);
+      decreaseI = true;
       if (autoBuyDead && gold >= workerCost) {
         gold -= workerCost;
         workers.push({
@@ -663,6 +662,7 @@ function moveRaider(i) {
 
     if (raiders[i].health <= 0) {
       raiders.splice(i, 1);
+      decreaseI = true;
     } else {
 
       if (new Date() - raiders[i].timer > raiders[i].shootTime) {
@@ -762,7 +762,7 @@ function moveRaider(i) {
       }
     }
   }
-
+  
   if (i < raiders.length) {
     raiders[i].timeSinceLastFrame = new Date();
   }
@@ -781,6 +781,7 @@ function moveBullet(i) {
   if (play) {
     if (bullets[i].x > canvas.width - bullets[i].radius || bullets[i].x < bullets[i].radius || bullets[i].y > canvas.height - bullets[i].radius || bullets[i].y < 150 + bullets[i].radius) {
       bullets.splice(i, 1);
+      decreaseI = true;
     } else {
       bullets[i].x += bullets[i].x_vel * (bullets[i].timeSinceLastFrame / (50 / 3));
       bullets[i].y += bullets[i].y_vel * (bullets[i].timeSinceLastFrame / (50 / 3));
@@ -977,16 +978,33 @@ function draw() {
       }
     }
 
+    decreaseI = false;
+    
     for (var i = 0; i < bullets.length; i++) {
+      decreaseI = false;
       moveBullet(i);
+      
+      if (decreaseI) {
+        i -= 1;
+      }
     }
 
     for (var i = 0; i < workers.length; i++) {
+      decreaseI = false;
       moveWorker(i);
+      
+      if (decreaseI) {
+        i -= 1;
+      }
     }
 
     for (var i = 0; i < soldiers.length; i++) {
+      decreaseI = false;
       moveSoldier(i);
+      
+      if (decreaseI) {
+        i -= 1;
+      }
     }
     if (play && new Date() - payTimer > 1000) {
       payTimer = new Date();
@@ -1003,7 +1021,12 @@ function draw() {
       if (soldiers.length + workers.length === 0 && Math.sqrt(Math.pow(raiders[i].x - castle.x, 2) + Math.pow(raiders[i].y - castle.y, 2)) < castle.radius - raiders[i].radius) {
         lost = true;
       }
+      decreaseI = false;
       moveRaider(i);
+      
+      if (decreaseI) {
+        i -= 1;
+      }
     }
     
     if (outpostPlacing >= 0) {
