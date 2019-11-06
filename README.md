@@ -7,5 +7,7 @@
 
 # Soldier Tycoon Online Version
 1. Go to https://gcreeper00.github.io/Soldier-Tycoon/
+
 ===========================================
+
 The PC Version and Online Version are the same!
