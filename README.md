@@ -3,6 +3,7 @@ We are proud to announce that we are working on a Unity version of Soldier Tycoo
 
 # Soldier Tycoon Open Beta 0.2.0 (Online)
 Soldier Graphics Added
+
 https://gcreeper00.github.io/Soldier-Tycoon/
 
 # Bug Tracker
