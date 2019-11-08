@@ -1,4 +1,4 @@
-# Soldier Tycoon Beta 0.2.0 (online)
+# Soldier Tycoon Beta 0.2.0 (Online)
 Soldier Graphics
 
 
