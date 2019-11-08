@@ -923,7 +923,7 @@ function topBar() {
   ctx.fillRect(0, 148, canvas.width, 2);
 
   ctx.font = "15px Arial";
-  ctx.fillText("Soldier Tycoon Game", 10, 20);
+  ctx.fillText("Soldier Tycoon", 10, 20);
   if (sandbox) {
     ctx.fillText("Sandbox mode", canvas.width - 105, 120);
   }
