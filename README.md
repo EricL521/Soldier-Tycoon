@@ -1,10 +1,10 @@
-# Soldier Tycoon Beta 0.2.0 (Online)
-Soldier Graphics
+# Solider Tycoon Closed Beta 0.1.0 (PC)
+Creating Objects
 
+# Soldier Tycoon Closed Beta 0.2.0 (Online)
+Soldier Graphics Added
 
-
-# Soldier Tycoon PC Version
-1. In progress
-
-# Soldier Tycoon Online Version
-1. Go to https://gcreeper00.github.io/Soldier-Tycoon/
+# PC
+WIP
+# Online
+https://gcreeper00.github.io/Soldier-Tycoon/
