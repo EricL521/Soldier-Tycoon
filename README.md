@@ -1,13 +1,14 @@
-# Solider Tycoon Closed Beta 0.1.0 (PC)
-Creating Objects
+# Soldier Tycoon News
+We are proud to announce that we are working on a Unity version of Soldier Tycoon! It will be releasing sometime in the future.
 
-# Soldier Tycoon Closed Beta 0.2.0 (Online)
+# Solider Tycoon Open Beta 0.1.0 (PC)
+WIP
+
+# Soldier Tycoon Open Beta 0.2.0 (Online)
 Soldier Graphics Added
 
-# PC
-WIP
 # Online
 https://gcreeper00.github.io/Soldier-Tycoon/
 
-# Bug Tracker
-Game sometimes crashes when you don't have enough gold to Auto-Renew dead/pay soldiers
+# Bug Tracker Online
+Game sometimes crashes when a raider kills many workers and then the soldier kills the raider
