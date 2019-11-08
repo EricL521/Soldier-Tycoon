@@ -8,3 +8,6 @@ Soldier Graphics Added
 WIP
 # Online
 https://gcreeper00.github.io/Soldier-Tycoon/
+
+# Bug Tracker
+Game sometimes crashes when you don't have enough gold to Auto-Renew dead/pay soldiers
