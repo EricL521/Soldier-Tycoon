@@ -2,7 +2,6 @@
 plans:
 	- Different people (soldiers and workers) require different amounts of money per second (maybe)
 	- Hovering over buttons gives info on current person and stats (maybe)
-	- <img src="https://i.pinimg.com/474x/1a/bf/e2/1abfe2e436b12409b2d46a68d7bf749a--inkscape-tutorials-video-tutorials.jpg" alt="2D Game Art for Programmers: Top down view - Soldier"/>
 */
 
 /*
