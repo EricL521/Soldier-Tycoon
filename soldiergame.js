@@ -13,7 +13,7 @@ bugs:
 
 document.write("<title>Soldier Tycoon</title>");
 document.write("<canvas id='canvas' width='1347' height='587' style='border:2px solid black'></canvas>");
-document.write("<img style=\"visibility:hidden;\" src=\"soldierNoBackground.png\" alt=\"Image result for soldier clipart top view\" id=\"soldierPicture\" width = \"25\" hight=\"16.4855072\"/>");
+document.write("<img style=\"visibility:hidden;\" src=\"soldier.png\" alt=\"Image result for soldier clipart top view\" id=\"soldierPicture\" width = \"25\" hight=\"16.4855072\"/>");
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var raidTimer = new Date();
