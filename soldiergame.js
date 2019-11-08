@@ -247,10 +247,10 @@ document.onmouseup = function() {
         }
         else {
           if (soldiers[soldiers.length - 1].y_vel > 0) {
-            soldiers[soldiers.length - 1].rotation = -90;
+            soldiers[soldiers.length - 1].rotation = 90;
           }
           else if (soldiers[soldiers.length - 1].y_vel < 0) {
-            soldiers[soldiers.length - 1].rotation = 90;
+            soldiers[soldiers.length - 1].rotation = -90;
           }
         }
       }
@@ -455,18 +455,16 @@ document.onmouseup = function() {
 };
 
 function moveSoldier(i) {
+  ctx.beginPath();
+  ctx.arc(soldiers[i].x, soldiers[i].y, soldiers[i].radius, 0, 2 * Math.PI);
+  ctx.fillStyle = "green";
+  ctx.fill();
+  
   ctx.save();
   ctx.translate(soldiers[i].x, soldiers[i].y);
   ctx.rotate(soldiers[i].rotation * Math.PI/180);
   ctx.drawImage(document.getElementById("soldierPicture"), -1.5 * soldiers[i].radius, -2 * soldiers[i].radius, document.getElementById("soldierPicture").width, document.getElementById("soldierPicture").height);
   ctx.restore();
-  
-  /*
-  ctx.beginPath();
-  ctx.arc(soldiers[i].x, soldiers[i].y, soldiers[i].radius, 0, 2 * Math.PI);
-  ctx.fillStyle = "green";
-  ctx.fill();
-  */
   
   soldiers[i].timeSinceLastFrame = new Date() - soldiers[i].timeSinceLastFrame;
 
@@ -535,10 +533,10 @@ function moveSoldier(i) {
         }
         else {
           if (soldiers[soldiers.length - 1].y_vel > 0) {
-            soldiers[soldiers.length - 1].rotation = -90;
+            soldiers[soldiers.length - 1].rotation = 90;
           }
           else if (soldiers[soldiers.length - 1].y_vel < 0) {
-            soldiers[soldiers.length - 1].rotation = 90;
+            soldiers[soldiers.length - 1].rotation = -90;
           }
         }
       }
@@ -570,10 +568,10 @@ function moveSoldier(i) {
             }
             else {
               if (bullets[bullets.length - 1].y_vel > 0) {
-                soldiers[i].rotation = -90;
+                soldiers[i].rotation = 90;
               }
               else if (bullets[bullets.length - 1].y_vel < 0) {
-                soldiers[i].rotation = 90;
+                soldiers[i].rotation = -90;
               }
             }
             
@@ -626,10 +624,10 @@ function moveSoldier(i) {
         }
         else {
           if (soldiers[i].y_vel > 0) {
-            soldiers[i].rotation = -90;
+            soldiers[i].rotation = 90;
           }
           else if (soldiers[i].y_vel < 0) {
-            soldiers[i].rotation = 90;
+            soldiers[i].rotation = -90;
           }
         }
       }
@@ -645,10 +643,10 @@ function moveSoldier(i) {
         }
         else {
           if (soldiers[i].y_vel > 0) {
-            soldiers[i].rotation = -90;
+            soldiers[i].rotation = 90;
           }
           else if (soldiers[i].y_vel < 0) {
-            soldiers[i].rotation = 90;
+            soldiers[i].rotation = -90;
           }
         }
       }
