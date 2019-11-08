@@ -2,6 +2,7 @@
 plans:
 	- Different people (soldiers and workers) require different amounts of money per second (maybe)
 	- Hovering over buttons gives info on current person and stats (maybe)
+	- <img src="https://i.pinimg.com/474x/1a/bf/e2/1abfe2e436b12409b2d46a68d7bf749a--inkscape-tutorials-video-tutorials.jpg" alt="2D Game Art for Programmers: Top down view - Soldier"/>
 */
 
 /*
@@ -11,6 +12,7 @@ bugs:
 
 document.write("<title>Soldier Tycoon</title>");
 document.write("<canvas id='canvas' width='1347' height='587' style='border:2px solid black'></canvas>");
+document.write("<img style=\"visibility:hidden;\" src=\"https://i2.wp.com/unluckystudio.com/wp-content/uploads/2015/03/survivor-idle_rifle_0.png\" alt=\"Image result for soldier clipart top view\" id=\"soldierPicture\" width = \"25\" hight=\"16.4855072\"/>");
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var raidTimer = new Date();
@@ -30,7 +32,8 @@ var soldiers = [{
   shootTime: Math.random() * 100 + 450,
   timeSinceLastFrame: new Date(),
   outpostNumber: -1,
-  paid: false
+  paid: false,
+  rotation: -45
 }];
 var payTimer = new Date();
 var payTimerMillis = 0;
@@ -218,20 +221,38 @@ document.onmouseup = function() {
     if (mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125) {
       if (gold >= soldierCost && soldiers.length + workers.length + 1 <= maxPeople) {
         gold -= soldierCost;
+        var x_temp = Math.random() / 2;
+        var y_temp = Math.random() / 2;
         soldiers.push({
           x: castle.x,
           y: castle.y,
           radius: 5,
-          x_vel: Math.random() / 2,
-          y_vel: Math.random() - 0.5,
+          x_vel: x_temp,
+          y_vel: y_temp,
           health: soldierHealth,
           damage: Math.random() * 10 + minSoldierDamage,
           timer: new Date(),
           shootTime: Math.random() * 100 + 450,
           timeSinceLastFrame: new Date(),
           outpostNumber: -1,
-          paid: false
+          paid: false,
+          rotation: 0
         });
+        
+        if (soldiers[soldiers.length - 1].x_vel < 0) {
+          soldiers[soldiers.length - 1].rotation = Math.atan(soldiers[soldiers.length - 1].y_vel/soldiers[soldiers.length - 1].x_vel) * 180/Math.PI + 180;
+        }
+        else if (soldiers[soldiers.length - 1].x_vel > 0) {
+          soldiers[soldiers.length - 1].rotation = Math.atan(soldiers[soldiers.length - 1].y_vel/soldiers[soldiers.length - 1].x_vel) * 180/Math.PI;
+        }
+        else {
+          if (soldiers[soldiers.length - 1].y_vel > 0) {
+            soldiers[soldiers.length - 1].rotation = -90;
+          }
+          else if (soldiers[soldiers.length - 1].y_vel < 0) {
+            soldiers[soldiers.length - 1].rotation = 90;
+          }
+        }
       }
     }
 
@@ -381,7 +402,8 @@ document.onmouseup = function() {
         shootTime: Math.random() * 100 + 450,
         timeSinceLastFrame: new Date(),
         outpostNumber: -1,
-        paid: false
+        paid: false,
+        rotation: -45
       }];
       workers = [{
         x: canvas.width / 2,
@@ -433,11 +455,19 @@ document.onmouseup = function() {
 };
 
 function moveSoldier(i) {
+  ctx.save();
+  ctx.translate(soldiers[i].x, soldiers[i].y);
+  ctx.rotate(soldiers[i].rotation * Math.PI/180);
+  ctx.drawImage(document.getElementById("soldierPicture"), -1.5 * soldiers[i].radius, -2 * soldiers[i].radius, document.getElementById("soldierPicture").width, document.getElementById("soldierPicture").height);
+  ctx.restore();
+  
+  /*
   ctx.beginPath();
   ctx.arc(soldiers[i].x, soldiers[i].y, soldiers[i].radius, 0, 2 * Math.PI);
   ctx.fillStyle = "green";
   ctx.fill();
-
+  */
+  
   soldiers[i].timeSinceLastFrame = new Date() - soldiers[i].timeSinceLastFrame;
 
   if (play) {
@@ -473,7 +503,8 @@ function moveSoldier(i) {
             shootTime: Math.random() * 100 + 450,
             timeSinceLastFrame: new Date(),
             outpostNumber: soldiers[i].outpostNumber,
-            paid: false
+            paid: false,
+            rotation: 0
           });
           
           outposts[soldiers[i].outpostNumber].unitsContained += 1;
@@ -491,8 +522,24 @@ function moveSoldier(i) {
             shootTime: Math.random() * 100 + 450,
             timeSinceLastFrame: new Date(),
             outpostNumber: -1,
-            paid: false
+            paid: false,
+            rotation: 0
           });
+        }
+        
+        if (soldiers[soldiers.length - 1].x_vel < 0) {
+          soldiers[soldiers.length - 1].rotation = Math.atan(soldiers[soldiers.length - 1].y_vel/soldiers[soldiers.length - 1].x_vel) * 180/Math.PI + 180;
+        }
+        else if (soldiers[soldiers.length - 1].x_vel > 0) {
+          soldiers[soldiers.length - 1].rotation = Math.atan(soldiers[soldiers.length - 1].y_vel/soldiers[soldiers.length - 1].x_vel) * 180/Math.PI;
+        }
+        else {
+          if (soldiers[soldiers.length - 1].y_vel > 0) {
+            soldiers[soldiers.length - 1].rotation = -90;
+          }
+          else if (soldiers[soldiers.length - 1].y_vel < 0) {
+            soldiers[soldiers.length - 1].rotation = 90;
+          }
         }
       }
       
@@ -514,6 +561,22 @@ function moveSoldier(i) {
             soldiers[i].timer = new Date();
             soldiers[i].x_vel = 0;
             soldiers[i].y_vel = 0;
+            
+            if (bullets[bullets.length - 1].x_vel < 0) {
+              soldiers[i].rotation = Math.atan(bullets[bullets.length - 1].y_vel/bullets[bullets.length - 1].x_vel) * 180/Math.PI + 180;
+            }
+            else if (bullets[bullets.length - 1].x_vel > 0) {
+              soldiers[i].rotation = Math.atan(bullets[bullets.length - 1].y_vel/bullets[bullets.length - 1].x_vel) * 180/Math.PI;
+            }
+            else {
+              if (bullets[bullets.length - 1].y_vel > 0) {
+                soldiers[i].rotation = -90;
+              }
+              else if (bullets[bullets.length - 1].y_vel < 0) {
+                soldiers[i].rotation = 90;
+              }
+            }
+            
             break;
           }
         }
@@ -525,31 +588,69 @@ function moveSoldier(i) {
       if (soldiers[i].outpostNumber < 0 && (soldiers[i].x > castle.x + castle.scoutRange - soldiers[i].radius || soldiers[i].x < castle.x - castle.scoutRange + soldiers[i].radius)) {
         soldiers[i].x_vel *= -1;
         soldiers[i].x += soldiers[i].x_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
+        
+        soldiers[i].rotation = 180 - soldiers[i].rotation;
       }
 
       if (soldiers[i].outpostNumber < 0 && (soldiers[i].y > castle.y + castle.scoutRange - soldiers[i].radius || soldiers[i].y < castle.y - castle.scoutRange + soldiers[i].radius)) {
         soldiers[i].y_vel *= -1;
         soldiers[i].y += soldiers[i].y_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
+        
+        soldiers[i].rotation *= -1;
       }
       
       for (var j = 0; j < outposts.length; j ++) {
         if (soldiers[i].outpostNumber === j && (soldiers[i].x > outposts[j].x + outposts[j].size - soldiers[i].radius || soldiers[i].x < outposts[j].x - outposts[j].size + soldiers[i].radius)) {
           soldiers[i].x_vel *= -1;
           soldiers[i].x += soldiers[i].x_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
+          
+          soldiers[i].rotation = 180 - soldiers[i].rotation;
         }
 
         if (soldiers[i].outpostNumber === j && (soldiers[i].y > outposts[j].y + outposts[j].size - soldiers[i].radius || soldiers[i].y < outposts[j].y - outposts[j].size + soldiers[i].radius)) {
           soldiers[i].y_vel *= -1;
           soldiers[i].y += soldiers[i].y_vel * (soldiers[i].timeSinceLastFrame / (50 / 3));
+          
+          soldiers[i].rotation *= -1;
         }
       }
 
       if (Math.random() > 0.99) {
         soldiers[i].x_vel = Math.random() - 0.5;
+        
+        if (soldiers[i].x_vel < 0) {
+          soldiers[i].rotation = Math.atan(soldiers[i].y_vel/soldiers[i].x_vel) * 180/Math.PI + 180;
+        }
+        else if (soldiers[i].x_vel > 0) {
+          soldiers[i].rotation = Math.atan(soldiers[i].y_vel/soldiers[i].x_vel) * 180/Math.PI;
+        }
+        else {
+          if (soldiers[i].y_vel > 0) {
+            soldiers[i].rotation = -90;
+          }
+          else if (soldiers[i].y_vel < 0) {
+            soldiers[i].rotation = 90;
+          }
+        }
       }
 
       if (Math.random() > 0.99) {
         soldiers[i].y_vel = Math.random() - 0.5;
+        
+        if (soldiers[i].x_vel < 0) {
+          soldiers[i].rotation = Math.atan(soldiers[i].y_vel/soldiers[i].x_vel) * 180/Math.PI + 180;
+        }
+        else if (soldiers[i].x_vel > 0) {
+          soldiers[i].rotation = Math.atan(soldiers[i].y_vel/soldiers[i].x_vel) * 180/Math.PI;
+        }
+        else {
+          if (soldiers[i].y_vel > 0) {
+            soldiers[i].rotation = -90;
+          }
+          else if (soldiers[i].y_vel < 0) {
+            soldiers[i].rotation = 90;
+          }
+        }
       }
     }
 
@@ -826,7 +927,7 @@ function topBar() {
   ctx.font = "15px Arial";
   ctx.fillText("Soldier Tycoon Game", 10, 20);
   if (sandbox) {
-    ctx.fillText("Sandbox mode", canvas.width - 105, 100);
+    ctx.fillText("Sandbox mode", canvas.width - 105, 130);
   }
 
   ctx.font = "15px Arial";
