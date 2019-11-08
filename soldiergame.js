@@ -240,20 +240,7 @@ document.onmouseup = function() {
           rotation: 0
         });
         
-        if (soldiers[soldiers.length - 1].x_vel < 0) {
-          soldiers[soldiers.length - 1].rotation = Math.atan(soldiers[soldiers.length - 1].y_vel/soldiers[soldiers.length - 1].x_vel) * 180/Math.PI + 180;
-        }
-        else if (soldiers[soldiers.length - 1].x_vel > 0) {
-          soldiers[soldiers.length - 1].rotation = Math.atan(soldiers[soldiers.length - 1].y_vel/soldiers[soldiers.length - 1].x_vel) * 180/Math.PI;
-        }
-        else {
-          if (soldiers[soldiers.length - 1].y_vel > 0) {
-            soldiers[soldiers.length - 1].rotation = 90;
-          }
-          else if (soldiers[soldiers.length - 1].y_vel < 0) {
-            soldiers[soldiers.length - 1].rotation = -90;
-          }
-        }
+        soldiers[soldiers.length - 1].rotation = getRotation(x_temp, y_temp);
       }
     }
 
@@ -455,6 +442,23 @@ document.onmouseup = function() {
   }
 };
 
+function getRotation(xVel, yVel) {
+	if (xVel < 0) {
+    return Math.atan(yVel/xVel) * 180/Math.PI + 180;
+  }
+  else if (xVel > 0) {
+    return Math.atan(yVel/xVel) * 180/Math.PI;
+  }
+  else {
+    if (yVel > 0) {
+      return 90;
+    }
+    else if (yVel < 0) {
+      return -90;
+    }
+  }
+}
+
 function moveSoldier(i) {
   ctx.beginPath();
   ctx.arc(soldiers[i].x, soldiers[i].y, soldiers[i].radius, 0, 2 * Math.PI);
@@ -526,20 +530,7 @@ function moveSoldier(i) {
           });
         }
         
-        if (soldiers[soldiers.length - 1].x_vel < 0) {
-          soldiers[soldiers.length - 1].rotation = Math.atan(soldiers[soldiers.length - 1].y_vel/soldiers[soldiers.length - 1].x_vel) * 180/Math.PI + 180;
-        }
-        else if (soldiers[soldiers.length - 1].x_vel > 0) {
-          soldiers[soldiers.length - 1].rotation = Math.atan(soldiers[soldiers.length - 1].y_vel/soldiers[soldiers.length - 1].x_vel) * 180/Math.PI;
-        }
-        else {
-          if (soldiers[soldiers.length - 1].y_vel > 0) {
-            soldiers[soldiers.length - 1].rotation = 90;
-          }
-          else if (soldiers[soldiers.length - 1].y_vel < 0) {
-            soldiers[soldiers.length - 1].rotation = -90;
-          }
-        }
+        soldiers[soldiers.length - 1].rotation = getRotation(soldiers[soldiers.length - 1].x_vel, soldiers[soldiers.length - 1].y_vel);
       }
       
       soldiers.splice(i, 1);
@@ -561,20 +552,7 @@ function moveSoldier(i) {
             soldiers[i].x_vel = 0;
             soldiers[i].y_vel = 0;
             
-            if (bullets[bullets.length - 1].x_vel < 0) {
-              soldiers[i].rotation = Math.atan(bullets[bullets.length - 1].y_vel/bullets[bullets.length - 1].x_vel) * 180/Math.PI + 180;
-            }
-            else if (bullets[bullets.length - 1].x_vel > 0) {
-              soldiers[i].rotation = Math.atan(bullets[bullets.length - 1].y_vel/bullets[bullets.length - 1].x_vel) * 180/Math.PI;
-            }
-            else {
-              if (bullets[bullets.length - 1].y_vel > 0) {
-                soldiers[i].rotation = 90;
-              }
-              else if (bullets[bullets.length - 1].y_vel < 0) {
-                soldiers[i].rotation = -90;
-              }
-            }
+            soldiers[i].rotation = getRotation(bullets[bullets.length - 1].x_vel, bullets[bullets.length - 1].y_vel);
             
             break;
           }
@@ -617,39 +595,13 @@ function moveSoldier(i) {
       if (Math.random() > 0.99) {
         soldiers[i].x_vel = Math.random() - 0.5;
         
-        if (soldiers[i].x_vel < 0) {
-          soldiers[i].rotation = Math.atan(soldiers[i].y_vel/soldiers[i].x_vel) * 180/Math.PI + 180;
-        }
-        else if (soldiers[i].x_vel > 0) {
-          soldiers[i].rotation = Math.atan(soldiers[i].y_vel/soldiers[i].x_vel) * 180/Math.PI;
-        }
-        else {
-          if (soldiers[i].y_vel > 0) {
-            soldiers[i].rotation = 90;
-          }
-          else if (soldiers[i].y_vel < 0) {
-            soldiers[i].rotation = -90;
-          }
-        }
+        soldiers[i].rotation = getRotation(soldiers[i].x_vel, soldiers[i].y_vel);
       }
 
       if (Math.random() > 0.99) {
         soldiers[i].y_vel = Math.random() - 0.5;
         
-        if (soldiers[i].x_vel < 0) {
-          soldiers[i].rotation = Math.atan(soldiers[i].y_vel/soldiers[i].x_vel) * 180/Math.PI + 180;
-        }
-        else if (soldiers[i].x_vel > 0) {
-          soldiers[i].rotation = Math.atan(soldiers[i].y_vel/soldiers[i].x_vel) * 180/Math.PI;
-        }
-        else {
-          if (soldiers[i].y_vel > 0) {
-            soldiers[i].rotation = 90;
-          }
-          else if (soldiers[i].y_vel < 0) {
-            soldiers[i].rotation = -90;
-          }
-        }
+        soldiers[i].rotation = getRotation(soldiers[i].x_vel, soldiers[i].y_vel);
       }
     }
 
