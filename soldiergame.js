@@ -8,6 +8,7 @@ plans:
 /*
 bugs:
   - Game crashes sometimes (probably something to do with raiders)
+  I think crashes happen when it takes too long to kill the raiders
 */
 
 document.write("<title>Soldier Tycoon</title>");
