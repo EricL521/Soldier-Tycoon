@@ -175,8 +175,7 @@ canvas.addEventListener("mousemove", function(e) {
 			soldierMenu = false;
 		}
 		
-		if ((mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100 && !pauseButtonDisabled) ||
-			(mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125) || 
+		if ((mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100 && !pauseButtonDisabled) || 
 			(soldierMenu && mouseX > 10 && mouseX < 130 && mouseY > 160 && mouseY < 210 && gold >= soldierCost && soldiers.length + miners.length + 1 <= maxPeople) || 
 			(soldierMenu && mouseX > 140 && mouseX < 170 && mouseY > 170 && mouseY < 200) ||
 			(mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125 && gold >= minerCost && soldiers.length + miners.length + 1 <= maxPeople) ||
