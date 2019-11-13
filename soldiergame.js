@@ -28,8 +28,8 @@ if (accepted) {
 
 document.write("<title>Soldier Tycoon</title>");
 document.write("<canvas id='canvas' width='1347' height='587' style='border:2px solid black'></canvas>");
-document.write("<img style=\"visibility:hidden;\" src=\"pictures/soldier.png\" alt=\"Image result for soldier clipart top view\" id=\"soldierPicture\" width = \"25\" hight=\"16.4855072\"/>");
-document.write("<img style=\"visibility:hidden;\" src=\"pictures/miner.png\" alt=\"Image result for soldier clipart top view\" id=\"minerPicture\" width = \"15\" hight=\"15.652173913\"/>");
+document.write("<img style=\"visibility:hidden;\" src=\"pictures/soldier.png\" alt=\"Image result for soldier image\" id=\"soldierPicture\" width = \"25\" hight=\"16.4855072\"/>");
+document.write("<img style=\"visibility:hidden;\" src=\"pictures/miner.png\" alt=\"Image result for worker image\" id=\"minerPicture\" width = \"15\" hight=\"15.652173913\"/>");
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
