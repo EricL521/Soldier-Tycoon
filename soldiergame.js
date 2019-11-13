@@ -202,7 +202,7 @@ document.onmouseup = function() {
 		}
 
 		if (mouseX > canvas.width - 30 && mouseX < canvas.width - 10 && mouseY < 30 && mouseY > 5) {
-			alert("\u2022 Try to stay alive as long as possible against the raiders! \n\u2022 Soldiers(green) are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 50 gold per minute. When there is not enough gold, soldiers will leave. \n\u2022 Miners(blue) produce gold. You will need them to buy units/upgrades. \n\u2022 Outposts can have a maximum of 4 soldiers. \n\n\u2022 Press \"b\" to bet.");
+			alert("\u2022 Try to stay alive as long as possible against the raiders! \n\u2022 Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 50 gold per minute. When there is not enough gold, soldiers will leave. \n\u2022 Miners produce gold. You will need them to buy units/upgrades. \n\u2022 Outposts can have a maximum of 4 soldiers. \n\n\u2022 Need money in a pinch? Press \"b\" to bet gold for a chance to win!.");
 
 			for (var i = 0; i < soldiers.length; i++) {
 				soldiers[i].timeSinceLastFrame = new Date();
