@@ -9,6 +9,23 @@ bugs:
 	
 */
 
+var accepted = false;
+
+alert("Please do NOT play this game when you are not supposed to.");
+if (confirm("Do you agree to this?")) {
+	alert("Thank you and enjoy!");
+	accepted = true;
+}
+else if (confirm("You must agree to play this game! This is your last chance to agree.")) {
+	alert("Thank you and enjoy!");
+	accepted = true;
+} else {
+	alert("If you wish to play, please accept!");
+	accepted = false;
+}
+
+if (accepted) {
+
 document.write("<title>Soldier Tycoon</title>");
 document.write("<canvas id='canvas' width='1347' height='587' style='border:2px solid black'></canvas>");
 document.write("<img style=\"visibility:hidden;\" src=\"pictures/soldier.png\" alt=\"Image result for soldier clipart top view\" id=\"soldierPicture\" width = \"25\" hight=\"16.4855072\"/>");
@@ -1238,3 +1255,10 @@ function draw() {
 }
 
 draw();
+
+} else {
+
+document.write("<h1>If you wish to play please accept!</h1>");
+document.write("<button onClick='location.reload()'>Click here to reload</button>");
+
+}
