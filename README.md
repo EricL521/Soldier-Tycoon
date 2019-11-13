@@ -5,4 +5,4 @@ We are proud to announce that we are working on a Unity version of Soldier Tycoo
 - Soldier Dropdown Menu added
 
 # Bug Tracker
-- Game sometimes crashes when a raider kills many workers and then the soldier kills the raider
+- Game sometimes crashes when a raider kills many workers and then the soldier kills the raider (remember to have a healthy ratio of soldiers to workers)
