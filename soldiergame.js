@@ -14,6 +14,7 @@ document.write("<title>Soldier Tycoon</title>");
 document.write("<canvas id='canvas' width='1347' height='587' style='border:2px solid black'></canvas>");
 document.write("<img style=\"visibility:hidden;\" src=\"pictures/soldier.png\" alt=\"Image result for soldier clipart top view\" id=\"soldierPicture\" width = \"25\" hight=\"16.4855072\"/>");
 document.write("<img style=\"visibility:hidden;\" src=\"pictures/miner.png\" alt=\"Image result for soldier clipart top view\" id=\"minerPicture\" width = \"15\" hight=\"15.652173913\"/>");
+
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var raidTimer = new Date();
@@ -90,6 +91,8 @@ var betAmount = 0;
 var autoBuyDead = false;
 var decreaseI = false;
 
+var soldierMenu = false;
+
 document.addEventListener("keydown", function(event) {
 	if (event.key + "" === "b") {
 		betAmount = gold + 1;
@@ -149,12 +152,20 @@ canvas.addEventListener("mousemove", function(e) {
 	mouseY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop - canvas.offsetTop - 2;
 
 	if (!lost) {
+		if (mouseX > 10 && mouseX < 135 && mouseY > 70 && mouseY < 125) {
+			soldierMenu = true;
+		}
+		else if (!(mouseX > 5 && mouseX < 185 && mouseY > 57 && mouseY < 225)) {
+			soldierMenu = false;
+		}
+		
 		if ((mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100 && !pauseButtonDisabled) ||
-			(mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125 && gold >= soldierCost && soldiers.length + miners.length + 1 <= maxPeople) ||
+			(mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125) || 
+			(soldierMenu && mouseX > 10 && mouseX < 130 && mouseY > 160 && mouseY < 210 && gold >= soldierCost && soldiers.length + miners.length + 1 <= maxPeople) || 
+			(soldierMenu && mouseX > 140 && mouseX < 170 && mouseY > 170 && mouseY < 200) ||
 			(mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125 && gold >= minerCost && soldiers.length + miners.length + 1 <= maxPeople) ||
 			(mouseX > 390 && mouseX < 510 && mouseY > 75 && mouseY < 125 && gold >= castleUpgradeCost) ||
 			(mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125 && gold >= minerUpgradeCost) ||
-			(mouseX > 810 && mouseX < 930 && mouseY > 75 && mouseY < 125 && gold >= soldierUpgradeCost) ||
 			(mouseX > 1020 && mouseX < 1140 && mouseY > 75 && mouseY < 125 && gold >= outpostCost) ||
 			(mouseX > 1190 && mouseX < 1240 && mouseY > 75 && mouseY < 125) ||
 			(mouseX > canvas.width - 30 && mouseX < canvas.width - 10 && mouseY < 30 && mouseY > 5)) {
@@ -216,7 +227,7 @@ document.onmouseup = function() {
 			raidTimerMillis = new Date().getTime() - raidTimer.getTime();
 		}
 
-		if (mouseX > 10 && mouseX < 130 && mouseY > 75 && mouseY < 125) {
+		if (soldierMenu && mouseX > 10 && mouseX < 130 && mouseY > 160 && mouseY < 210) {
 			if (gold >= soldierCost && soldiers.length + miners.length + 1 <= maxPeople) {
 				gold -= soldierCost;
 				var x_temp = Math.random() / 2;
@@ -295,7 +306,7 @@ document.onmouseup = function() {
 			}
 		}
 
-		if (mouseX > 810 && mouseX < 930 && mouseY > 75 && mouseY < 125) {
+		if (soldierMenu && mouseX > 140 && mouseX < 170 && mouseY > 170 && mouseY < 200) {
 			if (gold >= soldierUpgradeCost) {
 				minSoldierDamage += 10;
 				soldierHealth += 10;
@@ -466,13 +477,13 @@ function moveSoldier(i) {
 	ctx.arc(soldiers[i].x, soldiers[i].y, soldiers[i].radius, 0, 2 * Math.PI);
 	ctx.fillStyle = "green";
 	ctx.fill();
-
+	
 	ctx.save();
 	ctx.translate(soldiers[i].x, soldiers[i].y);
 	ctx.rotate(soldiers[i].rotation * Math.PI / 180);
 	ctx.drawImage(document.getElementById("soldierPicture"), -1.5 * soldiers[i].radius, -2 * soldiers[i].radius, document.getElementById("soldierPicture").width, document.getElementById("soldierPicture").height);
 	ctx.restore();
-
+	
 	soldiers[i].timeSinceLastFrame = new Date() - soldiers[i].timeSinceLastFrame;
 
 	if (play) {
@@ -623,18 +634,18 @@ function moveSoldier(i) {
 	}
 }
 
-function moveminer(i) {
+function moveMiner(i) {
 	ctx.beginPath();
 	ctx.arc(miners[i].x, miners[i].y, miners[i].radius, 0, 2 * Math.PI);
 	ctx.fillStyle = "blue";
 	ctx.fill();
-
+	
 	ctx.save();
 	ctx.translate(miners[i].x, miners[i].y);
 	ctx.rotate((miners[i].rotation * Math.PI / 180));
 	ctx.drawImage(document.getElementById("minerPicture"), -1.5 * miners[i].radius, -1 * miners[i].radius, document.getElementById("minerPicture").width, document.getElementById("minerPicture").height);
 	ctx.restore();
-
+	
 	miners[i].timeSinceLastFrame = new Date() - miners[i].timeSinceLastFrame;
 
 	if (play) {
@@ -886,10 +897,42 @@ function startRaid() {
 }
 
 function topBar() {
-
 	ctx.fillStyle = "black";
 	ctx.fillRect(0, 148, canvas.width, 2);
-
+	
+	if (soldierMenu) {
+		ctx.fillStyle = "black";
+		ctx.beginPath();
+		ctx.rect(5, 57, 180, 168);
+		ctx.stroke();
+		ctx.fillStyle = "white";
+		ctx.fillRect(6, 58, 178, 166);
+		
+		ctx.fillStyle = "green";
+		ctx.fillRect(10, 160, 120, 50);
+		ctx.fillStyle = "black";
+		ctx.font = "12px Arial";
+		ctx.fillText("Hire Normal Soldier - " + soldierCost, 10, 155);
+		ctx.font = "12px Arial";
+		if (soldiers.length === 1) {
+			ctx.fillText("You have " + soldiers.length + " normal soldiers", 10, 220);
+		} else {
+			ctx.fillText("You have " + soldiers.length + " normal soldiers", 10, 220);
+		}
+		
+		ctx.fillStyle = "grey";
+		ctx.fillRect(140, 170, 30, 30);
+		
+		ctx.fillStyle = "black";
+		ctx.font = "30px Arial";
+		ctx.fillText("\u2191", 147, 193);
+		
+		ctx.font = "12px Arial";
+		ctx.fillText("" + soldierUpgradeCost, 140, 167);
+	}
+	
+	ctx.fillStyle = "black";
+	
 	ctx.font = "15px Arial";
 	ctx.fillText("Soldier Tycoon", 10, 20);
 	if (sandbox) {
@@ -905,7 +948,7 @@ function topBar() {
 	ctx.fillRect(10, 75, 120, 50);
 	ctx.fillStyle = "black";
 	ctx.font = "12px Arial";
-	ctx.fillText("Hire Soldier for " + soldierCost + " gold.", 10, 70);
+	ctx.fillText("Hire Soldiers", 10, 70);
 	ctx.font = "12px Arial";
 	if (soldiers.length === 1) {
 		ctx.fillText("You have " + soldiers.length + " soldier", 10, 135);
@@ -936,12 +979,6 @@ function topBar() {
 	ctx.fillStyle = "black";
 	ctx.font = "12px Arial";
 	ctx.fillText("Upgrade your miners for " + minerUpgradeCost + " gold.", 600, 70);
-
-	ctx.fillStyle = "green";
-	ctx.fillRect(810, 75, 120, 50);
-	ctx.fillStyle = "black";
-	ctx.font = "12px Arial";
-	ctx.fillText("Upgrade your soldiers for " + soldierUpgradeCost + " gold.", 810, 70);
 
 	ctx.fillStyle = "grey";
 	ctx.fillRect(1020, 75, 120, 50);
@@ -1058,7 +1095,7 @@ function draw() {
 
 		for (var i = 0; i < miners.length; i++) {
 			decreaseI = false;
-			moveminer(i);
+			moveMiner(i);
 
 			if (decreaseI) {
 				i -= 1;
@@ -1100,9 +1137,9 @@ function draw() {
 			outposts[outpostPlacing].x = mouseX;
 			outposts[outpostPlacing].y = mouseY;
 		}
-
+		
 		drawBackground();
-
+		
 		topBar();
 
 	} else {
