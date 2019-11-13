@@ -94,7 +94,7 @@ var fps = 0;
 var castleUpgradeCost = 25000;
 var maxPeople = 50;
 var sandbox = false;
-alert("Sandbox mode can be turned on after the first round.");
+alert("Sandbox mode can be turned on after your first game.");
 var minerUpgradeCost = 5000;
 var soldierUpgradeCost = 7500;
 var timePerGold = 100;
@@ -465,9 +465,12 @@ document.onmouseup = function() {
 			maxPeople = 50;
 			lost = false;
 			sandbox = false;
-			if (confirm("Do you want to turn on sandbox mode?")) {
+			if (confirm("Do you want to turn on sandbox mode?") && confirm("Sandbox mode may crash the game and/or lower your fps. Are you sure?")) {
 				gold = Infinity;
 				sandbox = true;
+				alert("Sandbox mode ON");
+			} else {
+				alert("Sandbox mode OFF");
 			}
 		}
 	}
