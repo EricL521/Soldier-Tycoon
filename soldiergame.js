@@ -905,8 +905,8 @@ function topBar() {
 		ctx.beginPath();
 		ctx.rect(5, 57, 180, 168);
 		ctx.stroke();
-		ctx.fillStyle = "white";
-		ctx.fillRect(6, 58, 178, 166);
+		
+		ctx.clearRect(6, 58, 178, 166);
 		
 		ctx.fillStyle = "green";
 		ctx.fillRect(10, 160, 120, 50);
