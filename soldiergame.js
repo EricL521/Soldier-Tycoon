@@ -6,8 +6,7 @@ plans:
 
 /*
 bugs:
-	- Game crashes sometimes (probably something to do with raiders)
-	I think crashes happen when it takes too long to kill the raiders
+	
 */
 
 document.write("<title>Soldier Tycoon</title>");
@@ -615,18 +614,19 @@ function moveSoldier(i) {
 
 				soldiers[i].rotation = getRotation(soldiers[i].x_vel, soldiers[i].y_vel);
 			}
+			
+			if (!soldiers[i].paid && paySeconds === 1) {
+				if (gold >= 50) {
+					gold -= 50;
+					soldiers[i].paid = true;
+				} else {
+					soldiers.splice(i, 1);
+				}
+			} else if (soldiers[i].paid && paySeconds > 1) {
+				soldiers[i].paid = false;
+			}
 		}
 
-		if (!soldiers[i].paid && paySeconds === 1) {
-			if (gold >= 50) {
-				gold -= 50;
-				soldiers[i].paid = true;
-			} else {
-				soldiers.splice(i, 1);
-			}
-		} else if (soldiers[i].paid && paySeconds > 1) {
-			soldiers[i].paid = false;
-		}
 	}
 
 	if (i < soldiers.length) {
