@@ -177,7 +177,7 @@ canvas.addEventListener("mousemove", function(e) {
 		
 		if ((mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100 && !pauseButtonDisabled) || 
 			(soldierMenu && mouseX > 10 && mouseX < 130 && mouseY > 160 && mouseY < 210 && gold >= soldierCost && soldiers.length + miners.length + 1 <= maxPeople) || 
-			(soldierMenu && mouseX > 140 && mouseX < 170 && mouseY > 170 && mouseY < 200) ||
+			(soldierMenu && mouseX > 140 && mouseX < 170 && mouseY > 170 && mouseY < 200 && gold >= soldierUpgradeCost) ||
 			(mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125 && gold >= minerCost && soldiers.length + miners.length + 1 <= maxPeople) ||
 			(mouseX > 390 && mouseX < 510 && mouseY > 75 && mouseY < 125 && gold >= castleUpgradeCost) ||
 			(mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125 && gold >= minerUpgradeCost) ||
