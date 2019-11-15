@@ -28,7 +28,7 @@ if (accepted) {
 
 document.write("<title>Soldier Tycoon</title>");
 document.write("<canvas id='canvas' width='1347' height='587' style='border:2px solid black'></canvas>");
-document.write("<img style=\"visibility:hidden;\" src=\"pictures/soldier.png\" alt=\"Image result for soldier image\" id=\"soldierPicture\" width = \"25\" hight=\"16.4855072\"/>");
+/*document.write("<img style=\"visibility:hidden;\" src=\"pictures/soldier.png\" alt=\"Image result for soldier image\" id=\"soldierPicture\" width = \"25\" hight=\"16.4855072\"/>");*/
 document.write("<img style=\"visibility:hidden;\" src=\"pictures/miner.png\" alt=\"Image result for worker image\" id=\"minerPicture\" width = \"15\" hight=\"15.652173913\"/>");
 
 var canvas = document.getElementById('canvas');
@@ -503,13 +503,13 @@ function moveSoldier(i) {
 	ctx.arc(soldiers[i].x, soldiers[i].y, soldiers[i].radius, 0, 2 * Math.PI);
 	ctx.fillStyle = "green";
 	ctx.fill();
-	
+	/*
 	ctx.save();
 	ctx.translate(soldiers[i].x, soldiers[i].y);
 	ctx.rotate(soldiers[i].rotation * Math.PI / 180);
 	ctx.drawImage(document.getElementById("soldierPicture"), -1.5 * soldiers[i].radius, -2 * soldiers[i].radius, document.getElementById("soldierPicture").width, document.getElementById("soldierPicture").height);
 	ctx.restore();
-	
+	*/
 	soldiers[i].timeSinceLastFrame = new Date() - soldiers[i].timeSinceLastFrame;
 
 	if (play) {
