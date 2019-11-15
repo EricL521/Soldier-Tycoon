@@ -108,7 +108,8 @@ var autoBuyDead = false;
 var decreaseI = false;
 
 var soldierMenu = false;
-
+var workerMenu = false;
+	
 document.addEventListener("keydown", function(event) {
 	if (event.key + "" === "b") {
 		betAmount = gold + 1;
@@ -175,12 +176,19 @@ canvas.addEventListener("mousemove", function(e) {
 			soldierMenu = false;
 		}
 		
+		if (mouseX > 200 && mouseX < 320 && mouseY > 70 && mouseY < 125) {
+			workerMenu = true;
+		}
+		else if (!(mouseX > 195 && mouseX < 375 && mouseY > 57 && mouseY < 225)) {
+			workerMenu = false;
+		}
+		
 		if ((mouseX > canvas.width - 60 && mouseX < canvas.width - 10 && mouseY > 50 && mouseY < 100 && !pauseButtonDisabled) || 
 			(soldierMenu && mouseX > 10 && mouseX < 130 && mouseY > 160 && mouseY < 210 && gold >= soldierCost && soldiers.length + miners.length + 1 <= maxPeople) || 
 			(soldierMenu && mouseX > 140 && mouseX < 170 && mouseY > 170 && mouseY < 200 && gold >= soldierUpgradeCost) ||
-			(mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125 && gold >= minerCost && soldiers.length + miners.length + 1 <= maxPeople) ||
+			(workerMenu && mouseX > 200 && mouseX < 320 && mouseY > 160 && mouseY < 210 && gold >= minerCost && soldiers.length + miners.length + 1 <= maxPeople) ||
+			(workerMenu && mouseX > 330 && mouseX < 360 && mouseY > 170 && mouseY < 200 && gold >= minerUpgradeCost) ||
 			(mouseX > 390 && mouseX < 510 && mouseY > 75 && mouseY < 125 && gold >= castleUpgradeCost) ||
-			(mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125 && gold >= minerUpgradeCost) ||
 			(mouseX > 1020 && mouseX < 1140 && mouseY > 75 && mouseY < 125 && gold >= outpostCost) ||
 			(mouseX > 1190 && mouseX < 1240 && mouseY > 75 && mouseY < 125) ||
 			(mouseX > canvas.width - 30 && mouseX < canvas.width - 10 && mouseY < 30 && mouseY > 5)) {
@@ -265,7 +273,7 @@ document.onmouseup = function() {
 			}
 		}
 
-		if (mouseX > 200 && mouseX < 320 && mouseY > 75 && mouseY < 125) {
+		if (workerMenu && mouseX > 200 && mouseX < 320 && mouseY > 160 && mouseY < 210) {
 			if (gold >= minerCost && soldiers.length + miners.length + 1 <= maxPeople) {
 				miners.push({
 					x: canvas.width / 2,
@@ -292,7 +300,7 @@ document.onmouseup = function() {
 			}
 		}
 
-		if (mouseX > 600 && mouseX < 720 && mouseY > 75 && mouseY < 125) {
+		if (workerMenu && mouseX > 330 && mouseX < 360 && mouseY > 170 && mouseY < 200) {
 			if (gold >= minerUpgradeCost) {
 				if (timePerGold / 1.05 > 15) {
 					timePerGold /= 1.05;
@@ -950,6 +958,37 @@ function topBar() {
 		ctx.fillText("" + soldierUpgradeCost, 140, 167);
 	}
 	
+	if (workerMenu) {
+		ctx.fillStyle = "black";
+		ctx.beginPath();
+		ctx.rect(195, 57, 180, 168);
+		ctx.stroke();
+		
+		ctx.clearRect(196, 58, 178, 166);
+		
+		ctx.fillStyle = "blue";
+		ctx.fillRect(200, 160, 120, 50);
+		ctx.fillStyle = "black";
+		ctx.font = "12px Arial";
+		ctx.fillText("Hire Miner - " + minerCost, 200, 155);
+		ctx.font = "12px Arial";
+		if (miners.length === 1) {
+			ctx.fillText("You have " + miners.length + " miners", 200, 220);
+		} else {
+			ctx.fillText("You have " + miners.length + " miners", 200, 220);
+		}
+		
+		ctx.fillStyle = "grey";
+		ctx.fillRect(330, 170, 30, 30);
+		
+		ctx.fillStyle = "black";
+		ctx.font = "30px Arial";
+		ctx.fillText("\u2191", 337, 193);
+		
+		ctx.font = "12px Arial";
+		ctx.fillText("" + minerUpgradeCost, 330, 167);
+	}
+	
 	ctx.fillStyle = "black";
 	
 	ctx.font = "15px Arial";
@@ -979,12 +1018,12 @@ function topBar() {
 	ctx.fillRect(200, 75, 120, 50);
 	ctx.fillStyle = "black";
 	ctx.font = "12px Arial";
-	ctx.fillText("Hire Miner for " + minerCost + " gold.", 200, 70);
+	ctx.fillText("Hire Workers", 200, 70);
 	ctx.font = "12px Arial";
 	if (miners.length === 1) {
-		ctx.fillText("You have " + miners.length + " miner", 200, 135);
+		ctx.fillText("You have " + miners.length + " worker", 200, 135);
 	} else {
-		ctx.fillText("You have " + miners.length + " miners", 200, 135);
+		ctx.fillText("You have " + miners.length + " workers", 200, 135);
 	}
 
 	ctx.fillStyle = "grey";
@@ -992,12 +1031,6 @@ function topBar() {
 	ctx.fillStyle = "black";
 	ctx.font = "12px Arial";
 	ctx.fillText("Upgrade your castle for " + castleUpgradeCost + " gold.", 390, 70);
-
-	ctx.fillStyle = "blue";
-	ctx.fillRect(600, 75, 120, 50);
-	ctx.fillStyle = "black";
-	ctx.font = "12px Arial";
-	ctx.fillText("Upgrade your miners for " + minerUpgradeCost + " gold.", 600, 70);
 
 	ctx.fillStyle = "grey";
 	ctx.fillRect(1020, 75, 120, 50);
