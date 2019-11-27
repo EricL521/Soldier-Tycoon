@@ -210,7 +210,7 @@ if (getCookie("data") !== "") {
 	}
 	
 } else {
-	setCookie("data", JSON.stringify({gold: gold, soldiers: soldiers.length, miners: miners.length, 
+	setCookie("data", JSON.stringify({gold: gold, soldiers: soldiers.length, miners: miners.length,
 																		soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, 
 																		minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, 
 																	 	timerPerGold: timePerGold, castleGPS: castle.castleGPS, maxPeople: maxPeople, 
