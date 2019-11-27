@@ -109,7 +109,110 @@ var decreaseI = false;
 
 var soldierMenu = false;
 var workerMenu = false;
+
+function setCookie(name,value,days) {
+  var d = new Date();
+  d.setTime(d.getTime() + (days*24*60*60*1000));
+  var expires = "expires=" + d.toGMTString();
+  document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+if (getCookie("data") !== "") {
+	alert("Welcome Back!");
 	
+	var data = getCookie("data");
+	data = JSON.parse(data);
+	
+	gold = data.gold;
+	soldierUpgradeCost = data.soldierUpgradeCost;
+	soldierHealth = data.soldierHealth;
+	minSoldierDamage = data.minSoldierDamage;
+	minerUpgradeCost = data.minerUpgradeCost;
+	timePerGold = data.timePerGold;
+	castle.castleGPS = data.castleGPS;
+	maxPeople = data.maxPeople;
+	castleUpgradeCost = data.castleUpgradeCost;
+	
+	for (var i = 0; i < data.soldiers; i ++) {
+		var x_temp = Math.random() / 2;
+		var y_temp = Math.random() / 2;
+		soldiers.push({
+			x: castle.x,
+			y: castle.y,
+			radius: 5,
+			x_vel: x_temp,
+			y_vel: y_temp,
+			health: soldierHealth,
+			damage: Math.random() * 10 + minSoldierDamage,
+			timer: new Date(),
+			shootTime: Math.random() * 100 + 450,
+			timeSinceLastFrame: new Date(),
+			outpostNumber: -1,
+			paid: false,
+			rotation: getRotation(x_temp, y_temp)
+		});
+	}
+	
+	for (var i = 0; i < data.miners; i ++) {
+		miners.push({
+			x: canvas.width / 2,
+			y: (canvas.height + 150) / 2,
+			radius: 3,
+			x_vel: 0.3,
+			y_vel: 0.5,
+			health: 50,
+			goldTimer: new Date(),
+			timeSinceLastFrame: new Date(),
+			rotation: getRotation(0.3, 0.5)
+		});
+	}
+	
+	for (var i = 0; i < data.raiders; i ++) {
+		var x1 = 0;
+		if (Math.random() >= 0.5) {
+			x1 = Math.random() * (canvas.width / 2 - castle.scoutRange - 10) + 10;
+		} else {
+			x1 = canvas.width / 2 + (Math.random() * (canvas.width / 2 - castle.scoutRange - 10)) + castle.scoutRange - 10;
+		}
+		var y1 = (Math.random() * (canvas.height - 150 - 20) + 150 + 10);
+		raiders.push({
+			x: x1,
+			y: y1,
+			radius: 10,
+			x_vel: (castle.x - x1) / (Math.sqrt(Math.pow(castle.x - x1, 2) + Math.pow(castle.y - y1, 2), 2) / Math.sqrt(2, 2)),
+			y_vel: (castle.y - y1) / (Math.sqrt(Math.pow(castle.x - x1, 2) + Math.pow(castle.y - y1, 2), 2) / Math.sqrt(2, 2)),
+			health: 200,
+			timer: new Date(),
+			shootTime: Math.random() * 100 + 450,
+			damage: Math.random() * 90 + 10,
+			timeSinceLastFrame: new Date()
+		});
+	}
+	
+} else {
+	setCookie("data", JSON.stringify({gold: gold, soldiers: soldiers.length, miners: miners.length, 
+																		soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, 
+																		minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, 
+																	 	timerPerGold: timePerGold, castleGPS: castle.castleGPS, maxPeople: maxPeople, 
+																		castleUpgradeCost: castleUpgradeCost, raiders: raiders.length}));
+}
+
 document.addEventListener("keydown", function(event) {
 	if (event.key + "" === "b") {
 		betAmount = gold + 1;
@@ -1095,7 +1198,12 @@ function drawBackground() {
 }
 
 function draw() {
-
+	setCookie("data", JSON.stringify({gold: gold, soldiers: soldiers.length, miners: miners.length, 
+																		soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, 
+																		minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, 
+																	 	timerPerGold: timePerGold, castleGPS: castle.castleGPS, maxPeople: maxPeople, 
+																		castleUpgradeCost: castleUpgradeCost, raiders: raiders.length}));
+	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	if (!lost) {
