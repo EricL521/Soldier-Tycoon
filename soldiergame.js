@@ -149,6 +149,10 @@ if (getCookie("data") !== "") {
 	maxPeople = data.maxPeople;
 	castleUpgradeCost = data.castleUpgradeCost;
 	
+	soldiers = [];
+	miners = [];
+	raiders = [];
+	
 	for (var i = 0; i < data.soldiers; i ++) {
 		var x_temp = Math.random() / 2;
 		var y_temp = Math.random() / 2;
