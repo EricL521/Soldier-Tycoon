@@ -136,6 +136,8 @@ function getCookie(cname) {
 if (getCookie("data") !== "") {
 	alert("Welcome Back!");
 	
+	firstTime = false;
+	
 	var data = getCookie("data");
 	data = JSON.parse(data);
 	
@@ -148,6 +150,11 @@ if (getCookie("data") !== "") {
 	castle.castleGPS = data.castleGPS;
 	maxPeople = data.maxPeople;
 	castleUpgradeCost = data.castleUpgradeCost;
+	firstTime = data.firstTime;
+	firstRaid = data.firstRaid;
+	firstMaxPeople = data.firstMaxPeople;
+	firstOutpost = data.firstOutpost;
+	lost = data.lost;
 	
 	soldiers = [];
 	miners = [];
@@ -210,7 +217,7 @@ if (getCookie("data") !== "") {
 	}
 	
 } else {
-	setCookie("data", JSON.stringify({gold: gold, soldiers: soldiers.length, miners: miners.length, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth,minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, timerPerGold: timePerGold, castleGPS: castle.castleGPS, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders.length}), 14);
+	setCookie("data", JSON.stringify({gold: gold, soldiers: soldiers.length, miners: miners.length, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timerPerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders.length, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost}), 14);
 }
 
 document.addEventListener("keydown", function(event) {
@@ -1198,7 +1205,7 @@ function drawBackground() {
 }
 
 function draw() {
-	setCookie("data", JSON.stringify({gold: gold, soldiers: soldiers.length, miners: miners.length, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth,minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, timerPerGold: timePerGold, castleGPS: castle.castleGPS, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders.length}), 14);
+	setCookie("data", JSON.stringify({gold: gold, soldiers: soldiers.length, miners: miners.length, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timerPerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders.length, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost}), 14);
 	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
