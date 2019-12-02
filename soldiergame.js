@@ -94,7 +94,6 @@ var fps = 0;
 var castleUpgradeCost = 25000;
 var maxPeople = 50;
 var sandbox = false;
-alert("Sandbox mode can be turned on after your first game.");
 var minerUpgradeCost = 5000;
 var soldierUpgradeCost = 7500;
 var timePerGold = 100;
