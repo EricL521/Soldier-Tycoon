@@ -155,6 +155,7 @@ if (getCookie("data") !== "") {
 	firstOutpost = data.firstOutpost;
 	lost = data.lost;
 	paySeconds = data.paySeconds;
+	sandbox = data.sandbox;
 	
 	soldiers = [];
 	miners = [];
@@ -217,7 +218,7 @@ if (getCookie("data") !== "") {
 	}
 	
 } else {
-	setCookie("data", JSON.stringify({gold: gold, soldiers: soldiers.length, miners: miners.length, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders.length, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}), 14);
+	setCookie("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers.length, miners: miners.length, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders.length, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}), 14);
 }
 
 document.addEventListener("keydown", function(event) {
@@ -1205,7 +1206,7 @@ function drawBackground() {
 }
 
 function draw() {
-	setCookie("data", JSON.stringify({gold: gold, soldiers: soldiers.length, miners: miners.length, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders.length, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}), 14);
+	setCookie("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers.length, miners: miners.length, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders.length, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}), 14);
 	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
