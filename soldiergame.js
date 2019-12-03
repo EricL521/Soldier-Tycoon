@@ -157,68 +157,12 @@ if (getCookie("data") !== "") {
 	paySeconds = data.paySeconds;
 	sandbox = data.sandbox;
 	
-	soldiers = [];
-	miners = [];
-	raiders = [];
-	
-	for (var i = 0; i < data.soldiers; i ++) {
-		var x_temp = Math.random() / 2;
-		var y_temp = Math.random() / 2;
-		soldiers.push({
-			x: castle.x,
-			y: castle.y,
-			radius: 5,
-			x_vel: x_temp,
-			y_vel: y_temp,
-			health: soldierHealth,
-			damage: Math.random() * 10 + minSoldierDamage,
-			timer: new Date(),
-			shootTime: Math.random() * 100 + 450,
-			timeSinceLastFrame: new Date(),
-			outpostNumber: -1,
-			paid: false,
-			rotation: getRotation(x_temp, y_temp)
-		});
-	}
-	
-	for (var i = 0; i < data.miners; i ++) {
-		miners.push({
-			x: canvas.width / 2,
-			y: (canvas.height + 150) / 2,
-			radius: 3,
-			x_vel: 0.3,
-			y_vel: 0.5,
-			health: 50,
-			goldTimer: new Date(),
-			timeSinceLastFrame: new Date(),
-			rotation: getRotation(0.3, 0.5)
-		});
-	}
-	
-	for (var i = 0; i < data.raiders; i ++) {
-		var x1 = 0;
-		if (Math.random() >= 0.5) {
-			x1 = Math.random() * (canvas.width / 2 - castle.scoutRange - 10) + 10;
-		} else {
-			x1 = canvas.width / 2 + (Math.random() * (canvas.width / 2 - castle.scoutRange - 10)) + castle.scoutRange - 10;
-		}
-		var y1 = (Math.random() * (canvas.height - 150 - 20) + 150 + 10);
-		raiders.push({
-			x: x1,
-			y: y1,
-			radius: 10,
-			x_vel: (castle.x - x1) / (Math.sqrt(Math.pow(castle.x - x1, 2) + Math.pow(castle.y - y1, 2), 2) / Math.sqrt(2, 2)),
-			y_vel: (castle.y - y1) / (Math.sqrt(Math.pow(castle.x - x1, 2) + Math.pow(castle.y - y1, 2), 2) / Math.sqrt(2, 2)),
-			health: 200,
-			timer: new Date(),
-			shootTime: Math.random() * 100 + 450,
-			damage: Math.random() * 90 + 10,
-			timeSinceLastFrame: new Date()
-		});
-	}
+	soldiers = data.soldiers;
+	miners = data.miners;
+	raiders = data.raiders;
 	
 } else {
-	setCookie("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers.length, miners: miners.length, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders.length, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}), 14);
+	setCookie("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}), 14);
 }
 
 document.addEventListener("keydown", function(event) {
@@ -1206,7 +1150,7 @@ function drawBackground() {
 }
 
 function draw() {
-	setCookie("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers.length, miners: miners.length, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders.length, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}), 14);
+	setCookie("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}), 14);
 	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
