@@ -108,36 +108,10 @@ var decreaseI = false;
 
 var soldierMenu = false;
 var workerMenu = false;
-
-function setCookie(name,value,days) {
-  var d = new Date();
-  d.setTime(d.getTime() + (days*24*60*60*1000));
-  var expires = "expires=" + d.toGMTString();
-  document.cookie = name + "=" + value + ";" + expires + ";path=/";
-}
-
-function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for(var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-
-if (getCookie("data") !== "") {
+if (localStorage.getItem("data")) {
 	alert("Welcome Back!");
 	
-	firstTime = false;
-	
-	var data = getCookie("data");
+	var data = localStorage.getItem("data");
 	data = JSON.parse(data);
 	
 	gold = data.gold;
@@ -177,7 +151,7 @@ if (getCookie("data") !== "") {
 	}
 	
 } else {
-	setCookie("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}), 14);
+	localStorage.setItem("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}));
 }
 
 document.addEventListener("keydown", function(event) {
@@ -378,7 +352,7 @@ document.onmouseup = function() {
 					minerUpgradeCost += Math.round(minerUpgradeCost / 15);
 				} else {
 					timePerGold = 15;
-					alert("Your workers are maxed!");
+					alert("Your miners are maxed!");
 
 					for (var i = 0; i < soldiers.length; i++) {
 						soldiers[i].timeSinceLastFrame = new Date();
@@ -1165,7 +1139,7 @@ function drawBackground() {
 }
 
 function draw() {
-	setCookie("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}), 14);
+	localStorage.setItem("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}));
 	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
