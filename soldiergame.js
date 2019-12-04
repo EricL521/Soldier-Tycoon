@@ -161,6 +161,21 @@ if (getCookie("data") !== "") {
 	miners = data.miners;
 	raiders = data.raiders;
 	
+	for (var i = 0; i < soldiers.length; i ++) {
+		soldiers[i].timer = new Date();
+		soldiers[i].timeSinceLastFrame = new Date();
+	}
+	
+	for (var i = 0; i < raiders.length; i ++) {
+		raiders[i].timer = new Date();
+		raiders[i].timeSinceLastFrame = new Date();
+	}
+	
+	for (var i = 0; i < miners.length; i ++) {
+		miners[i].goldTimer = new Date();
+		miners[i].timeSinceLastFrame = new Date();
+	}
+	
 } else {
 	setCookie("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}), 14);
 }
