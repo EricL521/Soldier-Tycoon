@@ -378,7 +378,7 @@ document.onmouseup = function() {
 					minerUpgradeCost += Math.round(minerUpgradeCost / 15);
 				} else {
 					timePerGold = 15;
-					alert("Your Workers are maxed!");
+					alert("Your workers are maxed!");
 
 					for (var i = 0; i < soldiers.length; i++) {
 						soldiers[i].timeSinceLastFrame = new Date();
