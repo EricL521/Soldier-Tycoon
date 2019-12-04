@@ -204,6 +204,28 @@ document.addEventListener("keydown", function(event) {
 			raiders[i].timeSinceLastFrame = new Date();
 		}
 	}
+	
+	if (event.key + "" === "s") {
+		localStorage.setItem("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}));
+		
+		alert("Game Saved");
+		
+		for (var i = 0; i < soldiers.length; i++) {
+			soldiers[i].timeSinceLastFrame = new Date();
+		}
+
+		for (var i = 0; i < bullets.length; i++) {
+			bullets[i].timeSinceLastFrame = new Date();
+		}
+
+		for (var i = 0; i < miners.length; i++) {
+			miners[i].timeSinceLastFrame = new Date();
+		}
+
+		for (var i = 0; i < raiders.length; i++) {
+			raiders[i].timeSinceLastFrame = new Date();
+		}
+	}
 });
 
 canvas.addEventListener('contextmenu', event => event.preventDefault());
@@ -269,7 +291,7 @@ document.onmouseup = function() {
 		}
 
 		if (mouseX > canvas.width - 30 && mouseX < canvas.width - 10 && mouseY < 30 && mouseY > 5) {
-			alert("\u2022 Try to stay alive as long as possible against the raiders! \n\u2022 Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 50 gold per minute. When there is not enough gold, soldiers will leave. \n\u2022 Miners produce gold. You will need them to buy units/upgrades. \n\u2022 Outposts can have a maximum of 4 soldiers. \n\n\u2022 Need money in a pinch? Press \"b\" to bet gold for a chance to win!.");
+			alert("\u2022 Try to stay alive as long as possible against the raiders! \n\u2022 Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 50 gold per minute. When there is not enough gold, soldiers will leave. \n\u2022 Miners produce gold. You will need them to buy units/upgrades. \n\u2022 Outposts can have a maximum of 4 soldiers. \n\n\u2022 Need money in a pinch? Press \"b\" to bet gold for a chance to win! \n\u2022 Need to leave? Be sure to press S to save!");
 
 			for (var i = 0; i < soldiers.length; i++) {
 				soldiers[i].timeSinceLastFrame = new Date();
@@ -1256,6 +1278,7 @@ function draw() {
 		alert("Soldiers are troops used to protect your castle. They shoot bullets at raiders. Each soldier gets paid 50 gold per minute. When there is not enough gold, soldiers will leave.");
 		alert("Miners produce gold. You will need them to buy units/upgrades.");
 		alert("Need gold? Press B to bet!");
+		alert("Need to leave? Be sure to press S to save!");
 
 		for (var i = 0; i < soldiers.length; i++) {
 			soldiers[i].timeSinceLastFrame = new Date();
