@@ -5,4 +5,4 @@ We are proud to announce that we are working on a Unity version of sodlier yrttc
 - Added cookies where it saves your progress for up to 2 weeks of inactivity when you close the game.
 
 # Bug Tracker
-Cookies do not draw soldiers to the screen upon relogging.
+Cookies do not draw soldiers to the screen upon relogging, and raiders and soldiers do not shoot upon relogging.
