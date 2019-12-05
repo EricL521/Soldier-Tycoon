@@ -110,6 +110,7 @@ var soldierMenu = false;
 var workerMenu = false;
 if (localStorage.getItem("data")) {
 	alert("Welcome Back!");
+	alert("Remember to press S to save!");
 	
 	var data = localStorage.getItem("data");
 	data = JSON.parse(data);
