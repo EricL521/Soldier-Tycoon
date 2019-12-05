@@ -6,5 +6,5 @@ We now use cookies to save your progress in Soldier Tycoon! The game is still a 
 
 # Bug Tracker
 - Outposts don't save.
-- Castle size does not save
-- When you expand your castle while raiders are on your walls, they'll move into your castle.
+- Castle size does not save.
+- When you expand your castle while raiders are on your walls, they'll move into your castle. ![](https://i.pinimg.com/originals/9d/ac/9e/9dac9e668d15dbb98e4d92eeac18554e.jpg)
