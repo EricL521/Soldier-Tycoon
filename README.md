@@ -5,6 +5,6 @@ We now use cookies to save your progress in Soldier Tycoon! The game is still a 
 - Added cookies where it saves your progress for up to 2 weeks of inactivity when you close the game.
 
 # Bug Tracker
-Outposts don't save.
-Castle size does not save
-When you expand your castle while raiders are on your walls, they'll move into your castle.
+-Outposts don't save.
+-Castle size does not save
+-When you expand your castle while raiders are on your walls, they'll move into your castle.
