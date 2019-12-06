@@ -131,6 +131,8 @@ if (localStorage.getItem("data")) {
 	lost = data.lost;
 	paySeconds = data.paySeconds;
 	sandbox = data.sandbox;
+	outposts = data.outposts;
+	outpostCost = data.outpostCost;
 	
 	soldiers = data.soldiers;
 	miners = data.miners;
@@ -152,7 +154,7 @@ if (localStorage.getItem("data")) {
 	}
 	
 } else {
-	localStorage.setItem("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}));
+	localStorage.setItem("data", JSON.stringify({outpostCost: outpostCost, outposts: outposts, sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}));
 }
 
 document.addEventListener("keydown", function(event) {
@@ -1162,7 +1164,7 @@ function drawBackground() {
 }
 
 function draw() {
-	localStorage.setItem("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}));
+	localStorage.setItem("data", JSON.stringify({outpostCost: outpostCost, outposts: outposts, sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}));
 	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
