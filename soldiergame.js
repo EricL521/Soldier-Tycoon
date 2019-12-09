@@ -8,7 +8,7 @@ plans:
 bugs:
 	
 */
-
+//This code is for all the alerts in the beginning
 var accepted = false;
 
 alert("Please do NOT play this game when you are not supposed to.");
@@ -23,14 +23,15 @@ else if (confirm("You must agree to play this game! This is your last chance to 
 	alert("If you wish to play, please accept!");
 	accepted = false;
 }
-
+//This code is for drawing all of the things at the beginning of the game
 if (accepted) {
-
+	
 document.write("<title>Soldier Tycoon</title>");
+//All of the resources used in the game that come from other places
 document.write("<canvas id='canvas' width='1347' height='587' style='border:2px solid black'></canvas>");
 /*document.write("<img style=\"visibility:hidden;\" src=\"pictures/soldier.png\" alt=\"Image result for soldier image\" id=\"soldierPicture\" width = \"25\" hight=\"16.4855072\"/>");*/
 document.write("<img style=\"visibility:hidden;\" src=\"pictures/miner.png\" alt=\"Image result for worker image\" id=\"minerPicture\" width = \"15\" hight=\"15.652173913\"/>");
-
+//Setting up JS Canvas, and some initial vars
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var raidTimer = new Date();
@@ -38,6 +39,7 @@ var raidSeconds = 15;
 var raidTimerMillis = 0;
 var minSoldierDamage = 40;
 var soldierHealth = 100;
+// Soldier class
 var soldiers = [{
 	x: canvas.width / 2,
 	y: (canvas.height + 150) / 2,
@@ -67,8 +69,10 @@ var miners = [{
 	timeSinceLastFrame: new Date(),
 	rotation: getRotation(0.3, 0.5)
 }];
+//Arrays for bullets and raiders
 var bullets = [];
 var raiders = [];
+//Setting up the castle
 var castle = {
 	x: canvas.width / 2,
 	y: (canvas.height + 150) / 2,
@@ -76,6 +80,7 @@ var castle = {
 	scoutRange: 100,
 	castleGPS: 15
 };
+//Setting up some other initial variables
 var outposts = [];
 var outpostCost = 100000;
 var outpostPlacing = -1;
@@ -108,6 +113,7 @@ var decreaseI = false;
 
 var soldierMenu = false;
 var workerMenu = false;
+//Retrieving saved data and saving code, as well as making data able to be in a string
 if (localStorage.getItem("data")) {
 	alert("Welcome Back!");
 	alert("Remember to press S to save!");
@@ -156,7 +162,7 @@ if (localStorage.getItem("data")) {
 } else {
 	localStorage.setItem("data", JSON.stringify({outpostCost: outpostCost, outposts: outposts, sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castle: castle, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}));
 }
-
+// Code for bets
 document.addEventListener("keydown", function(event) {
 	if (event.key + "" === "b") {
 		betAmount = gold + 1;
@@ -190,6 +196,7 @@ document.addEventListener("keydown", function(event) {
 				gold -= betAmount;
 				alert("Sorry! You lost " + betAmount + " gold!");
 			}
+//Calculations for failsafe in case of frame drop
 		}
 		for (var i = 0; i < soldiers.length; i++) {
 			soldiers[i].timeSinceLastFrame = new Date();
@@ -207,7 +214,7 @@ document.addEventListener("keydown", function(event) {
 			raiders[i].timeSinceLastFrame = new Date();
 		}
 	}
-	
+//COde that listens to saves
 	if (event.key + "" === "s") {
 		localStorage.setItem("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}));
 		
