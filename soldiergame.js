@@ -258,15 +258,16 @@ canvas.addEventListener("mousemove", function(e) {
 			(workerMenu && mouseX > 200 && mouseX < 320 && mouseY > 160 && mouseY < 210 && gold >= minerCost && soldiers.length + miners.length + 1 <= maxPeople) ||
 			(workerMenu && mouseX > 330 && mouseX < 360 && mouseY > 170 && mouseY < 200 && gold >= minerUpgradeCost) ||
 			(mouseX > 390 && mouseX < 510 && mouseY > 75 && mouseY < 125 && gold >= castleUpgradeCost) ||
-			(mouseX > 1020 && mouseX < 1140 && mouseY > 75 && mouseY < 125 && gold >= outpostCost) ||
-			(mouseX > 1190 && mouseX < 1240 && mouseY > 75 && mouseY < 125) ||
+			(mouseX > 920 && mouseX < 1040 && mouseY > 75 && mouseY < 125 && gold >= outpostCost) ||
+			(mouseX > 1090 && mouseX < 1140 && mouseY > 75 && mouseY < 125) || 
+		    	(mouseX > 1190 && mouseX < 1240 && mouseY > 75 && mouseY < 125) ||
 			(mouseX > canvas.width - 30 && mouseX < canvas.width - 10 && mouseY < 30 && mouseY > 5)) {
 			document.getElementById('canvas').style.cursor = "pointer";
 		} else {
 			var pointer = false;
 			for (var i = 0; i < outposts.length; i++) {
 				if (outposts[i].selected && ((mouseX > outposts[i].x + 5 && mouseX < outposts[i].x + 17 && mouseY < outposts[i].y + 25 && mouseY > outposts[i].y + 13) ||
-						(mouseX > outposts[i].x + 30 && mouseX < outposts[i].x + 42 && mouseY < outposts[i].y + 25 && mouseY > outposts[i].y + 13)) ||
+					(mouseX > outposts[i].x + 30 && mouseX < outposts[i].x + 42 && mouseY < outposts[i].y + 25 && mouseY > outposts[i].y + 13)) ||
 					(Math.sqrt(Math.pow(outposts[i].x - mouseX, 2) + Math.pow(outposts[i].y - mouseY, 2), 2) <= outposts[i].radius)) {
 					document.getElementById('canvas').style.cursor = "pointer";
 					pointer = true;
@@ -289,8 +290,14 @@ canvas.addEventListener("mousemove", function(e) {
 
 document.onmouseup = function() {
 	if (!lost) {
-		if (mouseX > 1190 && mouseX < 1240 && mouseY > 75 && mouseY < 125) {
+		if (mouseX > 1090 && mouseX < 1140 && mouseY > 75 && mouseY < 125) {
 			autoBuyDead = !autoBuyDead;
+		}
+		
+		if (mouseX > 1190 && mouseX < 1240 && mouseY > 75 && mouseY < 125) {
+			if (confirm("Are you sure you would like to surrender (resets your progress)?") && confirm("This is your last chance to turn back. Click ok to surrender (resets your progress).")) {
+				lost = true;
+			}
 		}
 
 		if (mouseX > canvas.width - 30 && mouseX < canvas.width - 10 && mouseY < 30 && mouseY > 5) {
@@ -412,7 +419,7 @@ document.onmouseup = function() {
 			}
 		}
 
-		if (outpostPlacing < 0 && mouseX > 1020 && mouseX < 1140 && mouseY > 75 && mouseY < 125) {
+		if (outpostPlacing < 0 && mouseX > 920 && mouseX < 1040 && mouseY > 75 && mouseY < 125) {
 			if (gold >= outpostCost) {
 				gold -= outpostCost;
 				outposts.push({
@@ -1102,22 +1109,31 @@ function topBar() {
 	ctx.fillText("Upgrade your castle for " + castleUpgradeCost + " gold.", 390, 70);
 
 	ctx.fillStyle = "grey";
-	ctx.fillRect(1020, 75, 120, 50);
+	ctx.fillRect(920, 75, 120, 50);
 	ctx.fillStyle = "black";
 	ctx.font = "12px Arial";
-	ctx.fillText("Buy an outpost for " + outpostCost + " gold.", 1020, 70);
+	ctx.fillText("Buy an outpost for " + outpostCost + " gold.", 920, 70);
 
 	if (autoBuyDead) {
 		ctx.fillStyle = "green";
 	} else {
 		ctx.fillStyle = "red";
 	}
-	ctx.fillRect(1190, 75, 50, 50);
+	ctx.fillRect(1090, 75, 50, 50);
 	ctx.fillStyle = "black";
 	ctx.font = "12px Arial";
-	ctx.fillText("Auto-Replace Dead", 1160, 135);
+	ctx.fillText("Auto-Replace Dead", 1060, 135);
 	ctx.fillStyle = "white";
-	ctx.fillText("On/Off", 1197, 105);
+	ctx.fillText("On/Off", 1097, 105);
+	
+	ctx.fillStyle = "red";
+	ctx.fillRect(1190, 75, 50 ,50);
+	ctx.fillStyle = "black";
+	ctx.font = "12px Arial";
+	ctx.fillText("(reset)", 1190, 135);
+	ctx.fillStyle = "white";
+	ctx.font = "11px Arial";
+	ctx.fillText("Surrender", 1190, 105);
 
 	ctx.fillStyle = "grey";
 	ctx.fillRect(canvas.width - 60, 50, 50, 50);
