@@ -214,7 +214,7 @@ document.addEventListener("keydown", function(event) {
 			raiders[i].timeSinceLastFrame = new Date();
 		}
 	}
-//COde that listens to saves
+//Code that listens to saves
 	if (event.key + "" === "s") {
 		localStorage.setItem("data", JSON.stringify({sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castleGPS: castle.castleGPS, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}));
 		
@@ -235,6 +235,12 @@ document.addEventListener("keydown", function(event) {
 		for (var i = 0; i < raiders.length; i++) {
 			raiders[i].timeSinceLastFrame = new Date();
 		}
+	}
+	
+	if (event.key + "" === " " && !pauseButtonDisabled) {
+		play = !play;
+		payTimerMillis = new Date().getTime() - payTimer.getTime();
+		raidTimerMillis = new Date().getTime() - raidTimer.getTime();
 	}
 });
 
