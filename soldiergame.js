@@ -241,6 +241,7 @@ document.addEventListener("keydown", function(event) {
 		play = !play;
 		payTimerMillis = new Date().getTime() - payTimer.getTime();
 		raidTimerMillis = new Date().getTime() - raidTimer.getTime();
+		return false;
 	}
 });
 
