@@ -241,7 +241,6 @@ document.addEventListener("keydown", function(event) {
 		play = !play;
 		payTimerMillis = new Date().getTime() - payTimer.getTime();
 		raidTimerMillis = new Date().getTime() - raidTimer.getTime();
-		scroll(0,0);
 	}
 });
 
@@ -1194,6 +1193,7 @@ function drawBackground() {
 }
 
 function draw() {
+	scroll(0,0);
 	localStorage.setItem("data", JSON.stringify({outpostCost: outpostCost, outposts: outposts, sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castle: castle, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}));
 	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
