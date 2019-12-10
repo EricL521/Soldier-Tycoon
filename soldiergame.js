@@ -1361,6 +1361,22 @@ function draw() {
 	if (firstMaxPeople && soldiers.length + miners.length === 50 && maxPeople === 50) {
 		alert("Castle Full? Upgrade it to fit more people.");
 		firstMaxPeople = false;
+		
+		for (var i = 0; i < soldiers.length; i++) {
+			soldiers[i].timeSinceLastFrame = new Date();
+		}
+
+		for (var i = 0; i < bullets.length; i++) {
+			bullets[i].timeSinceLastFrame = new Date();
+		}
+
+		for (var i = 0; i < miners.length; i++) {
+			miners[i].timeSinceLastFrame = new Date();
+		}
+
+		for (var i = 0; i < raiders.length; i++) {
+			raiders[i].timeSinceLastFrame = new Date();
+		}
 	}
 
 	if (firstRaid && raiders.length > 0) {
