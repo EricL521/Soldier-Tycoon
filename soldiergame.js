@@ -32,6 +32,7 @@ document.write("<canvas id='canvas' width='1347' height='587' style='border:2px 
 /*document.write("<img style=\"visibility:hidden;\" src=\"pictures/soldier.png\" alt=\"Image result for soldier image\" id=\"soldierPicture\" width = \"25\" hight=\"16.4855072\"/>");*/
 document.write("<img style=\"visibility:hidden;\" src=\"pictures/miner.png\" alt=\"Image result for worker image\" id=\"minerPicture\" width = \"15\" hight=\"15.652173913\"/>");
 //Setting up JS Canvas, and some initial vars
+var leftPage = false;
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var raidTimer = new Date();
@@ -162,6 +163,11 @@ if (localStorage.getItem("data")) {
 } else {
 	localStorage.setItem("data", JSON.stringify({outpostCost: outpostCost, outposts: outposts, sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castle: castle, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}));
 }
+
+document.addEventListener("visibilitychange", function() {
+	play = false; // pauses the game
+});
+
 // Code for bets
 document.addEventListener("keydown", function(event) {
 	if (event.key + "" === "b") {
