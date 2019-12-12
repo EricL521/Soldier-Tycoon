@@ -579,7 +579,7 @@ document.onmouseup = function() {
 	}
 };
 
-var getRotation = function(xVel, yVel) {
+function getRotation(xVel, yVel) {
 	if (xVel < 0) {
 		return Math.atan(yVel / xVel) * 180 / Math.PI + 180;
 	} else if (xVel > 0) {
@@ -591,9 +591,9 @@ var getRotation = function(xVel, yVel) {
 			return -90;
 		}
 	}
-};
+}
 
-var moveSoldier = function(i) {
+function moveSoldier(i) {
 	ctx.beginPath();
 	ctx.arc(soldiers[i].x, soldiers[i].y, soldiers[i].radius, 0, 2 * Math.PI);
 	ctx.fillStyle = "green";
@@ -754,9 +754,9 @@ var moveSoldier = function(i) {
 	if (i < soldiers.length) {
 		soldiers[i].timeSinceLastFrame = new Date();
 	}
-};
+}
 
-var moveMiner = function(i) {
+function moveMiner(i) {
 	ctx.beginPath();
 	ctx.arc(miners[i].x, miners[i].y, miners[i].radius, 0, 2 * Math.PI);
 	ctx.fillStyle = "blue";
@@ -838,9 +838,9 @@ var moveMiner = function(i) {
 	if (i < miners.length) {
 		miners[i].timeSinceLastFrame = new Date();
 	}
-};
+}
 
-var moveRaider = function(i) {
+function moveRaider(i) {
 	ctx.beginPath();
 	ctx.arc(raiders[i].x, raiders[i].y, raiders[i].radius, 0, 2 * Math.PI);
 	ctx.fillStyle = "red";
@@ -966,9 +966,9 @@ var moveRaider = function(i) {
 	if (i < raiders.length) {
 		raiders[i].timeSinceLastFrame = new Date();
 	}
-};
+}
 
-var moveBullet = function(i) {
+function moveBullet(i) {
 	if (bullets[i].y > 148 + bullets[i].radius) {
 		ctx.beginPath();
 		ctx.arc(bullets[i].x, bullets[i].y, bullets[i].radius, 0, 2 * Math.PI);
@@ -991,7 +991,7 @@ var moveBullet = function(i) {
 	if (i < bullets.length) {
 		bullets[i].timeSinceLastFrame = new Date();
 	}
-};
+}
 
 var startRaid = function() {
 	var raiders1 = Math.floor((Math.random() * ((soldiers.length + miners.length) / 25)) + ((soldiers.length + miners.length) / 15)) + ((soldierHealth - 100) / 10);
@@ -1018,7 +1018,7 @@ var startRaid = function() {
 	}
 };
 
-var topBar = function() {
+function topBar() {
 	ctx.fillStyle = "black";
 	ctx.fillRect(0, 148, canvas.width, 2);
 	
@@ -1166,9 +1166,9 @@ var topBar = function() {
 
 	ctx.fillStyle = "black";
 	ctx.fillText("?", canvas.width - 30, 30);
-};
+}
 
-var drawBackground = function() {
+function drawBackground() {
 	for (var m = 0; m < outposts.length; m++) {
 		ctx.beginPath();
 		ctx.arc(outposts[m].x, outposts[m].y, outposts[m].radius, 0, 2 * Math.PI);
@@ -1196,9 +1196,9 @@ var drawBackground = function() {
 	ctx.fill();
 
 	ctx.strokeRect(castle.x - castle.scoutRange, castle.y - castle.scoutRange, 2 * castle.scoutRange, 2 * castle.scoutRange);
-};
+}
 
-var draw = function() {
+function draw() {
 	scroll(0,0);
 	localStorage.setItem("data", JSON.stringify({outpostCost: outpostCost, outposts: outposts, sandbox: sandbox, gold: gold, soldiers: soldiers, miners: miners, soldierUpgradeCost: soldierUpgradeCost, soldierHealth: soldierHealth, minSoldierDamage: minSoldierDamage, minerUpgradeCost: minerUpgradeCost, castle: castle, timePerGold: timePerGold, maxPeople: maxPeople, castleUpgradeCost: castleUpgradeCost, raiders: raiders, firstTime: firstTime, firstRaid: firstRaid, firstMaxPeople: firstMaxPeople, firstOutpost: firstOutpost, lost: lost, paySeconds: paySeconds}));
 	
@@ -1410,7 +1410,7 @@ var draw = function() {
 	}
 
 	requestAnimationFrame(draw);
-};
+}
 
 draw();
 
