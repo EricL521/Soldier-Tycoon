@@ -1,7 +1,7 @@
 # Soldier Tycoon News
 We now use cookies to save your progress in Soldier Tycoon! The game is still a bit buggy but we are working to fix it!
 
-# [Soldier Tycoon Open Beta 0.3.2: Saving Update](https://gcreeper00.github.io/Soldier-Tycoon/)
+# [Soldier Tycoon Open Beta 0.3.2: Saving Update](https://EricL521.github.io/Soldier-Tycoon/)
 - Press S to save!
 - Reset your save by pressing the reset button!
 
